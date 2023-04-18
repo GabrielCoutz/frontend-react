@@ -1,0 +1,1 @@
+export const toCurrency = (price: string) => Number(price).toLocaleString("BRL", {currency: "BRL", style: "currency"})
