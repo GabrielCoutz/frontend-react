@@ -31,10 +31,13 @@ export interface ApiErrorResponse extends AxiosError {
   response?: AxiosResponse<ApiError>;
 }
 
+const user = {
+  create: (payload: CreateUserPayload): Promise<Record<"data", CreateUserResponse>> => axiosInstance.post('/users', JSON.stringify(payload)),
+  update: (payload: UpdateUserPayload): Promise<Record<"data", UpdateUserResponse>> => axiosInstance.patch('/users', JSON.stringify(payload)),
+  delete: (id: string) => axiosInstance.delete(`/users/${id}`),
+  get: (id: string) => axiosInstance.get(`/users/${id}`)
+}
 
 export const api = {
-  getUser: (id: string) => axiosInstance.get(`/users/${id}`),
-  createUser: (payload: CreateUserPayload): Promise<Record<"data", CreateUserResponse>> => axiosInstance.post('/users', JSON.stringify(payload)),
-  updateUser: (payload: UpdateUserPayload): Promise<Record<"data", UpdateUserResponse>> => axiosInstance.patch('/users', JSON.stringify(payload)),
-  deleteUser: (id: string) => axiosInstance.delete(`/users/${id}`)
+  user
 }
