@@ -17,4 +17,7 @@
     ".next": true
   },
   "explorerExclude.backup": {},
+  "[ts]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
 }

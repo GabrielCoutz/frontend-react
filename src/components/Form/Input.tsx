@@ -14,7 +14,7 @@ export const Input = (props: InputProps) => {
         {...props}
         {...register(props.name, { required: props.errorMessage })}
         id={props.name}
-        className="max-w-[300px] rounded border-2 border-gray-400 hover:border-indigo-600 focus:border-indigo-600 transition"
+        className="rounded border-2 border-gray-400 hover:border-indigo-600 focus:border-indigo-600 transition"
       />
     </>
   )
