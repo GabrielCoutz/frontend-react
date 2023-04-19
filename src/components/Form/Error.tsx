@@ -12,7 +12,7 @@ export const Error = ({ field }: ErrorProps) => {
   } = useFormContext()
 
   return errors[field]?.message?.toString() ? (
-    <span className="text-red-500 font-medium flex">
+    <span className="text-red-500 flex text-sm">
       <ErrorIcon />
       {errors[field]?.message?.toString()}
     </span>

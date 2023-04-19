@@ -10,7 +10,7 @@ export const ErrorIcon = (props?: SVGAttributes<SVGElement>) => {
       xmlns="http://www.w3.org/2000/svg"
       aria-hidden="true"
       {...props}
-      className="w-[20px] me-1 inline-block"
+      className="w-[17px] me-1 inline-block"
     >
       <path
         strokeLinecap="round"
