@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { useForm, FormProvider } from 'react-hook-form'
+
 import { api, ApiErrorResponse } from '../../helpers/request'
 import { Button } from '../Button'
 import { Form } from '../Form'
@@ -29,10 +30,10 @@ const SignupForm = () => {
   }
 
   return (
-    <div className="mx-auto p-4 max-w-screen-sm">
+    <div className="mx-auto p-4 max-w-sm sm:w-full">
       <FormProvider {...signupFormMethods}>
         <form
-          className="bg-white p-10 container mx-auto my-8 rounded flex flex-col gap-4 max-w-[400px]"
+          className="mx-auto rounded flex flex-col gap-4"
           onSubmit={handleSubmit(handleSignup)}
         >
           <Form.Field>
@@ -40,7 +41,7 @@ const SignupForm = () => {
             <Form.Input
               name="name"
               type="text"
-              errorMessage="Preencha este campo"
+              errormessage="Preencha este campo"
             />
             <Form.Error field="name" />
           </Form.Field>
@@ -50,7 +51,7 @@ const SignupForm = () => {
             <Form.Input
               name="email"
               type="email"
-              errorMessage="Preencha este campo"
+              errormessage="Preencha este campo"
             />
             <Form.Error field="email" />
           </Form.Field>
@@ -60,18 +61,18 @@ const SignupForm = () => {
             <Form.Input
               name="password"
               type="password"
-              errorMessage="Preencha este campo"
+              errormessage="Preencha este campo"
             />
             <Form.Error field="password" />
           </Form.Field>
 
           {error && (
-            <span className="text-red-500 font-medium text-center">
+            <span className="text-red-500 font-medium text-center text-sm">
               {error}
             </span>
           )}
 
-          <Button.Primary>Cadastrar-se</Button.Primary>
+          <Button.Primary className="mt-2">Cadastrar-se</Button.Primary>
         </form>
       </FormProvider>
     </div>
