@@ -1,9 +1,10 @@
 import { InputHTMLAttributes } from 'react'
-import { useFormContext } from 'react-hook-form'
+import { useFormContext, ValidationRule } from 'react-hook-form'
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   name: string
   errormessage?: string
+  validation?: ValidationRule<RegExp> | undefined
 }
 
 export const Input = (props: InputProps) => {
@@ -12,7 +13,10 @@ export const Input = (props: InputProps) => {
     <>
       <input
         {...props}
-        {...register(props.name, { required: props.errormessage })}
+        {...register(props.name, {
+          required: props.errormessage,
+          pattern: props.validation,
+        })}
         id={props.name}
         className="rounded-lg h-9 border-gray-200 shadow hover:shadow-sm focus:ring-inset-indigo-600 ring-inset transition text-sm focus:ring-indigo-700"
       />
