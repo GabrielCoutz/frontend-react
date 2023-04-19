@@ -1,11 +1,9 @@
 import { useRouter } from 'next/router'
 import React from 'react'
 
-const Repo = () => {
+const Product = () => {
   const { query } = useRouter()
-  return (
-    <div>Repo: {query.id}</div>
-  )
+  return <div>product: {query.id}</div>
 }
 
-export default Repo
+export default Product

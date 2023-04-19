@@ -1,3 +1,7 @@
 import axios from "axios";
 
-export const request = async (url: string) => await (await axios.get(url)).data
+type Endpoint = "/users" | "/products" | "/auth"
+
+export const request = async (endpoint: Endpoint) => await (await axios.get(endpoint, {
+  baseURL: 'http://localhost:3000'
+})).data
