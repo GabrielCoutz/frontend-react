@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 import { useForm, FormProvider } from 'react-hook-form'
 
-import { api, ApiErrorResponse } from '../../helpers/request'
+import { api } from '../../helpers/request'
+import { ApiErrorResponse } from '../../helpers/request/error'
 import { Button } from '../Button'
 import { Form } from '../Form'
 
@@ -52,6 +53,7 @@ const SignupForm = () => {
               name="email"
               type="email"
               errormessage="Preencha este campo"
+              validation={{ value: /\S+@\S+\.\S+/, message: 'Email inválido' }}
             />
             <Form.Error field="email" />
           </Form.Field>
