@@ -3,7 +3,7 @@ import { useFormContext } from 'react-hook-form'
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   name: string
-  errorMessage?: string
+  errormessage?: string
 }
 
 export const Input = (props: InputProps) => {
@@ -12,9 +12,9 @@ export const Input = (props: InputProps) => {
     <>
       <input
         {...props}
-        {...register(props.name, { required: props.errorMessage })}
+        {...register(props.name, { required: props.errormessage })}
         id={props.name}
-        className="rounded border-2 border-gray-400 hover:border-indigo-600 focus:border-indigo-600 transition"
+        className="rounded-lg h-9 border-gray-200 shadow hover:shadow-sm focus:ring-inset-indigo-600 ring-inset transition text-sm focus:ring-indigo-700"
       />
     </>
   )

@@ -5,7 +5,7 @@ export const Terciary = (props: ButtonProps) => {
   return (
     <button
       {...props}
-      className={`font-semibold py-2 px-8 text-indigo-700 rounded transition underline-offset-2 underline hover:bg-slate-200 border-transparent border ${props.className}`}
+      className={`font-semibold text-indigo-600 transition underline-offset-2 underline hover:text-indigo-950 border-transparent border h-min-9 rounded-lg ${props.className}`}
     >
       {props.children}
     </button>
