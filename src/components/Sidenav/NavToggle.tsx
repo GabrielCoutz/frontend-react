@@ -11,7 +11,7 @@ export const NavToggle = () => {
       className="p-2 rounded-lg text-white transition border border-transparent hover:border-white md:hidden"
       onClick={() => setMenuIsOpen(!menuIsOpen)}
     >
-      {menuIsOpen ? <MenuIcon /> : <CloseIcon />}
+      {menuIsOpen ? <CloseIcon /> : <MenuIcon />}
     </button>
   )
 }

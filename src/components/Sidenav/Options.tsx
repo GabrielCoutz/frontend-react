@@ -31,7 +31,7 @@ export const Options = () => {
   return (
     <ul
       className={`transition-all flex flex-col gap-3 p-4 ${
-        menuIsOpen ? 'max-md:hidden' : ''
+        menuIsOpen ? '' : 'max-md:hidden'
       }`}
     >
       {optionsList.map((option) => (
