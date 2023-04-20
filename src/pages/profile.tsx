@@ -1,10 +1,35 @@
+import React, { useState } from 'react'
 import { GetServerSideProps } from 'next'
-import React from 'react'
+
 import { api } from '../helpers/request'
 import { parseCookies } from 'nookies'
+import { Sidenav } from '../components/Sidenav'
+import { IOption, optionsList, ProfileContext } from '../context/profile'
+import { Display } from '../components/Sidenav/Display'
 
 const profile = ({ userData }: { userData: string }) => {
-  return <pre>{JSON.stringify(userData)}</pre>
+  const [activeOption, setActiveOption] = useState<IOption>(optionsList[0])
+  const [menuIsOpen, setMenuIsOpen] = useState(false)
+
+  return (
+    <ProfileContext.Provider
+      value={{
+        optionsList,
+        activeOption,
+        setActiveOption,
+        menuIsOpen,
+        setMenuIsOpen,
+      }}
+    >
+      <section className="container grid grid-cols-[300px,1fr] mx-auto max-w-6xl max-md:grid-cols-1 my-32 px-4">
+        <Sidenav.Nav>
+          <Sidenav.NavToggle />
+          <Sidenav.Options />
+        </Sidenav.Nav>
+        <Display />
+      </section>
+    </ProfileContext.Provider>
+  )
 }
 
 export default profile
