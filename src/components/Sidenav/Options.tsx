@@ -7,8 +7,8 @@ export const Options = () => {
 
   return (
     <ul
-      className={`md:h-full transition-all flex flex-col gap-3 p-4 ${
-        menuIsOpen ? 'hidden' : 'block'
+      className={`transition-all flex flex-col gap-3 p-4 ${
+        menuIsOpen ? 'max-md:hidden' : ''
       }`}
     >
       {optionsList.map((option) => (
