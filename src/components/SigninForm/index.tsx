@@ -1,11 +1,13 @@
 import Link from 'next/link'
 import React, { useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
+import { setCookie } from 'nookies'
+
 import { api } from '../../helpers/request'
 import { ApiErrorResponse } from '../../helpers/request/error'
-
 import { Button } from '../Button'
 import { Form } from '../Form'
+import { useRouter } from 'next/router'
 
 interface SigninFormSchema {
   email: string
@@ -14,6 +16,7 @@ interface SigninFormSchema {
 
 const SigninForm = () => {
   const signinFormMethods = useForm<SigninFormSchema>()
+  const { push } = useRouter()
   const { handleSubmit } = signinFormMethods
   const [error, setError] = useState<string | undefined>(undefined)
   const [loading, setLoading] = useState<boolean | undefined>(undefined)
@@ -24,11 +27,15 @@ const SigninForm = () => {
 
     api.auth
       .login(payload)
-      .then(({ data }) => console.log(data))
+      .then(({ data }) => {
+        setCookie(undefined, 'token', data.token)
+        setCookie(undefined, 'id', data.id)
+        push('profile')
+      })
       .catch(({ response }: ApiErrorResponse) => {
         if (response?.data.statusCode == 401)
           return setError('Credenciais inválidas')
-        else setError('Erro inesperado, por vafor tente novamente mais tarde.')
+        else setError('Erro inesperado, por favor tente novamente mais tarde.')
         console.log(response?.data)
       })
       .finally(() => setLoading(false))
