@@ -65,6 +65,7 @@ const SigninForm = () => {
               name="password"
               type="password"
               errormessage="Preencha este campo"
+              autoComplete="password"
             />
             <Form.Error field="password" />
           </Form.Field>
