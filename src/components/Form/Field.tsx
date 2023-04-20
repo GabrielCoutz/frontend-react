@@ -1,5 +1,13 @@
-import React, { PropsWithChildren } from 'react'
+import React, { HTMLAttributes } from 'react'
 
-export const Field = ({ children }: PropsWithChildren) => {
-  return <div className="flex flex-col gap-2">{children}</div>
+interface FieldProps extends HTMLAttributes<HTMLDivElement> {
+  children: React.ReactNode
+}
+
+export const Field = (item: FieldProps) => {
+  return (
+    <div {...item} className={`flex flex-col gap-2 ${item?.className}`}>
+      {item.children}
+    </div>
+  )
 }
