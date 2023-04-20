@@ -11,18 +11,19 @@ export const Option = ({ option }: { option: IOption }) => {
     setActiveOption(selectedOption)
     setMenuIsOpen(!menuIsOpen)
   }
+
   return (
     <li>
-      {option.key === activeOption.key ? (
+      {option.name === activeOption?.name ? (
         <Button.Primary className="w-full" onClick={() => changeOption(option)}>
-          {option.component}
+          {option.name}
         </Button.Primary>
       ) : (
         <Button.Secondary
           className="w-full"
           onClick={() => changeOption(option)}
         >
-          {option.component}
+          {option.name}
         </Button.Secondary>
       )}
     </li>

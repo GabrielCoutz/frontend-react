@@ -1,9 +1,32 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { ProfileContext } from '../../context/profile'
+import { Config } from '../Configs'
+import { MyProducts } from '../MyProducts'
+import { UserForm } from '../UserForm'
 import { Option } from './Option'
 
+export const optionsList = [
+  {
+    component: <UserForm />,
+    name: 'Meus dados',
+    active: true,
+  },
+  {
+    component: <MyProducts />,
+    name: 'Meus produtos',
+    active: false,
+  },
+  {
+    component: <Config />,
+    name: 'Configurações',
+    active: false,
+  },
+]
+
 export const Options = () => {
-  const { optionsList, menuIsOpen } = useContext(ProfileContext)
+  const { menuIsOpen, setActiveOption } = useContext(ProfileContext)
+
+  useEffect(() => setActiveOption(optionsList[0]), [])
 
   return (
     <ul
@@ -12,7 +35,7 @@ export const Options = () => {
       }`}
     >
       {optionsList.map((option) => (
-        <Option option={option} key={option.key} />
+        <Option option={option} key={option.name} />
       ))}
     </ul>
   )

@@ -4,17 +4,16 @@ import { GetServerSideProps } from 'next'
 import { api } from '../helpers/request'
 import { parseCookies } from 'nookies'
 import { Sidenav } from '../components/Sidenav'
-import { IOption, optionsList, ProfileContext } from '../context/profile'
-import { Display } from '../components/Sidenav/Display'
+import { IOption, ProfileContext } from '../context/profile'
+import { ProfileDisplay } from '../components/ProfileDisplay'
 
 const profile = ({ userData }: { userData: string }) => {
-  const [activeOption, setActiveOption] = useState<IOption>(optionsList[0])
+  const [activeOption, setActiveOption] = useState<IOption | null>(null)
   const [menuIsOpen, setMenuIsOpen] = useState(false)
 
   return (
     <ProfileContext.Provider
       value={{
-        optionsList,
         activeOption,
         setActiveOption,
         menuIsOpen,
@@ -26,7 +25,7 @@ const profile = ({ userData }: { userData: string }) => {
           <Sidenav.NavToggle />
           <Sidenav.Options />
         </Sidenav.Nav>
-        <Display />
+        <ProfileDisplay />
       </section>
     </ProfileContext.Provider>
   )
