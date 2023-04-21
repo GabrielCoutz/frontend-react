@@ -1,9 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { IUser } from '../../interfaces/User'
 
-const initialState: IUser = {
-  name: 'initial',
-} as IUser
+const initialState: IUser = {} as IUser
 
 export const userSlice = createSlice({
   name: 'user',
