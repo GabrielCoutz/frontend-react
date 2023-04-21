@@ -1,4 +1,6 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
+
 import { HeaderContext } from '../../contexts/header'
 import { selectUserName } from '../../redux/user/userSelectors'
 import { HeaderLink } from './HeaderLink'
@@ -21,8 +23,13 @@ const links: ILink[] = [
 ]
 
 export const Links = () => {
-  const userIsLogged = selectUserName()
   const { setMenuIsOpen } = useContext(HeaderContext)
+  const [userIsLogged, setUserIslogged] = useState(false)
+  const userName = useSelector(selectUserName)
+
+  useEffect(() => {
+    if (userName) setUserIslogged(true)
+  }, [userName])
 
   return (
     <ul className="flex gap-4 max-md:flex-col max-md:p-4">
