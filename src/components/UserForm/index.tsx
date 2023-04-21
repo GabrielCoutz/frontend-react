@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { parseCookies } from 'nookies'
 import { FormProvider, useForm } from 'react-hook-form'
 import { useDispatch, useSelector } from 'react-redux'
@@ -9,19 +9,19 @@ import { IUser } from '../../interfaces/User'
 import { Button } from '../Button'
 import { Form } from '../Form'
 import { selectUserState } from '../../redux/user/userSelectors'
+import { UI } from '../Ui'
 import {
   updateUserSuccess,
   updateUserStart,
   updateUserFail,
 } from '../../redux/user/userSlice'
-import { ApiErrorResponse } from '../../helpers/request/error'
-import { UI } from '../Ui'
 
 interface UserFormSchema extends IUser {
   password: string
 }
 
 export const UserForm = () => {
+  const [message, setMessage] = useState('')
   const { user, error, isLoading } = useSelector(selectUserState)
   const dispatch = useDispatch()
 
@@ -31,6 +31,7 @@ export const UserForm = () => {
 
   const handleUpdate = async (data: UserFormSchema) => {
     dispatch(updateUserStart())
+    setMessage('')
     const updateUserDto: UpdateUserPayload = {
       email: data.email,
       name: data.name,
@@ -39,6 +40,7 @@ export const UserForm = () => {
     try {
       const { data } = await api.user.update(user?.id, updateUserDto, token)
       dispatch(updateUserSuccess(data))
+      setMessage('Dados atualizados')
     } catch (error) {
       console.log(error)
 
@@ -88,11 +90,12 @@ export const UserForm = () => {
         </Form.Field>
 
         <div className="flex justify-end col-span-full flex-col items-end">
-          {error && (
-            <UI.Erro className="mb-2 max-md:self-stretch max-md:text-center max-md:p-1 max-md:rounded-lg max-md:bg-red-100">
-              {error}
-            </UI.Erro>
-          )}
+          <UI.Erro className="mb-2 max-md:self-stretch">{error}</UI.Erro>
+
+          <UI.Success className="mb-2 max-md:self-stretch">
+            {message}
+          </UI.Success>
+
           <Button.Primary
             className="max-md:w-full max-md:mt-2"
             disabled={isLoading}
