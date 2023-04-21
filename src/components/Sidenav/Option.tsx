@@ -5,6 +5,7 @@ import { Button } from '../Button'
 export const Option = ({ option }: { option: IOption }) => {
   const { activeOption, setActiveOption, setMenuIsOpen, menuIsOpen } =
     useContext(ProfileContext)
+  const optionIsSelected = option.name === activeOption?.name
 
   const changeOption = (selectedOption: IOption) => {
     selectedOption.active = true
@@ -14,7 +15,7 @@ export const Option = ({ option }: { option: IOption }) => {
 
   return (
     <li>
-      {option.name === activeOption?.name ? (
+      {optionIsSelected ? (
         <Button.Primary className="w-full" onClick={() => changeOption(option)}>
           {option.name}
         </Button.Primary>

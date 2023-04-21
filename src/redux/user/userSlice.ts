@@ -7,12 +7,10 @@ export const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    saveUser: (state, { payload }: PayloadAction<IUser>) => {
-      return {
-        ...state,
-        ...payload,
-      }
-    },
+    saveUser: (state, { payload }: PayloadAction<IUser>) => ({
+      ...state,
+      ...payload,
+    }),
   },
 })
 

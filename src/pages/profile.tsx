@@ -11,10 +11,10 @@ import { useAppDispatch } from '../hooks/useAppDispatch'
 import { saveUser } from '../redux/user/userSlice'
 
 const profile = ({ userData }: { userData: IUser }) => {
+  const dispatch = useAppDispatch()
   const [activeOption, setActiveOption] = useState<IOption | null>(null)
   const [menuIsOpen, setMenuIsOpen] = useState(false)
 
-  const dispatch = useAppDispatch()
   dispatch(saveUser(userData))
 
   return (

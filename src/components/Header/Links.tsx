@@ -21,12 +21,12 @@ const links: ILink[] = [
 ]
 
 export const Links = () => {
-  const userName = selectUserName()
+  const userIsLogged = selectUserName()
   const { setMenuIsOpen } = useContext(HeaderContext)
 
   return (
     <ul className="flex gap-4 max-md:flex-col max-md:p-4">
-      {userName ? (
+      {userIsLogged ? (
         <ProfileButton />
       ) : (
         links.map((link) => (
