@@ -1,4 +1,7 @@
-import { useAppSelector } from '../../hooks/useAppSelector'
+import { RootState } from '../store'
 
-export const selectUser = () => useAppSelector((state) => state.user)
-export const selectUserName = () => useAppSelector((state) => state.user.name)
+export const selectUserState = ({ user }: RootState) => user
+
+export const selectUserName = ({ user }: RootState) => user?.user?.name
+
+export const selectUser = ({ user }: RootState) => user?.user
