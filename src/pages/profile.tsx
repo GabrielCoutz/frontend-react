@@ -6,10 +6,16 @@ import { parseCookies } from 'nookies'
 import { Sidenav } from '../components/Sidenav'
 import { IOption, ProfileContext } from '../context/profile'
 import { ProfileDisplay } from '../components/ProfileDisplay'
+import { IUser } from '../interfaces/User'
+import { useAppDispatch } from '../hooks/useAppDispatch'
+import { saveUser } from '../redux/user/userSlice'
 
-const profile = ({ userData }: { userData: string }) => {
+const profile = ({ userData }: { userData: IUser }) => {
   const [activeOption, setActiveOption] = useState<IOption | null>(null)
   const [menuIsOpen, setMenuIsOpen] = useState(false)
+
+  const dispatch = useAppDispatch()
+  dispatch(saveUser(userData))
 
   return (
     <ProfileContext.Provider

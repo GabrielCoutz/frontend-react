@@ -19,5 +19,8 @@
     ],
     "rules": {
         "no-trailing-spaces": "warn"
-    }
+    },
+    "ignorePatterns": [
+        "node_modules"
+    ]
 }
