@@ -8,19 +8,19 @@ import { UpdateUserPayload } from '../../helpers/request/user'
 import { IUser } from '../../interfaces/User'
 import { Button } from '../Button'
 import { Form } from '../Form'
-
-const defaultValues = {
-  name: 'xampson',
-  email: 'xampson@gmail.com',
-}
+import { selectUser } from '../../redux/user/userSelectors'
+import { useAppDispatch } from '../../hooks/useAppDispatch'
+import { updateUser } from '../../redux/user/userSlice'
 
 interface UserFormSchema extends IUser {
   password: string
 }
 
 export const UserForm = () => {
-  const userFormMethods = useForm<UserFormSchema>({ defaultValues })
-  const { id, token } = parseCookies(document.cookie as any)
+  const user = selectUser()
+  const dispatch = useAppDispatch()
+  const userFormMethods = useForm<UserFormSchema>({ defaultValues: user })
+  const { token } = parseCookies(document.cookie as any)
   const { handleSubmit } = userFormMethods
 
   const handleUpdate = (data: UserFormSchema) => {
@@ -30,8 +30,8 @@ export const UserForm = () => {
     }
 
     api.user
-      .update(id, updateUserDto, token)
-      .then(({ data }) => console.log(data))
+      .update(user.id, updateUserDto, token)
+      .then(({ data }) => dispatch(updateUser(data)))
       .catch(({ response }: ApiErrorResponse) => console.log(response?.data))
   }
 
@@ -48,7 +48,7 @@ export const UserForm = () => {
             type="text"
             errormessage="O nome não pode ser vazio"
             validation={{
-              value: /^[a-zA-Z]{5,}$/,
+              value: /^[a-zA-Z ]{5,}$/,
               message: 'O nome precisa ser maior que 5 letras',
             }}
           />
