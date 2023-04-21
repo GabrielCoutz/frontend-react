@@ -1,38 +1,53 @@
 import React from 'react'
 import { parseCookies } from 'nookies'
 import { FormProvider, useForm } from 'react-hook-form'
+import { useDispatch, useSelector } from 'react-redux'
 
 import { api } from '../../helpers/request'
-import { ApiErrorResponse } from '../../helpers/request/error'
 import { UpdateUserPayload } from '../../helpers/request/user'
 import { IUser } from '../../interfaces/User'
 import { Button } from '../Button'
 import { Form } from '../Form'
-import { selectUser } from '../../redux/user/userSelectors'
-import { useAppDispatch } from '../../hooks/useAppDispatch'
-import { updateUser } from '../../redux/user/userSlice'
+import { selectUserState } from '../../redux/user/userSelectors'
+import {
+  updateUserSuccess,
+  updateUserStart,
+  updateUserFail,
+} from '../../redux/user/userSlice'
+import { ApiErrorResponse } from '../../helpers/request/error'
+import { UI } from '../Ui'
 
 interface UserFormSchema extends IUser {
   password: string
 }
 
 export const UserForm = () => {
-  const user = selectUser()
-  const dispatch = useAppDispatch()
-  const userFormMethods = useForm<UserFormSchema>({ defaultValues: user })
+  const { user, error, isLoading } = useSelector(selectUserState)
+  const dispatch = useDispatch()
+
   const { token } = parseCookies(document.cookie as any)
+  const userFormMethods = useForm<UserFormSchema>({ defaultValues: user })
   const { handleSubmit } = userFormMethods
 
-  const handleUpdate = (data: UserFormSchema) => {
+  const handleUpdate = async (data: UserFormSchema) => {
+    dispatch(updateUserStart())
     const updateUserDto: UpdateUserPayload = {
       email: data.email,
       name: data.name,
     }
 
-    api.user
-      .update(user.id, updateUserDto, token)
-      .then(({ data }) => dispatch(updateUser(data)))
-      .catch(({ response }: ApiErrorResponse) => console.log(response?.data))
+    try {
+      const { data } = await api.user.update(user?.id, updateUserDto, token)
+      dispatch(updateUserSuccess(data))
+    } catch (error) {
+      console.log(error)
+
+      dispatch(
+        updateUserFail(
+          'Um erro inesperado ocorreu! Por favor, tente novamente mais tarde.',
+        ),
+      )
+    }
   }
 
   return (
@@ -72,9 +87,17 @@ export const UserForm = () => {
           <Form.Error field="password" />
         </Form.Field>
 
-        <div className="flex justify-end col-span-full">
-          <Button.Primary className="max-md:w-full max-md:mt-2">
-            Atualizar dados
+        <div className="flex justify-end col-span-full flex-col items-end">
+          {error && (
+            <UI.Erro className="mb-2 max-md:self-stretch max-md:text-center max-md:p-1 max-md:rounded-lg max-md:bg-red-100">
+              {error}
+            </UI.Erro>
+          )}
+          <Button.Primary
+            className="max-md:w-full max-md:mt-2"
+            disabled={isLoading}
+          >
+            {isLoading ? 'Carregando...' : 'Atualizar dados'}
           </Button.Primary>
         </div>
       </form>
