@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React, { useState } from 'react'
 import { useForm, FormProvider } from 'react-hook-form'
@@ -82,6 +83,13 @@ const SignupForm = () => {
             {loading ? 'Aguarde...' : 'Cadastrar-se'}
           </Button.Primary>
         </form>
+
+        <p className="mt-10 text-center text-sm text-gray-500">
+          Já tem conta?{' '}
+          <Link href="signin">
+            <Button.Terciary>Faça login</Button.Terciary>
+          </Link>
+        </p>
       </FormProvider>
     </div>
   )
