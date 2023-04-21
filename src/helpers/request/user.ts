@@ -1,5 +1,5 @@
 import { axiosInstance } from '.'
-import { IUserList } from '../../interfaces/User'
+import { IUser, IUserList } from '../../interfaces/User'
 
 interface CreateUserPayload {
   email: string
@@ -11,7 +11,7 @@ export type UpdateUserPayload = Partial<CreateUserPayload>
 interface CreateUserResponse {
   id: string
 }
-type UserResponse = IUserList
+type UserResponse = IUser
 
 const create = (
   payload: CreateUserPayload,
@@ -39,7 +39,7 @@ const deleteUser = (id: string, token: string): Promise<void> =>
 const get = (id: string): Promise<Record<'data', UserResponse>> =>
   axiosInstance.get(`/users/${id}`)
 
-const getAll = (): Promise<Record<'data', UserResponse[]>> =>
+const getAll = (): Promise<Record<'data', IUserList>> =>
   axiosInstance.get('/users')
 
 export const user = {
