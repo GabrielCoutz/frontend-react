@@ -8,6 +8,7 @@ import { ApiErrorResponse } from '../../helpers/request/error'
 import { Button } from '../Button'
 import { Form } from '../Form'
 import { useRouter } from 'next/router'
+import { UI } from '../Ui'
 
 interface SigninFormSchema {
   email: string
@@ -18,27 +19,29 @@ const SigninForm = () => {
   const signinFormMethods = useForm<SigninFormSchema>()
   const { push } = useRouter()
   const { handleSubmit } = signinFormMethods
-  const [error, setError] = useState<string | undefined>(undefined)
-  const [loading, setLoading] = useState<boolean | undefined>(undefined)
+  const [error, setError] = useState<string>('')
+  const [loading, setLoading] = useState<boolean>(false)
 
-  const handleSignin = (payload: SigninFormSchema) => {
-    setError(undefined)
+  const handleSignin = async (payload: SigninFormSchema) => {
+    setError('')
     setLoading(true)
 
-    api.auth
-      .login(payload)
-      .then(({ data }) => {
-        setCookie(undefined, 'token', data.token)
-        setCookie(undefined, 'id', data.id)
-        push('profile')
-      })
-      .catch(({ response }: ApiErrorResponse) => {
-        if (response?.data.statusCode == 401)
-          return setError('Credenciais inválidas')
-        else setError('Erro inesperado, por favor tente novamente mais tarde.')
-        console.log(response?.data)
-      })
-      .finally(() => setLoading(false))
+    try {
+      const { data } = await api.auth.login(payload)
+      setCookie(undefined, 'token', data.token)
+      setCookie(undefined, 'id', data.id)
+      push('profile')
+    } catch (error: any) {
+      const { response }: ApiErrorResponse = error
+
+      if (response?.data.statusCode == 401)
+        return setError('Credenciais inválidas')
+
+      setError('Erro inesperado, por favor tente novamente mais tarde.')
+      console.log(response?.data)
+    }
+
+    setLoading(false)
   }
 
   return (
@@ -70,11 +73,7 @@ const SigninForm = () => {
             <Form.Error field="password" />
           </Form.Field>
 
-          {error && (
-            <span className="text-red-500 font-medium text-center text-sm">
-              {error}
-            </span>
-          )}
+          <UI.Erro>{error}</UI.Erro>
           <Button.Primary className="mt-2" disabled={loading}>
             {loading ? 'Carregando...' : 'Entrar'}
           </Button.Primary>

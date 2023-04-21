@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router'
 import React, { useState } from 'react'
 import { useForm, FormProvider } from 'react-hook-form'
 
@@ -5,6 +6,7 @@ import { api } from '../../helpers/request'
 import { ApiErrorResponse } from '../../helpers/request/error'
 import { Button } from '../Button'
 import { Form } from '../Form'
+import { UI } from '../Ui'
 
 interface SignupFormSchema {
   name: string
@@ -13,21 +15,27 @@ interface SignupFormSchema {
 }
 
 const SignupForm = () => {
+  const [error, setError] = useState<string>('')
+  const [loading, setLoading] = useState(false)
+  const { push } = useRouter()
   const signupFormMethods = useForm<SignupFormSchema>()
   const { handleSubmit } = signupFormMethods
-  const [error, setError] = useState<string | undefined>(undefined)
 
-  const handleSignup = (data: SignupFormSchema) => {
-    setError(undefined)
-    api.user
-      .create(data)
-      .then((response) => console.log(response))
-      .catch(({ response }: ApiErrorResponse) => {
-        if (response?.data.statusCode === 409)
-          return setError('Email já em uso.')
-        else setError('Erro inesperado, por favor tente novamente mais tarde.')
-        console.log(response?.data)
-      })
+  const handleSignup = async (payload: SignupFormSchema) => {
+    setError('')
+    setLoading(true)
+
+    try {
+      await api.user.create(payload)
+      push('signin')
+    } catch (error: any) {
+      const { response }: ApiErrorResponse = error
+      if (response?.data.statusCode === 409) return setError('Email já em uso.')
+
+      setError('Erro inesperado, por favor tente novamente mais tarde.')
+    }
+
+    setLoading(false)
   }
 
   return (
@@ -68,13 +76,11 @@ const SignupForm = () => {
             <Form.Error field="password" />
           </Form.Field>
 
-          {error && (
-            <span className="text-red-500 font-medium text-center text-sm">
-              {error}
-            </span>
-          )}
+          <UI.Erro>{error}</UI.Erro>
 
-          <Button.Primary className="mt-2">Cadastrar-se</Button.Primary>
+          <Button.Primary className="mt-2" disabled={loading}>
+            {loading ? 'Aguarde...' : 'Cadastrar-se'}
+          </Button.Primary>
         </form>
       </FormProvider>
     </div>
