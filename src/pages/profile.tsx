@@ -1,17 +1,17 @@
 import React, { useState } from 'react'
 import { GetServerSideProps } from 'next'
+import { parseCookies } from 'nookies'
+import { useDispatch } from 'react-redux'
 
 import { api } from '../helpers/request'
-import { parseCookies } from 'nookies'
 import { Sidenav } from '../components/Sidenav'
 import { IOption, ProfileContext } from '../contexts/profile'
 import { ProfileDisplay } from '../components/ProfileDisplay'
 import { IUser } from '../interfaces/User'
-import { useAppDispatch } from '../hooks/useAppDispatch'
 import { saveUser } from '../redux/user/userSlice'
 
 const profile = ({ userData }: { userData: IUser }) => {
-  const dispatch = useAppDispatch()
+  const dispatch = useDispatch()
   const [activeOption, setActiveOption] = useState<IOption | null>(null)
   const [menuIsOpen, setMenuIsOpen] = useState(false)
 
