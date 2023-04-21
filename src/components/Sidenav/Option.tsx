@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import { IOption, ProfileContext } from '../../context/profile'
+import { IOption, ProfileContext } from '../../contexts/profile'
 import { Button } from '../Button'
 
 export const Option = ({ option }: { option: IOption }) => {

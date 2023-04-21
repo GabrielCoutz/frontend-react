@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from 'react'
-import { ProfileContext } from '../../context/profile'
+import { ProfileContext } from '../../contexts/profile'
 import { Config } from '../Configs'
 import { MyProducts } from '../MyProducts'
 import { UserForm } from '../UserForm'
