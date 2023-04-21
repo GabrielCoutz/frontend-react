@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import { ProfileContext } from '../../context/profile'
+import { ProfileContext } from '../../contexts/profile'
 
 export const ProfileDisplay = () => {
   const { activeOption } = useContext(ProfileContext)
