@@ -73,7 +73,7 @@ const SigninForm = () => {
             <Form.Error field="password" />
           </Form.Field>
 
-          <UI.Erro>{error}</UI.Erro>
+          <UI.Erro className="text-center">{error}</UI.Erro>
           <Button.Primary className="mt-2" disabled={loading}>
             {loading ? 'Carregando...' : 'Entrar'}
           </Button.Primary>

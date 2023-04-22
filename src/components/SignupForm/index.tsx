@@ -34,9 +34,9 @@ const SignupForm = () => {
       if (response?.data.statusCode === 409) return setError('Email já em uso.')
 
       setError('Erro inesperado, por favor tente novamente mais tarde.')
+    } finally {
+      setLoading(false)
     }
-
-    setLoading(false)
   }
 
   return (
@@ -77,7 +77,7 @@ const SignupForm = () => {
             <Form.Error field="password" />
           </Form.Field>
 
-          <UI.Erro>{error}</UI.Erro>
+          <UI.Erro className="text-center">{error}</UI.Erro>
 
           <Button.Primary className="mt-2" disabled={loading}>
             {loading ? 'Aguarde...' : 'Cadastrar-se'}
