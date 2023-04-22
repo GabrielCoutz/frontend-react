@@ -39,9 +39,9 @@ const SigninForm = () => {
 
       setError('Erro inesperado, por favor tente novamente mais tarde.')
       console.log(response?.data)
+    } finally {
+      setLoading(false)
     }
-
-    setLoading(false)
   }
 
   return (
