@@ -9,6 +9,7 @@ import { IOption, ProfileContext } from '../contexts/profile'
 import { ProfileDisplay } from '../components/ProfileDisplay'
 import { IUser } from '../interfaces/User'
 import { saveUser } from '../redux/user/userSlice'
+import { saveProducts } from '../redux/product/productSlice'
 
 const profile = ({ userData }: { userData: IUser }) => {
   const dispatch = useDispatch()
@@ -17,6 +18,7 @@ const profile = ({ userData }: { userData: IUser }) => {
 
   useEffect(() => {
     dispatch(saveUser(userData))
+    dispatch(saveProducts(userData.products))
   }, [])
 
   return (
