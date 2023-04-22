@@ -1,5 +1,5 @@
 import { PayloadAction } from '@reduxjs/toolkit'
-import { UpdateUserPayload } from '../../helpers/request/user'
+import { IUpdateUserPayload } from '../../helpers/request/user'
 import { IUser } from '../../interfaces/User'
 import { IUserState } from './userSlice'
 
@@ -8,7 +8,7 @@ const saveUser = (
   { payload }: PayloadAction<IUser>,
 ): IUserState => ({
   ...state,
-  user: payload,
+  data: payload,
   error: null,
   isLoading: false,
 })
@@ -30,11 +30,11 @@ const updateUserFail = (
 
 const updateUserSuccess = (
   state: IUserState,
-  { payload }: PayloadAction<UpdateUserPayload>,
+  { payload }: PayloadAction<IUpdateUserPayload>,
 ): IUserState => ({
   ...state,
-  user: {
-    ...state.user,
+  data: {
+    ...state.data,
     ...payload,
   },
   error: null,

@@ -4,7 +4,7 @@ import { IUser } from '../../interfaces/User'
 import userReducers from './userReducers'
 
 export interface IUserState {
-  user: IUser
+  data: IUser
   isLoading: boolean
   error: string | null
 }
