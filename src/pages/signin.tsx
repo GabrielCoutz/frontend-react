@@ -1,5 +1,9 @@
+import { GetServerSideProps } from 'next'
+import { parseCookies } from 'nookies'
 import React from 'react'
+
 import SigninForm from '../components/SigninForm'
+import { api } from '../helpers/request'
 
 const signin = () => {
   return (
@@ -13,3 +17,24 @@ const signin = () => {
 }
 
 export default signin
+
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const redirectObject = {
+    destination: 'profile',
+    permanent: false,
+  }
+
+  const { token, id } = parseCookies(ctx)
+
+  try {
+    const { data: authData } = await api.auth.validate(token)
+    if (authData.id === id)
+      return {
+        redirect: redirectObject,
+      }
+  } catch {}
+
+  return {
+    props: {},
+  }
+}
