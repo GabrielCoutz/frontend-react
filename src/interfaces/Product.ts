@@ -1,4 +1,4 @@
-import { IUser } from "./User"
+import { IUser } from './User'
 
 export interface IProduct {
   id: string
@@ -6,7 +6,7 @@ export interface IProduct {
   price: string
   created_at: string
   description: string
-  user: IUser
+  user: Pick<IUser, 'id' | 'name'>
 }
 
 export type IProductList = IProduct[]

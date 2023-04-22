@@ -1,46 +1,47 @@
 import { axiosInstance } from '.'
 import { IUser, IUserList } from '../../interfaces/User'
 
-interface CreateUserPayload {
+interface ICreateUserPayload {
   email: string
   name: string
   password: string
 }
-export type UpdateUserPayload = Partial<CreateUserPayload>
-
-interface CreateUserResponse {
+export type IUpdateUserPayload = Partial<ICreateUserPayload>
+interface ICreateUserResponse {
   id: string
 }
-type UserResponse = IUser
+type IUserResponse = IUser
+
+const usersEndpoint = '/users'
 
 const create = (
-  payload: CreateUserPayload,
-): Promise<Record<'data', CreateUserResponse>> =>
-  axiosInstance.post('/users', payload)
+  payload: ICreateUserPayload,
+): Promise<Record<'data', ICreateUserResponse>> =>
+  axiosInstance.post(usersEndpoint, payload)
 
 const update = (
   id: string,
-  payload: UpdateUserPayload,
+  payload: IUpdateUserPayload,
   token: string,
-): Promise<Record<'data', UserResponse>> =>
-  axiosInstance.patch(`/users/${id}`, payload, {
+): Promise<Record<'data', IUserResponse>> =>
+  axiosInstance.patch(`${usersEndpoint}/${id}`, payload, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
   })
 
 const deleteUser = (id: string, token: string): Promise<void> =>
-  axiosInstance.delete(`/users/${id}`, {
+  axiosInstance.delete(`${usersEndpoint}/${id}`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
   })
 
-const get = (id: string): Promise<Record<'data', UserResponse>> =>
-  axiosInstance.get(`/users/${id}`)
+const get = (id: string): Promise<Record<'data', IUserResponse>> =>
+  axiosInstance.get(`${usersEndpoint}/${id}`)
 
 const getAll = (): Promise<Record<'data', IUserList>> =>
-  axiosInstance.get('/users')
+  axiosInstance.get(usersEndpoint)
 
 export const user = {
   create,

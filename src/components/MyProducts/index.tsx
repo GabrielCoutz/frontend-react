@@ -1,10 +1,10 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
 
-import { selectUserProducts } from '../../redux/user/userSelectors'
 import { Button } from '../Button'
 import { Product } from '../Product'
 import { EditProduct } from '../EditProduct'
+import { selectUserProducts } from '../../redux/product/productSelectors'
 
 export const MyProducts = () => {
   const products = useSelector(selectUserProducts)

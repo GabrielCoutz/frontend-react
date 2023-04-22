@@ -4,7 +4,7 @@ import { FormProvider, useForm } from 'react-hook-form'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { api } from '../../helpers/request'
-import { UpdateUserPayload } from '../../helpers/request/user'
+import { IUpdateUserPayload } from '../../helpers/request/user'
 import { IUser } from '../../interfaces/User'
 import { Button } from '../Button'
 import { Form } from '../Form'
@@ -22,7 +22,7 @@ interface UserFormSchema extends IUser {
 
 export const UserForm = () => {
   const [message, setMessage] = useState('')
-  const { user, error, isLoading } = useSelector(selectUserState)
+  const { data: user, error, isLoading } = useSelector(selectUserState)
   const dispatch = useDispatch()
 
   const { token } = parseCookies(document.cookie as any)
@@ -32,7 +32,7 @@ export const UserForm = () => {
   const handleUpdate = async (data: UserFormSchema) => {
     dispatch(updateUserStart())
     setMessage('')
-    const updateUserDto: UpdateUserPayload = {
+    const updateUserDto: IUpdateUserPayload = {
       email: data.email,
       name: data.name,
     }
