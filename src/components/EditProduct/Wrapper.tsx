@@ -8,7 +8,7 @@ export const Wrapper = (
     <Disclosure
       as="div"
       {...props}
-      className={`grid grid-cols-2 col-span-full ${props.className}`}
+      className={`grid grid-cols-2 col-span-full ${props.className} gap-y-4`}
     >
       {props.children}
     </Disclosure>
