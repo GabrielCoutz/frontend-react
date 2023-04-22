@@ -27,7 +27,7 @@ export const MyProducts = () => {
               <Button.Terciary>Editar</Button.Terciary>
             </EditProduct.Toggle>
 
-            <EditProduct.Content>tudo mais</EditProduct.Content>
+            <EditProduct.Content product={product} />
           </EditProduct.Wrapper>
         </Product.Card>
       ))}
