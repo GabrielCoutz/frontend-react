@@ -1,8 +1,16 @@
-import React from 'react'
-import { IUser } from '../../interfaces/User'
+import React, { HtmlHTMLAttributes, PropsWithChildren } from 'react'
 
-const Owner = ({ name: owner }: Pick<IUser, 'name'>) => {
-  return <span className="italic text-gray-400 text-sm mb-2">@{owner}</span>
+const Owner = (
+  props: PropsWithChildren<HtmlHTMLAttributes<HTMLSpanElement>>,
+) => {
+  return (
+    <span
+      {...props}
+      className={`italic text-gray-400 text-sm mb-2 ${props.className}`}
+    >
+      @{props.children}
+    </span>
+  )
 }
 
 export default Owner

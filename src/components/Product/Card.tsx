@@ -1,9 +1,12 @@
-import React, { PropsWithChildren } from 'react'
+import React, { HtmlHTMLAttributes, PropsWithChildren } from 'react'
 
-const Card = ({ children }: PropsWithChildren) => {
+const Card = (props: PropsWithChildren<HtmlHTMLAttributes<HTMLLIElement>>) => {
   return (
-    <li className="rounded border border-gray-200 shadow-sm hover:shadow-md transition-all">
-      {children}
+    <li
+      {...props}
+      className={`rounded-md border border-slate-200 shadow-sm hover:shadow-md transition p-4 ${props.className}`}
+    >
+      {props.children}
     </li>
   )
 }
