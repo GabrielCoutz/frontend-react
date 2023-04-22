@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { GetServerSideProps } from 'next'
 import { parseCookies } from 'nookies'
 import { useDispatch } from 'react-redux'
@@ -15,7 +15,9 @@ const profile = ({ userData }: { userData: IUser }) => {
   const [activeOption, setActiveOption] = useState<IOption | null>(null)
   const [menuIsOpen, setMenuIsOpen] = useState(false)
 
-  dispatch(saveUser(userData))
+  useEffect(() => {
+    dispatch(saveUser(userData))
+  }, [])
 
   return (
     <ProfileContext.Provider
