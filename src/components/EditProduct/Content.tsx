@@ -1,10 +1,20 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Disclosure, Transition } from '@headlessui/react'
 import { FormProvider, useForm } from 'react-hook-form'
+import { parseCookies } from 'nookies'
+import { useDispatch, useSelector } from 'react-redux'
 
 import { IProduct } from '../../interfaces/Product'
 import { Button } from '../Button'
 import { Form } from '../Form'
+import { api } from '../../helpers/request'
+import { UI } from '../Ui'
+import { selectUserProductsState } from '../../redux/product/productSelectors'
+import {
+  updateProductFail,
+  updateProductStart,
+  updateProductSuccess,
+} from '../../redux/product/productSlice'
 
 type ProductFormSchema = Pick<IProduct, 'description' | 'name' | 'price'>
 
@@ -13,13 +23,40 @@ interface ContentProps {
 }
 
 export const Content = ({ product }: ContentProps) => {
+  const [message, setMessage] = useState('')
+  const { token } = parseCookies(document.cookie as any)
+  const { error, isLoading } = useSelector(selectUserProductsState)
+  const dispatch = useDispatch()
   const productFormMethods = useForm<ProductFormSchema>({
     defaultValues: product,
   })
   const { handleSubmit } = productFormMethods
 
-  const handleUpdate = (payload: any) => {
-    console.log(payload)
+  const handleUpdate = async (payload: ProductFormSchema) => {
+    setMessage('')
+
+    dispatch(updateProductStart())
+    const updateProductDto = {
+      name: payload.name,
+      price: Number(payload.price),
+      description: payload.description,
+    }
+
+    try {
+      const { data } = await api.product.update(
+        product.id,
+        updateProductDto,
+        token,
+      )
+      dispatch(updateProductSuccess(data))
+      setMessage('Produto atualizado')
+    } catch (error) {
+      dispatch(
+        updateProductFail(
+          'Um erro inesperado ocorreu. Por favor, tente novamente mais tarde',
+        ),
+      )
+    }
   }
 
   return (
@@ -49,13 +86,17 @@ export const Content = ({ product }: ContentProps) => {
               <Form.Error field="name" />
             </Form.Field>
 
-            <Form.Field>
+            <Form.Field className="relative">
               <Form.Label htmlFor="price">Preço</Form.Label>
-              <Form.Input
-                name="price"
-                type="number"
-                errormessage="Preencha o preço"
-              />
+              <div className="flex items-center">
+                <span className="me-2 hover:cursor-default">R$</span>
+                <Form.Input
+                  name="price"
+                  type="number"
+                  errormessage="Preencha o preço"
+                  className="flex-1"
+                />
+              </div>
               <Form.Error field="price" />
             </Form.Field>
 
@@ -64,7 +105,14 @@ export const Content = ({ product }: ContentProps) => {
               <Form.Textarea name="description" cols={5} rows={3} />
             </Form.Field>
 
-            <Button.Primary className="col-span-full">Atualizar</Button.Primary>
+            <UI.Erro className="col-span-full text-center">{error}</UI.Erro>
+            <UI.Success className="col-span-full text-center">
+              {message}
+            </UI.Success>
+
+            <Button.Primary className="col-span-full" disabled={isLoading}>
+              {isLoading ? 'Carregando...' : 'Atualizar dados'}
+            </Button.Primary>
           </form>
         </FormProvider>
       </Disclosure.Panel>
