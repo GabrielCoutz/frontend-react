@@ -4,7 +4,7 @@ export const Message = (
   props: PropsWithChildren<HTMLAttributes<HTMLParagraphElement>>,
 ) => {
   return (
-    <p {...props} className={`text-sm text-gray-500 ${props.className}`}>
+    <p {...props} className={`text-sm text-gray-500 mb-4 ${props.className}`}>
       {props.children}
     </p>
   )

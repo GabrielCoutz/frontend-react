@@ -6,7 +6,7 @@ export const Title = (
   return (
     <h3
       {...props}
-      className={`text-base font-semibold leading-6 text-slate-900 ${props.className}`}
+      className={`text-base font-semibold leading-6 text-slate-900 mb-2 ${props.className}`}
     >
       {props.children}
     </h3>
