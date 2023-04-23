@@ -1,4 +1,5 @@
 import { PayloadAction } from '@reduxjs/toolkit'
+import { IProductResponse } from '../../helpers/request/product'
 import { IProduct, IProductList } from '../../interfaces/Product'
 import { IProductState } from './productSlice'
 
@@ -64,7 +65,6 @@ const deleteProductSuccess = (
   const updatedProducts = oldProducts.filter(
     (product) => product.id !== payload,
   )
-
   return {
     ...state,
     data: updatedProducts,
@@ -72,6 +72,31 @@ const deleteProductSuccess = (
     error: null,
   }
 }
+
+const createProductStart = (state: IProductState): IProductState => ({
+  ...state,
+  isLoading: true,
+  error: null,
+})
+
+const createProductFail = (
+  state: IProductState,
+  { payload }: PayloadAction<string>,
+): IProductState => ({
+  ...state,
+  error: payload,
+  isLoading: false,
+})
+
+const createProductSuccess = (
+  state: IProductState,
+  { payload }: PayloadAction<IProductResponse>,
+): IProductState => ({
+  ...state,
+  data: [...state.data, payload],
+  isLoading: false,
+  error: null,
+})
 
 export default {
   saveProducts,
@@ -81,4 +106,7 @@ export default {
   deleteProductStart,
   deleteProductFail,
   deleteProductSuccess,
+  createProductStart,
+  createProductFail,
+  createProductSuccess,
 }
