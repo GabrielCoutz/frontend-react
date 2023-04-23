@@ -18,7 +18,7 @@ const profile = ({ userData }: { userData: IUser }) => {
 
   useEffect(() => {
     dispatch(saveUser(userData))
-    dispatch(saveProducts(userData.products))
+    if (userData.products.length) dispatch(saveProducts(userData.products))
   }, [])
 
   return (
