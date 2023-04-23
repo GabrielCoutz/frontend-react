@@ -42,9 +42,43 @@ const updateProductSuccess = (
   }
 }
 
+const deleteProductStart = (state: IProductState): IProductState => ({
+  ...state,
+  isLoading: true,
+})
+
+const deleteProductFail = (
+  state: IProductState,
+  { payload }: PayloadAction<string>,
+): IProductState => ({
+  ...state,
+  error: payload,
+  isLoading: false,
+})
+
+const deleteProductSuccess = (
+  state: IProductState,
+  { payload }: PayloadAction<string>,
+): IProductState => {
+  const oldProducts = state.data
+  const updatedProducts = oldProducts.filter(
+    (product) => product.id !== payload,
+  )
+
+  return {
+    ...state,
+    data: updatedProducts,
+    isLoading: false,
+    error: null,
+  }
+}
+
 export default {
   saveProducts,
   updateProductStart,
   updateProductFail,
   updateProductSuccess,
+  deleteProductStart,
+  deleteProductFail,
+  deleteProductSuccess,
 }

@@ -21,5 +21,8 @@ export const {
   updateProductStart,
   updateProductFail,
   updateProductSuccess,
+  deleteProductStart,
+  deleteProductFail,
+  deleteProductSuccess,
 } = productSlice.actions
 export default productSlice.reducer
