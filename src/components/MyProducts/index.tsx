@@ -8,6 +8,6 @@ import { Empty } from './Empty'
 export const MyProducts = () => {
   const products = useSelector(selectUserProducts)
 
-  if (products.length) return <Products />
+  if (products?.length) return <Products />
   else return <Empty />
 }

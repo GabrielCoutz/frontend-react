@@ -7,7 +7,7 @@ interface ICreateProductPayload {
   description?: string
 }
 export type IUpdateProductPayload = Partial<ICreateProductPayload>
-type IProductResponse = IProduct
+export type IProductResponse = IProduct
 
 const productsEndpoint = '/products'
 
