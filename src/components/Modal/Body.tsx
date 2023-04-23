@@ -1,6 +1,7 @@
 import { Dialog, Transition } from '@headlessui/react'
 import React, { HtmlHTMLAttributes, PropsWithChildren } from 'react'
-import { Modal } from '.'
+import { Blur } from './Blur'
+import { Wrapper } from './Wrapper'
 
 interface BodyProps
   extends PropsWithChildren<HtmlHTMLAttributes<HTMLDivElement>> {
@@ -10,8 +11,8 @@ interface BodyProps
 export const Body = (props: BodyProps) => {
   return (
     <Dialog as="div" className="relative z-10" onClose={props.onClose}>
-      <Modal.Blur />
-      <Modal.Wrapper>
+      <Blur />
+      <Wrapper>
         <Transition.Child
           as="div"
           enter="ease-out duration-300"
@@ -26,7 +27,7 @@ export const Body = (props: BodyProps) => {
             {props.children}
           </Dialog.Panel>
         </Transition.Child>
-      </Modal.Wrapper>
+      </Wrapper>
     </Dialog>
   )
 }
