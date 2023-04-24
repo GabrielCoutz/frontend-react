@@ -4,11 +4,15 @@ import { IUser } from '../../interfaces/User'
 import userReducers from './userReducers'
 
 export interface IUserState {
-  data: IUser
+  data: IUser | null
   isLoading: boolean
   error: string | null
 }
-const initialState: IUserState = {} as IUserState
+const initialState: IUserState = {
+  data: null,
+  error: null,
+  isLoading: false,
+}
 
 export const userSlice = createSlice({
   name: 'user',
@@ -16,6 +20,13 @@ export const userSlice = createSlice({
   reducers: userReducers,
 })
 
-export const { saveUser, updateUserStart, updateUserFail, updateUserSuccess } =
-  userSlice.actions
+export const {
+  saveUser,
+  updateUserStart,
+  updateUserFail,
+  updateUserSuccess,
+  deleteUserStart,
+  deleteUserFail,
+  deleteUserSuccess,
+} = userSlice.actions
 export default userSlice.reducer
