@@ -1,10 +1,8 @@
-import { CakeIcon } from '@heroicons/react/24/outline'
-import React, { useState } from 'react'
+import React from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { useDispatch, useSelector } from 'react-redux'
 import { api } from '../../helpers/request'
 import { useCookie } from '../../hooks/useCookie'
-import { IProduct } from '../../interfaces/Product'
 import { selectUserProductsState } from '../../redux/product/productSelectors'
 import {
   createProductFail,
@@ -13,7 +11,6 @@ import {
 } from '../../redux/product/productSlice'
 import { Button } from '../Button'
 import { Form } from '../Form'
-import { Modal } from '../Modal'
 import { UI } from '../Ui'
 
 interface createProductFormSchema {
@@ -22,10 +19,9 @@ interface createProductFormSchema {
   description: string
 }
 
-export const CreateProduct = () => {
+export const CreateProductForm = () => {
   const createProductFormMethods = useForm<createProductFormSchema>()
   const { isLoading, error } = useSelector(selectUserProductsState)
-  const [productCreated, setProductCreated] = useState<IProduct>()
   const { handleSubmit } = createProductFormMethods
   const dispatch = useDispatch()
   const { token } = useCookie()
@@ -40,7 +36,7 @@ export const CreateProduct = () => {
 
     try {
       const { data } = await api.product.create(createProductDto, token)
-      setProductCreated(data)
+      dispatch(createProductSuccess(data))
     } catch (error) {
       console.log(error)
       dispatch(
@@ -105,29 +101,6 @@ export const CreateProduct = () => {
           </Button.Primary>
         </form>
       </FormProvider>
-
-      <Modal.Trigger trigger={!!productCreated}>
-        <Modal.Body
-          onClose={() =>
-            dispatch(createProductSuccess(productCreated as IProduct))
-          }
-        >
-          <Modal.IconWrapper className="bg-green-200">
-            <CakeIcon className="w-6 h-6 text-green-500" />
-          </Modal.IconWrapper>
-          <Modal.Title>É isso aí</Modal.Title>
-          <Modal.Message>Produto criado com sucesso</Modal.Message>
-          <Modal.Actions>
-            <Button.Primary
-              onClick={() =>
-                dispatch(createProductSuccess(productCreated as IProduct))
-              }
-            >
-              Ver meus produtos
-            </Button.Primary>
-          </Modal.Actions>
-        </Modal.Body>
-      </Modal.Trigger>
     </>
   )
 }

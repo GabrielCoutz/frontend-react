@@ -4,10 +4,16 @@ import { useSelector } from 'react-redux'
 import { selectUserProducts } from '../../redux/product/productSelectors'
 import { Products } from './Products'
 import { Empty } from './Empty'
+import { ProductsEventListener } from './ProductsEventListener'
 
 export const MyProducts = () => {
   const products = useSelector(selectUserProducts)
+  const userHasProducts = products?.length
 
-  if (products?.length) return <Products />
-  else return <Empty />
+  return (
+    <>
+      <ProductsEventListener />
+      {userHasProducts ? <Products /> : <Empty />}
+    </>
+  )
 }

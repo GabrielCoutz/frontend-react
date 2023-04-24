@@ -17,15 +17,13 @@ import { useCookie } from '../../hooks/useCookie'
 export const Delete = ({ product }: { product: IProduct }) => {
   const { isLoading, error } = useSelector(selectUserProductsState)
   const [deleteIntention, setDeleteIntention] = useState(false)
-  const [deleteSuccess, setDeleteSuccess] = useState(false)
   const { token } = useCookie()
   const dispatch = useDispatch()
 
   const handleClick = async () => {
     try {
       await api.product.delete(product.id, token)
-      setDeleteIntention(false)
-      setDeleteSuccess(true)
+      dispatch(deleteProductSuccess(product.id))
     } catch (error) {
       console.log(error)
       dispatch(
@@ -34,11 +32,6 @@ export const Delete = ({ product }: { product: IProduct }) => {
         ),
       )
     }
-  }
-
-  const dispatchAndCloseModal = () => {
-    dispatch(deleteProductSuccess(product.id))
-    setDeleteSuccess(false)
   }
 
   return (
@@ -73,23 +66,6 @@ export const Delete = ({ product }: { product: IProduct }) => {
             <Button.Secondary onClick={handleClick}>
               {isLoading ? 'Aguarde...' : 'Sim, tenho certeza'}
             </Button.Secondary>
-          </Modal.Actions>
-        </Modal.Body>
-      </Modal.Trigger>
-
-      <Modal.Trigger trigger={deleteSuccess}>
-        <Modal.Body onClose={dispatchAndCloseModal}>
-          <Modal.IconWrapper className="bg-green-100">
-            <TrashIcon className="text-green-500 h-6 w-6" />
-          </Modal.IconWrapper>
-          <Modal.Title>
-            <span className="italic">"{product.name}"</span> deletado
-          </Modal.Title>
-          <Modal.Message>Produto deletado com sucesso</Modal.Message>
-          <Modal.Actions>
-            <Button.Primary onClick={dispatchAndCloseModal} className="w-full">
-              Continuar
-            </Button.Primary>
           </Modal.Actions>
         </Modal.Body>
       </Modal.Trigger>

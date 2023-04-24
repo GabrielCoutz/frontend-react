@@ -2,7 +2,7 @@ import { SparklesIcon } from '@heroicons/react/24/outline'
 import React, { useState } from 'react'
 import { Accordion } from '../Accordion'
 
-import { CreateProduct } from '../CreateProduct'
+import { CreateProductForm } from '../CreateProductForm'
 import { Button } from '../Button'
 import { Modal } from '../Modal'
 
@@ -34,7 +34,7 @@ export const Empty = () => {
         </Accordion.Toggle>
 
         <Accordion.Content>
-          <CreateProduct />
+          <CreateProductForm />
         </Accordion.Content>
       </Accordion.Wrapper>
     </section>
