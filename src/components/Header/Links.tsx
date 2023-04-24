@@ -29,6 +29,7 @@ export const Links = () => {
 
   useEffect(() => {
     if (userName) setUserIslogged(true)
+    else setUserIslogged(false)
   }, [userName])
 
   return (
