@@ -28,8 +28,14 @@ const SigninForm = () => {
 
     try {
       const { data } = await api.auth.login(payload)
-      setCookie(undefined, 'token', data.token)
-      setCookie(undefined, 'id', data.id)
+      const cookieMaxAge = 60 * 60 * 24 * 1 // 1 day
+
+      setCookie(undefined, 'token', data.token, {
+        maxAge: cookieMaxAge,
+      })
+      setCookie(undefined, 'id', data.id, {
+        maxAge: cookieMaxAge,
+      })
       push('profile')
     } catch (error: any) {
       const { response }: ApiErrorResponse = error
