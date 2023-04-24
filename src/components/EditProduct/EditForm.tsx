@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import { Transition } from '@headlessui/react'
 import { FormProvider, useForm } from 'react-hook-form'
-import { parseCookies } from 'nookies'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { IProduct } from '../../interfaces/Product'
@@ -16,6 +15,7 @@ import {
   updateProductStart,
   updateProductSuccess,
 } from '../../redux/product/productSlice'
+import { useCookie } from '../../hooks/useCookie'
 
 type ProductFormSchema = Pick<IProduct, 'description' | 'name' | 'price'>
 
@@ -25,7 +25,7 @@ interface ContentProps {
 
 export const EditForm = ({ product }: ContentProps) => {
   const [message, setMessage] = useState('')
-  const { token } = parseCookies(document.cookie as any)
+  const { token } = useCookie()
   const { error, isLoading } = useSelector(selectUserProductsState)
   const dispatch = useDispatch()
   const productFormMethods = useForm<ProductFormSchema>({

@@ -1,9 +1,9 @@
 import { CakeIcon } from '@heroicons/react/24/outline'
-import { parseCookies } from 'nookies'
 import React, { useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { useDispatch, useSelector } from 'react-redux'
 import { api } from '../../helpers/request'
+import { useCookie } from '../../hooks/useCookie'
 import { IProduct } from '../../interfaces/Product'
 import { selectUserProductsState } from '../../redux/product/productSelectors'
 import {
@@ -25,10 +25,10 @@ interface createProductFormSchema {
 export const CreateProduct = () => {
   const createProductFormMethods = useForm<createProductFormSchema>()
   const { isLoading, error } = useSelector(selectUserProductsState)
-  const { token } = parseCookies(document.cookie as any)
+  const [productCreated, setProductCreated] = useState<IProduct>()
   const { handleSubmit } = createProductFormMethods
   const dispatch = useDispatch()
-  const [productCreated, setProductCreated] = useState<IProduct>()
+  const { token } = useCookie()
 
   const handleCreateProduct = async (payload: createProductFormSchema) => {
     dispatch(createProductStart())

@@ -2,7 +2,7 @@ import { ExclamationTriangleIcon } from '@heroicons/react/24/outline'
 import { FormProvider, useForm } from 'react-hook-form'
 import { useDispatch, useSelector } from 'react-redux'
 import React, { useState } from 'react'
-import { destroyCookie, parseCookies } from 'nookies'
+import { destroyCookie } from 'nookies'
 
 import { selectUserState } from '../../redux/user/userSelectors'
 import { Button } from '../Button'
@@ -17,6 +17,7 @@ import {
 } from '../../redux/user/userSlice'
 import { ApiErrorResponse } from '../../helpers/request/error'
 import { useRouter } from 'next/router'
+import { useCookie } from '../../hooks/useCookie'
 
 interface DeleteAccountSchema {
   password: string
@@ -25,7 +26,7 @@ interface DeleteAccountSchema {
 export const DeleteAccountForm = () => {
   const [deleteIntention, setDeleteIntention] = useState(false)
   const deleteAccountMethods = useForm<DeleteAccountSchema>()
-  const { token } = parseCookies(document.cookie as any)
+  const { token } = useCookie()
   const { handleSubmit } = deleteAccountMethods
   const { error, isLoading, data: user } = useSelector(selectUserState)
   const dispatch = useDispatch()

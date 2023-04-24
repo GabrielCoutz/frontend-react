@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import { parseCookies } from 'nookies'
 import { FormProvider, useForm } from 'react-hook-form'
 import { useDispatch, useSelector } from 'react-redux'
 
@@ -15,6 +14,7 @@ import {
   updateUserStart,
   updateUserFail,
 } from '../../redux/user/userSlice'
+import { useCookie } from '../../hooks/useCookie'
 
 interface UserFormSchema extends IUser {
   password: string
@@ -25,7 +25,7 @@ export const UserForm = () => {
   const { data: user, error, isLoading } = useSelector(selectUserState)
   const dispatch = useDispatch()
 
-  const { token } = parseCookies(document.cookie as any)
+  const { token } = useCookie()
   const userFormMethods = useForm<UserFormSchema>({
     defaultValues: user as IUser,
   })

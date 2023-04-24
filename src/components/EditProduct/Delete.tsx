@@ -1,5 +1,4 @@
 import { TrashIcon } from '@heroicons/react/24/outline'
-import { parseCookies } from 'nookies'
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
@@ -13,12 +12,13 @@ import {
   deleteProductSuccess,
 } from '../../redux/product/productSlice'
 import { selectUserProductsState } from '../../redux/product/productSelectors'
+import { useCookie } from '../../hooks/useCookie'
 
 export const Delete = ({ product }: { product: IProduct }) => {
   const { isLoading, error } = useSelector(selectUserProductsState)
   const [deleteIntention, setDeleteIntention] = useState(false)
   const [deleteSuccess, setDeleteSuccess] = useState(false)
-  const { token } = parseCookies(document.cookie as any)
+  const { token } = useCookie()
   const dispatch = useDispatch()
 
   const handleClick = async () => {
