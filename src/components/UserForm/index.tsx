@@ -26,10 +26,14 @@ export const UserForm = () => {
   const dispatch = useDispatch()
 
   const { token } = parseCookies(document.cookie as any)
-  const userFormMethods = useForm<UserFormSchema>({ defaultValues: user })
+  const userFormMethods = useForm<UserFormSchema>({
+    defaultValues: user as IUser,
+  })
   const { handleSubmit } = userFormMethods
 
   const handleUpdate = async (data: UserFormSchema) => {
+    if (!user?.id) return
+
     dispatch(updateUserStart())
     setMessage('')
     const updateUserDto: IUpdateUserPayload = {
@@ -38,7 +42,7 @@ export const UserForm = () => {
     }
 
     try {
-      const { data } = await api.user.update(user?.id, updateUserDto, token)
+      const { data } = await api.user.update(user.id, updateUserDto, token)
       dispatch(updateUserSuccess(data))
       setMessage('Dados atualizados')
     } catch (error) {
