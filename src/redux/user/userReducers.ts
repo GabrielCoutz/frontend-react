@@ -31,12 +31,37 @@ const updateUserFail = (
 const updateUserSuccess = (
   state: IUserState,
   { payload }: PayloadAction<IUpdateUserPayload>,
-): IUserState => ({
-  ...state,
-  data: {
+): IUserState => {
+  const updatedUser = {
     ...state.data,
     ...payload,
-  },
+  } as IUser
+
+  return {
+    ...state,
+    data: updatedUser,
+    error: null,
+    isLoading: false,
+  }
+}
+
+const deleteUserStart = (state: IUserState): IUserState => ({
+  ...state,
+  isLoading: true,
+})
+
+const deleteUserFail = (
+  state: IUserState,
+  { payload }: PayloadAction<string>,
+): IUserState => ({
+  ...state,
+  error: payload,
+  isLoading: false,
+})
+
+const deleteUserSuccess = (state: IUserState): IUserState => ({
+  ...state,
+  data: null,
   error: null,
   isLoading: false,
 })
@@ -46,4 +71,7 @@ export default {
   updateUserSuccess,
   updateUserStart,
   updateUserFail,
+  deleteUserStart,
+  deleteUserFail,
+  deleteUserSuccess,
 }
