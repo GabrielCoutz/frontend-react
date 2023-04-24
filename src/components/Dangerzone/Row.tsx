@@ -6,7 +6,7 @@ export const Row = (
   return (
     <div
       {...props}
-      className={`grid grid-cols-[1fr,300px] justify-between p-2 ${props.className}`}
+      className={`flex max-sm:flex-wrap gap-4 justify-between items-end mt-4 ${props.className}`}
     >
       {props.children}
     </div>
