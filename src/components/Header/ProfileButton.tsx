@@ -7,6 +7,8 @@ import { HeaderLink } from './HeaderLink'
 
 export const ProfileButton = () => {
   const userName = useSelector(selectUserName)
+
+  if (!userName) return null
   const firstName = userName.split(' ')[0]
 
   return <HeaderLink href="profile">{capitalize(firstName)}</HeaderLink>
