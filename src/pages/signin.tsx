@@ -25,6 +25,10 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   }
 
   const { token, id } = parseCookies(ctx)
+  if (!token || !id)
+    return {
+      props: {},
+    }
 
   try {
     const { data: authData } = await api.auth.validate(token)
