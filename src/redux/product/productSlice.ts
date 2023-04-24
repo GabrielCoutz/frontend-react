@@ -3,7 +3,7 @@ import { IProductList } from '../../interfaces/Product'
 import productReducers from './productReducers'
 
 export interface IProductState {
-  data: IProductList
+  data: IProductList | null
   isLoading: boolean
   error: null | string
 }

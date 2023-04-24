@@ -30,7 +30,7 @@ const updateProductSuccess = (
   state: IProductState,
   { payload }: PayloadAction<IProduct>,
 ): IProductState => {
-  const oldProducts = state.data
+  const oldProducts = state.data?.length ? state.data : []
   const updatedProducts = oldProducts.map((product) =>
     product.id === payload.id ? payload : product,
   )
@@ -61,7 +61,7 @@ const deleteProductSuccess = (
   state: IProductState,
   { payload }: PayloadAction<string>,
 ): IProductState => {
-  const oldProducts = state.data
+  const oldProducts = state.data?.length ? state.data : []
   const updatedProducts = oldProducts.filter(
     (product) => product.id !== payload,
   )
@@ -91,12 +91,14 @@ const createProductFail = (
 const createProductSuccess = (
   state: IProductState,
   { payload }: PayloadAction<IProductResponse>,
-): IProductState => ({
-  ...state,
-  data: [...state.data, payload],
-  isLoading: false,
-  error: null,
-})
+): IProductState => {
+  return {
+    ...state,
+    data: [...(state.data?.length ? state.data : []), payload],
+    isLoading: false,
+    error: null,
+  }
+}
 
 export default {
   saveProducts,

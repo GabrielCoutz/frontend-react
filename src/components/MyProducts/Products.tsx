@@ -11,7 +11,7 @@ export const Products = () => {
 
   return (
     <Product.List className="col-span-full">
-      {products.map((product) => (
+      {products?.map((product) => (
         <Product.Card key={product.id} className="grid grid-cols-2">
           <Accordion.Wrapper className="grid grid-cols-2 col-span-full gap-y-4">
             <Accordion.Header>
