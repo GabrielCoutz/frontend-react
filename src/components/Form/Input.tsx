@@ -1,7 +1,7 @@
 import { InputHTMLAttributes } from 'react'
 import { useFormContext, ValidationRule } from 'react-hook-form'
 
-interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
+export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   name: string
   errormessage?: string
   validation?: ValidationRule<RegExp> | undefined

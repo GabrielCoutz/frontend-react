@@ -89,7 +89,7 @@ export const UserForm = () => {
 
         <Form.Field className="max-w-xs">
           <Form.Label htmlFor="password">Senha</Form.Label>
-          <Form.Input name="password" type="password" autoComplete="off" />
+          <Form.PasswordInput name="password" autoComplete="off" />
           <Form.Error field="password" />
         </Form.Field>
 

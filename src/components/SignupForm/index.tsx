@@ -69,9 +69,8 @@ const SignupForm = () => {
 
           <Form.Field>
             <Form.Label htmlFor="password">Senha</Form.Label>
-            <Form.Input
+            <Form.PasswordInput
               name="password"
-              type="password"
               errormessage="Preencha este campo"
               autoComplete="password"
             />

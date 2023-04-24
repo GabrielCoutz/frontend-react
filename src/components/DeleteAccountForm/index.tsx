@@ -95,10 +95,9 @@ export const DeleteAccountForm = () => {
               >
                 <Form.Field className="flex self-center max-md:self-stretch">
                   <Form.Label className="self-start">Senha</Form.Label>
-                  <Form.Input
+                  <Form.PasswordInput
                     name="password"
                     errormessage="Por favor, insira sua senha"
-                    type="password"
                     autoComplete="off"
                   />
                   <Form.Error field="password" />
