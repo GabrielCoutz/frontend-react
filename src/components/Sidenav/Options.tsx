@@ -3,6 +3,7 @@ import { ProfileContext } from '../../contexts/profile'
 import { Config } from '../Configs'
 import { MyProducts } from '../MyProducts'
 import { UserForm } from '../UserForm'
+import { LogoutButton } from './LogoutButton'
 import { Option } from './Option'
 
 export const optionsList = [
@@ -30,13 +31,16 @@ export const Options = () => {
 
   return (
     <ul
-      className={`transition-all flex flex-col gap-3 p-4 ${
+      className={`transition-all flex flex-col gap-3 p-4 md:h-full ${
         menuIsOpen ? '' : 'max-md:hidden'
       }`}
     >
       {optionsList.map((option) => (
         <Option option={option} key={option.name} />
       ))}
+      <li className="md:flex md:items-end md:flex-1">
+        <LogoutButton />
+      </li>
     </ul>
   )
 }
