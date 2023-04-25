@@ -1,5 +1,5 @@
 import React from 'react'
-import { ButtonProps } from '.'
+import { ButtonProps } from '..'
 
 export const Primary = (props: ButtonProps) => {
   return (

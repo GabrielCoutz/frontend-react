@@ -1,5 +1,5 @@
 import React from 'react'
-import { ButtonProps } from '.'
+import { ButtonProps } from '..'
 
 export const Terciary = (props: ButtonProps) => {
   return (
