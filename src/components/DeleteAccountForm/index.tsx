@@ -2,7 +2,6 @@ import { ExclamationTriangleIcon } from '@heroicons/react/24/outline'
 import { FormProvider, useForm } from 'react-hook-form'
 import { useDispatch, useSelector } from 'react-redux'
 import React, { useContext, useState } from 'react'
-import { destroyCookie } from 'nookies'
 
 import { selectUserState } from '../../redux/user/userSelectors'
 import { Button } from '../Button'
@@ -19,6 +18,7 @@ import { ApiErrorResponse } from '../../helpers/request/error'
 import { useRouter } from 'next/router'
 import { useCookie } from '../../hooks/useCookie'
 import { ModalContext } from '../../contexts/modal'
+import { clearLocalData } from '../../helpers/clearLocalData'
 
 interface DeleteAccountSchema {
   password: string
@@ -51,10 +51,8 @@ export const DeleteAccountForm = () => {
 
       await api.user.delete(user.id, token)
       dispatch(deleteUserSuccess())
-
-      destroyCookie(undefined, 'token')
-      destroyCookie(undefined, 'id')
       setTrigger('DeletedAccount')
+      clearLocalData()
       push('signin')
     } catch (error: any) {
       const { response }: ApiErrorResponse = error
