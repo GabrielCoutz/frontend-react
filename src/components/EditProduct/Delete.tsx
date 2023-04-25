@@ -1,5 +1,5 @@
 import { TrashIcon } from '@heroicons/react/24/outline'
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { IProduct } from '../../interfaces/Product'
@@ -13,10 +13,12 @@ import {
 } from '../../redux/product/productSlice'
 import { selectUserProductsState } from '../../redux/product/productSelectors'
 import { useCookie } from '../../hooks/useCookie'
+import { ModalContext } from '../../contexts/modal'
 
 export const Delete = ({ product }: { product: IProduct }) => {
   const { isLoading, error } = useSelector(selectUserProductsState)
   const [deleteIntention, setDeleteIntention] = useState(false)
+  const { setTrigger } = useContext(ModalContext)
   const { token } = useCookie()
   const dispatch = useDispatch()
 
@@ -24,6 +26,7 @@ export const Delete = ({ product }: { product: IProduct }) => {
     try {
       await api.product.delete(product.id, token)
       dispatch(deleteProductSuccess(product.id))
+      setTrigger('DeletedProduct')
     } catch (error) {
       console.log(error)
       dispatch(

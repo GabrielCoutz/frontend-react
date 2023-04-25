@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { useDispatch, useSelector } from 'react-redux'
+import { ModalContext } from '../../contexts/modal'
 import { api } from '../../helpers/request'
 import { useCookie } from '../../hooks/useCookie'
 import { selectUserProductsState } from '../../redux/product/productSelectors'
@@ -25,6 +26,7 @@ export const CreateProductForm = () => {
   const { handleSubmit } = createProductFormMethods
   const dispatch = useDispatch()
   const { token } = useCookie()
+  const { setTrigger } = useContext(ModalContext)
 
   const handleCreateProduct = async (payload: createProductFormSchema) => {
     dispatch(createProductStart())
@@ -37,6 +39,7 @@ export const CreateProductForm = () => {
     try {
       const { data } = await api.product.create(createProductDto, token)
       dispatch(createProductSuccess(data))
+      setTrigger('CreatedProduct')
     } catch (error) {
       console.log(error)
       dispatch(

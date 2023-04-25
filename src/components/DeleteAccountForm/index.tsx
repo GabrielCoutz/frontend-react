@@ -1,7 +1,7 @@
 import { ExclamationTriangleIcon } from '@heroicons/react/24/outline'
 import { FormProvider, useForm } from 'react-hook-form'
 import { useDispatch, useSelector } from 'react-redux'
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { destroyCookie } from 'nookies'
 
 import { selectUserState } from '../../redux/user/userSelectors'
@@ -18,6 +18,7 @@ import {
 import { ApiErrorResponse } from '../../helpers/request/error'
 import { useRouter } from 'next/router'
 import { useCookie } from '../../hooks/useCookie'
+import { ModalContext } from '../../contexts/modal'
 
 interface DeleteAccountSchema {
   password: string
@@ -27,6 +28,7 @@ export const DeleteAccountForm = () => {
   const [deleteIntention, setDeleteIntention] = useState(false)
   const deleteAccountMethods = useForm<DeleteAccountSchema>()
   const { token } = useCookie()
+  const { setTrigger } = useContext(ModalContext)
   const { handleSubmit } = deleteAccountMethods
   const { error, isLoading, data: user } = useSelector(selectUserState)
   const dispatch = useDispatch()
@@ -52,6 +54,7 @@ export const DeleteAccountForm = () => {
 
       destroyCookie(undefined, 'token')
       destroyCookie(undefined, 'id')
+      setTrigger('DeletedAccount')
       push('signin')
     } catch (error: any) {
       const { response }: ApiErrorResponse = error
@@ -113,7 +116,7 @@ export const DeleteAccountForm = () => {
                   </Button.Primary>
                   <Button.Secondary
                     disabled={isLoading}
-                    className="hover:bg-red-500 hover:text-white border-red-500 text-red-500 whitespace-nowrap w-full"
+                    className="hover:text-white border-red-500 text-red-500 whitespace-nowrap w-full hover:!bg-red-500"
                   >
                     {isLoading ? 'Aguarde...' : 'Deletar conta'}
                   </Button.Secondary>

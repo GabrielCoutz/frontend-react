@@ -1,7 +1,8 @@
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { useForm, FormProvider } from 'react-hook-form'
+import { ModalContext } from '../../contexts/modal'
 
 import { api } from '../../helpers/request'
 import { ApiErrorResponse } from '../../helpers/request/error'
@@ -16,9 +17,10 @@ interface SignupFormSchema {
 }
 
 const SignupForm = () => {
+  const { push } = useRouter()
+  const { setTrigger } = useContext(ModalContext)
   const [error, setError] = useState<string>('')
   const [loading, setLoading] = useState(false)
-  const { push } = useRouter()
   const signupFormMethods = useForm<SignupFormSchema>()
   const { handleSubmit } = signupFormMethods
 
@@ -28,6 +30,7 @@ const SignupForm = () => {
 
     try {
       await api.user.create(payload)
+      setTrigger('CreatedAccount')
       push('signin')
     } catch (error: any) {
       const { response }: ApiErrorResponse = error
@@ -62,7 +65,10 @@ const SignupForm = () => {
               name="email"
               type="email"
               errormessage="Preencha este campo"
-              validation={{ value: /\S+@\S+\.\S+/, message: 'Email inválido' }}
+              validation={{
+                value: /\S+@\S+\.\S+/,
+                message: 'Email inválido',
+              }}
             />
             <Form.Error field="email" />
           </Form.Field>
