@@ -66,6 +66,13 @@ const deleteUserSuccess = (state: IUserState): IUserState => ({
   isLoading: false,
 })
 
+const logoutUser = (state: IUserState): IUserState => ({
+  ...state,
+  data: null,
+  error: null,
+  isLoading: false,
+})
+
 export default {
   saveUser,
   updateUserSuccess,
@@ -74,4 +81,5 @@ export default {
   deleteUserStart,
   deleteUserFail,
   deleteUserSuccess,
+  logoutUser,
 }
