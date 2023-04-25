@@ -8,7 +8,7 @@ export default function Home() {
     <QueryClientProvider client={queryClient}>
       <section className="flex align-middle p-8 mt-32 max-md:mt-16">
         <div className="mx-auto">
-          <h1 className="text-3xl max-md:text-2xl tracking-wide font-bold text-slate-950 mb-8 max-md:mb-4">
+          <h1 className="text-2xl font-semibold text-slate-800 mb-8 max-md:mb-4">
             Cadastre-se ou faça login
           </h1>
           <Link href="signup" className="block w-full">
