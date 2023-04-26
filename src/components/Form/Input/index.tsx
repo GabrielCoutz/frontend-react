@@ -12,6 +12,7 @@ export const Input = (props: InputProps) => {
   return (
     <>
       <input
+        data-testid="form-input"
         {...props}
         {...register(props.name, {
           required: props.errormessage,

@@ -1,8 +1,8 @@
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline'
 import { useState } from 'react'
 
-import { InputProps } from './Input'
-import { Form } from '.'
+import { Form } from '..'
+import { InputProps } from '../Input'
 
 type InputType = 'password' | 'text'
 

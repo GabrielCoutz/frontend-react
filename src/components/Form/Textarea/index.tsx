@@ -11,6 +11,7 @@ export const Textarea = (props: TextareaProps) => {
 
   return (
     <textarea
+      data-testid="textarea"
       {...props}
       id={props.name}
       {...register(props.name, { required: props.errormessage })}

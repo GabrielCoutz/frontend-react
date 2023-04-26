@@ -6,7 +6,11 @@ interface FieldProps extends HTMLAttributes<HTMLDivElement> {
 
 export const Field = (item: FieldProps) => {
   return (
-    <div {...item} className={`flex flex-col gap-2 ${item?.className}`}>
+    <div
+      data-testid="form-field"
+      {...item}
+      className={`flex flex-col gap-2 ${item?.className}`}
+    >
       {item.children}
     </div>
   )
