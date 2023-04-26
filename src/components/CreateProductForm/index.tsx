@@ -41,7 +41,6 @@ export const CreateProductForm = () => {
       dispatch(createProductSuccess(data))
       setTrigger('CreatedProduct')
     } catch (error) {
-      console.log(error)
       dispatch(
         createProductFail(
           'Não foi possível realizar esta ação. Por favor, tente novamente mais tarde',
