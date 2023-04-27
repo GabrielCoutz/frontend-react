@@ -1,8 +1,8 @@
 export const userMockState = {
-  user: {
-    isLoading: false,
-    error: null,
-    data: null,
+  isLoading: false,
+  error: null,
+  data: {
+    id: '123',
   },
 }
 

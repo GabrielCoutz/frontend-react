@@ -1,6 +1,6 @@
 import { axiosInstance } from "."
 
-interface LoginUserPayload {
+export interface LoginUserPayload {
   email: string
   password: string
 }
