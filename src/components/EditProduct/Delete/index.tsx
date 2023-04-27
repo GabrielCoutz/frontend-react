@@ -2,18 +2,18 @@ import { TrashIcon } from '@heroicons/react/24/outline'
 import React, { useContext, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
-import { IProduct } from '../../interfaces/Product'
-import { api } from '../../helpers/request'
-import { Button } from '../Button'
-import { Modal } from '../Modal'
-import { UI } from '../Ui'
+import { IProduct } from '../../../interfaces/Product'
+import { api } from '../../../helpers/request'
+import { Button } from '../../Button'
+import { Modal } from '../../Modal'
+import { UI } from '../../Ui'
 import {
   deleteProductFail,
   deleteProductSuccess,
-} from '../../redux/product/productSlice'
-import { selectUserProductsState } from '../../redux/product/productSelectors'
-import { useCookie } from '../../hooks/useCookie'
-import { ModalContext } from '../../contexts/modal'
+} from '../../../redux/product/productSlice'
+import { selectUserProductsState } from '../../../redux/product/productSelectors'
+import { useCookie } from '../../../hooks/useCookie'
+import { ModalContext } from '../../../contexts/modal'
 
 export const Delete = ({ product }: { product: IProduct }) => {
   const { isLoading, error } = useSelector(selectUserProductsState)
@@ -28,7 +28,6 @@ export const Delete = ({ product }: { product: IProduct }) => {
       dispatch(deleteProductSuccess(product.id))
       setTrigger('DeletedProduct')
     } catch (error) {
-      console.log(error)
       dispatch(
         deleteProductFail(
           'Não foi possível realizar essa ação. Por favor, tente novamente mais tarde',
