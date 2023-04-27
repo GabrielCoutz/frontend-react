@@ -19,6 +19,7 @@ import { useRouter } from 'next/router'
 import { useCookie } from '../../hooks/useCookie'
 import { ModalContext } from '../../contexts/modal'
 import { clearLocalData } from '../../helpers/clearLocalData'
+import { LoginUserPayload } from '../../helpers/request/auth'
 
 interface DeleteAccountSchema {
   password: string
@@ -35,21 +36,16 @@ export const DeleteAccountForm = () => {
   const { push } = useRouter()
 
   const handleDelete = async (payload: DeleteAccountSchema) => {
-    if (!user?.id) return
-
     dispatch(deleteUserStart())
     const loginPayloadDto = {
-      email: user.email,
+      email: user?.email,
       password: payload.password,
-    }
+    } as LoginUserPayload
 
     try {
-      const { data } = await api.auth.login(loginPayloadDto)
+      await api.auth.login(loginPayloadDto)
 
-      const passwordIsValid = data.id
-      if (!passwordIsValid) throw new Error()
-
-      await api.user.delete(user.id, token)
+      await api.user.delete(user?.id as string, token)
       dispatch(deleteUserSuccess())
       setTrigger('DeletedAccount')
       clearLocalData()
@@ -59,7 +55,6 @@ export const DeleteAccountForm = () => {
       if (response?.data.statusCode === 401)
         return dispatch(deleteUserFail('Senha inválida'))
 
-      console.log(error)
       dispatch(
         deleteUserFail(
           'Não foi possível realizar esta ação. Tente novamente mais tarde',
