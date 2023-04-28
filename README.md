@@ -68,11 +68,11 @@ Não é possível replicar o projeto com o container docker, **ainda**, porém a
 
 #### Desktop
 
-
+https://user-images.githubusercontent.com/86968853/235247313-5b9cb4c3-8dc8-419c-b2ec-68c02c156396.mp4
 
 #### Mobile
 
-
+https://user-images.githubusercontent.com/86968853/235247360-ca59754b-6b24-41d5-baaa-6e1028b903e1.mp4
 
 ---
 
