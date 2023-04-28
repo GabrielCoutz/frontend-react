@@ -1,40 +1,23 @@
 import { act, render, screen, waitFor } from '@testing-library/react'
-import { Provider } from 'react-redux'
-import { DeleteAccountForm } from '.'
-import configureStore from 'redux-mock-store'
-import { userMockState } from '../CreateProductForm/__mocks__/createProductForm.mock'
 import userEvent from '@testing-library/user-event'
-import { ResizeObserverMock } from './__mocks__/deleteAccountForm.mocks'
-import { ModalContext } from '../../contexts/modal'
-import {
-  deleteUserFail,
-  deleteUserStart,
-  deleteUserSuccess,
-} from '../../redux/user/userSlice'
+import { Provider } from 'react-redux'
 
-const mockStore = configureStore([])
-const store = mockStore(userMockState)
-const mockSetTrigger = jest.fn()
-const mockContext = {
-  openModal: jest.fn(),
-  setTrigger: () => mockSetTrigger(),
-  trigger: '' as any,
-}
+import * as userSlice from '../../redux/user/userSlice'
+import { DeleteAccountForm } from '.'
+
+import * as mockRedux from '../../redux/__mocks__/redux.mock'
+import * as mockRequest from '../../helpers/request/__mocks__/request.mock'
+import { mockUserState } from '../../redux/user/__mocks__/user.mock'
+import { MockModalContext } from '../../contexts/modal/__mocks__/modal.mock'
+import { MockResizeObserver } from '../../__mocks__/headlessui.mock'
 
 const renderDeleteAccountForm = () => {
   return render(
-    <ModalContext.Provider
-      value={{
-        openModal: mockContext.openModal,
-        setTrigger: mockContext.setTrigger,
-        trigger: mockContext.trigger,
-      }}
-    >
-      <Provider store={store}>
+    <MockModalContext>
+      <Provider store={mockRedux.mockStore({})}>
         <DeleteAccountForm />
       </Provider>
-      ,
-    </ModalContext.Provider>,
+    </MockModalContext>,
   )
 }
 
@@ -43,24 +26,19 @@ jest.mock('next/router', () => ({
   useRouter: jest.fn(() => ({ push: jest.fn() })),
 }))
 
-const mockDispatch = jest.fn()
-const deleteUser = jest.fn()
-
 jest.mock('react-redux', () => ({
   ...jest.requireActual('react-redux'),
-  useDispatch: () => mockDispatch,
-  useSelector: jest.fn(() => userMockState),
+  useDispatch: () => mockRedux.mockDispatch,
+  useSelector: () => mockRedux.mockUseSelect(mockUserState),
 }))
-
-const mockLogin = jest.fn()
 
 jest.mock('../../helpers/request', () => ({
   api: {
     auth: {
-      login: () => mockLogin(),
+      login: () => mockRequest.mockLogin(),
     },
     user: {
-      delete: () => deleteUser(),
+      delete: () => mockRequest.mockDeleteUser(),
     },
   },
 }))
@@ -71,7 +49,7 @@ describe('[DeleteAccountForm] index', () => {
   })
 
   beforeAll(() => {
-    global.ResizeObserver = ResizeObserverMock
+    global.ResizeObserver = MockResizeObserver
   })
 
   it('should render', () => {
@@ -102,7 +80,7 @@ describe('[DeleteAccountForm] index', () => {
       const deleteAccountButton = getByRole('button', { name: 'Deletar conta' })
       userEvent.click(deleteAccountButton)
 
-      expect(mockDispatch).not.toBeCalled()
+      expect(mockRedux.mockDispatch).not.toBeCalled()
     })
   })
 
@@ -119,15 +97,17 @@ describe('[DeleteAccountForm] index', () => {
       await userEvent.type(input, '123')
       await userEvent.click(deleteAccountButton)
 
-      expect(mockDispatch).toBeCalledWith(deleteUserStart())
-      expect(mockDispatch).toBeCalledWith(deleteUserSuccess())
-      expect(mockDispatch).toHaveBeenCalledTimes(2)
-      expect(deleteUser).toBeCalled()
+      expect(mockRedux.mockDispatch).toBeCalledWith(userSlice.deleteUserStart())
+      expect(mockRedux.mockDispatch).toBeCalledWith(
+        userSlice.deleteUserSuccess(),
+      )
+      expect(mockRedux.mockDispatch).toHaveBeenCalledTimes(2)
+      expect(mockRequest.mockDeleteUser).toBeCalled()
     })
   })
 
   it('should not delete account with invalid password, and dispatch fail action', async () => {
-    mockLogin.mockRejectedValue({
+    mockRequest.mockLogin.mockRejectedValue({
       data: {
         id: '',
       },
@@ -149,15 +129,18 @@ describe('[DeleteAccountForm] index', () => {
       await userEvent.type(input, '123')
       await userEvent.click(deleteAccountButton)
 
-      expect(mockDispatch).toBeCalledWith(deleteUserStart())
-      expect(mockDispatch).toBeCalledWith(deleteUserFail('Senha inválida'))
-      expect(mockDispatch).toHaveBeenCalledTimes(2)
-      expect(deleteUser).not.toBeCalled()
+      expect(mockRedux.mockDispatch).toBeCalledWith(userSlice.deleteUserStart())
+      expect(mockRedux.mockDispatch).toBeCalledWith(
+        userSlice.deleteUserFail('Senha inválida'),
+      )
+      expect(mockRedux.mockDispatch).toHaveBeenCalledTimes(2)
+      expect(mockRequest.mockDeleteUser).not.toBeCalled()
     })
   })
 
   it('should show generical error with api error', async () => {
-    mockLogin.mockRejectedValue(jest.fn())
+    mockRequest.mockLogin.mockRejectedValue(jest.fn())
+
     const { getByRole, container } = renderDeleteAccountForm()
     const toggleModalButton = container.getElementsByTagName('button')[0]
 
@@ -170,19 +153,19 @@ describe('[DeleteAccountForm] index', () => {
       await userEvent.type(input, '123')
       await userEvent.click(deleteAccountButton)
 
-      expect(mockDispatch).toBeCalledWith(deleteUserStart())
-      expect(mockDispatch).toBeCalledWith(
-        deleteUserFail(
+      expect(mockRedux.mockDispatch).toBeCalledWith(userSlice.deleteUserStart())
+      expect(mockRedux.mockDispatch).toBeCalledWith(
+        userSlice.deleteUserFail(
           'Não foi possível realizar esta ação. Tente novamente mais tarde',
         ),
       )
-      expect(mockDispatch).toHaveBeenCalledTimes(2)
-      expect(deleteUser).not.toBeCalled()
+      expect(mockRedux.mockDispatch).toHaveBeenCalledTimes(2)
+      expect(mockRequest.mockDeleteUser).not.toBeCalled()
     })
   })
 
   it('should close modal when cancel button is clicked', async () => {
-    mockLogin.mockRejectedValue(jest.fn())
+    mockRequest.mockLogin.mockRejectedValue(jest.fn())
     const { getByRole, container } = renderDeleteAccountForm()
     const toggleModalButton = container.getElementsByTagName('button')[0]
 

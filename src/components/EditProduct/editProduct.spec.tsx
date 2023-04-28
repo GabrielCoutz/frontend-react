@@ -1,9 +1,10 @@
 import { render, waitFor } from '@testing-library/react'
 import { Provider } from 'react-redux'
+
 import { EditProduct } from '.'
+
 import { mockUserState } from '../../redux/user/__mocks__/user.mock'
-import { mockDispatch } from '../CreateProductForm/__mocks__/createProductForm.mock'
-import { mockStore } from './Delete/__mocks__/delete.mock'
+import { mockDispatch, mockStore } from '../../redux/__mocks__/redux.mock'
 
 jest.mock('react-redux', () => ({
   ...jest.requireActual('react-redux'),
@@ -13,7 +14,7 @@ jest.mock('react-redux', () => ({
 
 const renderEditForm = () => {
   return render(
-    <Provider store={mockStore}>
+    <Provider store={mockStore({})}>
       <EditProduct.EditForm product={{} as any} />
     </Provider>,
   )

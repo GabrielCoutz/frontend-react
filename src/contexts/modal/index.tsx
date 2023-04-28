@@ -1,8 +1,8 @@
 import { createContext } from 'react'
-import { AccountDeletedModal } from '../components/DeleteAccountForm/AccountDeletedModal'
-import { ProductCreatedModal } from '../components/MyProducts/ProductCreatedModal'
-import { ProductDeletedModal } from '../components/MyProducts/ProductDeletedModal'
-import { AccountCreatedModal } from '../components/SignupForm/AccountCreatedModal'
+import { AccountDeletedModal } from '../../components/DeleteAccountForm/AccountDeletedModal'
+import { ProductCreatedModal } from '../../components/MyProducts/ProductCreatedModal'
+import { ProductDeletedModal } from '../../components/MyProducts/ProductDeletedModal'
+import { AccountCreatedModal } from '../../components/SignupForm/AccountCreatedModal'
 
 export type IModalTrigger =
   | 'CreatedAccount'

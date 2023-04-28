@@ -2,27 +2,22 @@ import { render, waitFor, act } from '@testing-library/react'
 import userEvents from '@testing-library/user-event'
 import { Provider } from 'react-redux'
 
-import { ResizeObserverMock } from '../../DeleteAccountForm/__mocks__/deleteAccountForm.mocks'
-import { ModalContext } from '../../../contexts/modal'
 import { Delete } from '.'
+import * as productSlice from '../../../redux/product/productSlice'
+
+import * as mockRedux from '../../../redux/__mocks__/redux.mock'
+import { mockDeleteProduct } from '../../../helpers/request/__mocks__/request.mock'
+import { mockProduct } from '../../../redux/product/__mocks__/product.mock'
+import { MockResizeObserver } from '../../../__mocks__/headlessui.mock'
 import {
-  deleteProductFail,
-  deleteProductSuccess,
-} from '../../../redux/product/productSlice'
-import {
-  mockContext,
-  mockDeleteProduct,
-  mockDispatch,
-  mockProduct,
-  mockSetTrigger,
-  mockStore,
-} from './__mocks__/delete.mock'
-import { mockUserState } from '../../../redux/user/__mocks__/user.mock'
+  MockModalContext,
+  mockModalSetTrigger,
+} from '../../../contexts/modal/__mocks__/modal.mock'
 
 jest.mock('react-redux', () => ({
   ...jest.requireActual('react-redux'),
-  useDispatch: () => mockDispatch,
-  useSelector: jest.fn(() => mockUserState),
+  useDispatch: () => mockRedux.mockDispatch,
+  useSelector: () => mockRedux.mockUseSelect(),
 }))
 
 jest.mock('../../../helpers/request', () => ({
@@ -35,24 +30,17 @@ jest.mock('../../../helpers/request', () => ({
 
 const renderDeleteProduct = () => {
   return render(
-    <ModalContext.Provider
-      value={{
-        openModal: mockContext.openModal,
-        setTrigger: mockContext.setTrigger,
-        trigger: mockContext.trigger,
-      }}
-    >
-      <Provider store={mockStore}>
+    <MockModalContext>
+      <Provider store={mockRedux.mockStore({})}>
         <Delete product={mockProduct} />
       </Provider>
-      ,
-    </ModalContext.Provider>,
+    </MockModalContext>,
   )
 }
 
 describe('[Edit Product] Delete', () => {
   beforeAll(() => {
-    global.ResizeObserver = ResizeObserverMock
+    global.ResizeObserver = MockResizeObserver
   })
   beforeEach(() => {
     jest.clearAllMocks()
@@ -91,8 +79,10 @@ describe('[Edit Product] Delete', () => {
       userEvents.click(deleteProductButton)
 
       expect(mockDeleteProduct).toBeCalled()
-      expect(mockDispatch).toBeCalledWith(deleteProductSuccess(''))
-      expect(mockSetTrigger).toBeCalled()
+      expect(mockRedux.mockDispatch).toBeCalledWith(
+        productSlice.deleteProductSuccess(''),
+      )
+      expect(mockModalSetTrigger).toBeCalled()
     })
   })
 
@@ -124,12 +114,12 @@ describe('[Edit Product] Delete', () => {
       })
       await userEvents.click(deleteProductButton)
 
-      expect(mockDispatch).toBeCalledWith(
-        deleteProductFail(
+      expect(mockRedux.mockDispatch).toBeCalledWith(
+        productSlice.deleteProductFail(
           'Não foi possível realizar essa ação. Por favor, tente novamente mais tarde',
         ),
       )
-      expect(mockDispatch).toBeCalledTimes(1)
+      expect(mockRedux.mockDispatch).toBeCalledTimes(1)
     })
   })
 })

@@ -1,25 +1,23 @@
 import { render, renderHook } from '@testing-library/react'
-import { FieldValues, FormProvider, FormState, useForm } from 'react-hook-form'
+import { FormProvider, useForm } from 'react-hook-form'
+
 import { Error } from '.'
 
-export const mockFormStateWithError = {
-  errors: {
-    name: {
-      type: 'required',
-      message: 'error',
-    },
-  },
-} as unknown as FormState<FieldValues>
+import { mockFormStateWithError } from './__mocks__/error.mock'
+
+const renderErrorComponent = () => {
+  const { result } = renderHook(() => useForm())
+
+  return render(
+    <FormProvider {...result.current} formState={mockFormStateWithError}>
+      <Error field="name" />
+    </FormProvider>,
+  )
+}
 
 describe('[Form] Error', () => {
   it('should have error text', () => {
-    const { result } = renderHook(() => useForm())
-
-    const { getByTestId, getByText } = render(
-      <FormProvider {...result.current} formState={mockFormStateWithError}>
-        <Error field="name" />
-      </FormProvider>,
-    )
+    const { getByTestId, getByText } = renderErrorComponent()
 
     expect(getByText('error')).toBeInTheDocument()
     expect(getByTestId('form-error')).toBeInTheDocument()

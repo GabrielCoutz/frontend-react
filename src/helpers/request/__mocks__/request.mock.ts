@@ -1,22 +1,12 @@
-export const mockRequest = {
-  api: {
-    auth: {
-      login: () => jest.fn(() => ({ data: { id: '123', token: '123' } })),
-      validate: () => jest.fn(),
-    },
-    user: {
-      delete: () => jest.fn(),
-      create: () => jest.fn(),
-      update: () => jest.fn(),
-      getAll: () => jest.fn(),
-      get: () => jest.fn(),
-    },
-    product: {
-      delete: () => jest.fn(),
-      create: () => jest.fn(),
-      update: () => jest.fn(),
-      getAll: () => jest.fn(),
-      get: () => jest.fn(),
-    },
-  },
-}
+export const mockLogin = jest.fn()
+export const mockValidate = jest.fn()
+
+export const mockDeleteUser = jest.fn()
+export const mockCreateUser = jest.fn()
+export const mockUpdateUser = jest.fn()
+export const mockGetUser = jest.fn()
+
+export const mockDeleteProduct = jest.fn()
+export const mockCreateProduct = jest.fn()
+export const mockUpdateProduct = jest.fn()
+export const mockGetProduct = jest.fn()

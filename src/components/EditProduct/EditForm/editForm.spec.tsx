@@ -1,28 +1,16 @@
 import { render, renderHook, waitFor } from '@testing-library/react'
 import { FormProvider, useForm } from 'react-hook-form'
-import { Provider } from 'react-redux'
-import { EditForm } from '.'
-import { mockUserState } from '../../../redux/user/__mocks__/user.mock'
-import { mockDispatch, mockStore } from '../Delete/__mocks__/delete.mock'
 import userEvent from '@testing-library/user-event'
-import {
-  updateProductFail,
-  updateProductStart,
-  updateProductSuccess,
-} from '../../../redux/product/productSlice'
+import { Provider } from 'react-redux'
 
-export const mockProduct = {
-  created_at: '',
-  description: 'product description',
-  id: '',
-  name: 'product name',
-  price: '123',
-  user: {
-    id: '',
-    name: '',
-  },
-}
-const mockUpdateProduct = jest.fn(() => ({ data: {} }))
+import { EditForm } from '.'
+import * as productSlice from '../../../redux/product/productSlice'
+
+import { mockUserState } from '../../../redux/user/__mocks__/user.mock'
+import { mockDispatch, mockStore } from '../../../redux/__mocks__/redux.mock'
+import { mockUpdateProduct } from '../../../helpers/request/__mocks__/request.mock'
+import { mockProduct } from '../../../redux/product/__mocks__/product.mock'
+
 jest.mock('react-redux', () => ({
   ...jest.requireActual('react-redux'),
   useSelector: () => mockUserState,
@@ -37,13 +25,12 @@ jest.mock('../../../helpers/request', () => ({
   },
 }))
 
-const mockDefaultValues = {
-  name: mockProduct.name,
-  price: mockProduct.price,
-  description: mockProduct.description,
-}
-
 const renderEditForm = () => {
+  const mockDefaultValues = {
+    name: mockProduct.name,
+    price: mockProduct.price,
+    description: mockProduct.description,
+  }
   const {
     result: { current },
   } = renderHook(() =>
@@ -53,7 +40,7 @@ const renderEditForm = () => {
   )
 
   return render(
-    <Provider store={mockStore}>
+    <Provider store={mockStore({})}>
       <FormProvider {...current}>
         <EditForm product={mockProduct} />
       </FormProvider>
@@ -84,6 +71,7 @@ describe('[Edit Product] EditForm', () => {
   })
 
   it('should dispatch when update button is clicked', async () => {
+    mockUpdateProduct.mockResolvedValue(jest.fn(() => ({ data: {} })))
     const { getByRole } = renderEditForm()
 
     await waitFor(async () => {
@@ -91,8 +79,10 @@ describe('[Edit Product] EditForm', () => {
 
       await userEvent.click(uploadButton)
 
-      expect(mockDispatch).toBeCalledWith(updateProductStart())
-      expect(mockDispatch).toBeCalledWith(updateProductSuccess({} as any))
+      expect(mockDispatch).toBeCalledWith(productSlice.updateProductStart())
+      expect(mockDispatch).toBeCalledWith(
+        productSlice.updateProductSuccess(undefined as any),
+      )
       expect(mockUpdateProduct).toBeCalled()
     })
   })
@@ -106,9 +96,9 @@ describe('[Edit Product] EditForm', () => {
 
       await userEvent.click(uploadButton)
 
-      expect(mockDispatch).toBeCalledWith(updateProductStart())
+      expect(mockDispatch).toBeCalledWith(productSlice.updateProductStart())
       expect(mockDispatch).toBeCalledWith(
-        updateProductFail(
+        productSlice.updateProductFail(
           'Um erro inesperado ocorreu. Por favor, tente novamente mais tarde',
         ),
       )

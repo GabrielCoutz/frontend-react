@@ -1,4 +1,4 @@
-import { createContext, Dispatch, SetStateAction } from "react"
+import { createContext, Dispatch, SetStateAction } from 'react'
 
 export interface IOption {
   component: JSX.Element
@@ -15,4 +15,6 @@ export interface IProfileContext {
   setMenuIsOpen: Dispatch<SetStateAction<boolean>>
 }
 
-export const ProfileContext = createContext<IProfileContext>({} as IProfileContext)
+export const ProfileContext = createContext<IProfileContext>(
+  {} as IProfileContext,
+)

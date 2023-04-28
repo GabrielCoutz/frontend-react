@@ -1,5 +1,6 @@
 import { render, renderHook } from '@testing-library/react'
 import { FormProvider, useForm } from 'react-hook-form'
+
 import { Input } from '.'
 
 describe('[Form] Input', () => {

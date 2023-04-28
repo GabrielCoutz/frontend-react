@@ -1,4 +1,4 @@
-export class ResizeObserverMock {
+export class MockResizeObserver {
   observe() {}
   disconnect() {}
   unobserve() {}
