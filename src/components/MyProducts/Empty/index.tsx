@@ -1,16 +1,16 @@
 import { SparklesIcon } from '@heroicons/react/24/outline'
 import React, { useState } from 'react'
-import { Accordion } from '../Accordion'
 
-import { CreateProductForm } from '../CreateProductForm'
-import { Button } from '../Button'
-import { Modal } from '../Modal'
+import { CreateProductForm } from '../../CreateProductForm'
+import { Accordion } from '../../Accordion'
+import { Button } from '../../Button'
+import { Modal } from '../../Modal'
 
 export const Empty = () => {
   const [accordionIsOpen, setAccordionIsOpen] = useState(false)
 
   return (
-    <section className="flex align-middle flex-col text-center">
+    <section className="flex align-middle flex-col text-center" data-testid="myproducts-empty">
       <Accordion.Wrapper>
         <Accordion.Header>
           <Modal.IconWrapper className="bg-blue-200 mb-2">

@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 
-import { selectUserProducts } from '../../redux/product/productSelectors'
-import { ProductCreatedModal } from './ProductCreatedModal'
-import { ProductDeletedModal } from './ProductDeletedModal'
+import { selectUserProducts } from '../../../redux/product/productSelectors'
+import { ProductCreatedModal } from '../ProductCreatedModal'
+import { ProductDeletedModal } from '../ProductDeletedModal'
 
 type ModalTrigger = 'ProductCreated' | 'ProductDeleted' | ''
 
 export const ProductsEventListener = () => {
   const products = useSelector(selectUserProducts)
   const [trigger, setTrigger] = useState<ModalTrigger>('')
+
   let oldProductsLength = 0
 
   useEffect(() => {

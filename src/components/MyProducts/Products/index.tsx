@@ -1,16 +1,17 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
-import { selectUserProducts } from '../../redux/product/productSelectors'
-import { Accordion } from '../Accordion'
-import { Button } from '../Button'
-import { EditProduct } from '../EditProduct'
-import { Product } from '../Product'
+
+import { selectUserProducts } from '../../../redux/product/productSelectors'
+import { EditProduct } from '../../EditProduct'
+import { Accordion } from '../../Accordion'
+import { Product } from '../../Product'
+import { Button } from '../../Button'
 
 export const Products = () => {
   const products = useSelector(selectUserProducts)
 
   return (
-    <Product.List className="col-span-full">
+    <Product.List className="col-span-full" data-testid="myproducts-products">
       {products?.map((product) => (
         <Product.Card key={product.id} className="grid grid-cols-2">
           <Accordion.Wrapper className="grid grid-cols-2 col-span-full gap-y-4">
