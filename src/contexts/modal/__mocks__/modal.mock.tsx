@@ -10,13 +10,7 @@ export const mockModalContext = {
 
 export const MockModalContext = ({ children }: PropsWithChildren) => {
   return (
-    <ModalContext.Provider
-      value={{
-        openModal: mockModalContext.openModal,
-        setTrigger: mockModalContext.setTrigger,
-        trigger: mockModalContext.trigger,
-      }}
-    >
+    <ModalContext.Provider value={mockModalContext}>
       {children}
     </ModalContext.Provider>
   )
