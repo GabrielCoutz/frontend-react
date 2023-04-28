@@ -1,7 +1,7 @@
 import { Dialog, Transition } from '@headlessui/react'
 import React, { HtmlHTMLAttributes, PropsWithChildren } from 'react'
-import { Blur } from './Blur'
-import { Wrapper } from './Wrapper'
+import { Blur } from '../Blur'
+import { Wrapper } from '../Wrapper'
 
 interface BodyProps
   extends PropsWithChildren<HtmlHTMLAttributes<HTMLDivElement>> {
