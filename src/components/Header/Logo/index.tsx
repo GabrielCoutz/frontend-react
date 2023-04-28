@@ -6,6 +6,7 @@ export const Logo = () => {
     <Link
       href="/"
       className="flex align-middle p-2 hover:bg-indigo-500 transition rounded-lg"
+      data-testid="header-logo"
     >
       Meu app
     </Link>

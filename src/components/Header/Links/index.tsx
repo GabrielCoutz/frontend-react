@@ -1,10 +1,10 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 
-import { HeaderContext } from '../../contexts/header'
-import { selectUserName } from '../../redux/user/userSelectors'
-import { HeaderLink } from './HeaderLink'
-import { ProfileButton } from './ProfileButton'
+import { HeaderContext } from '../../../contexts/header'
+import { selectUserName } from '../../../redux/user/userSelectors'
+import { HeaderLink } from '.././HeaderLink'
+import { ProfileButton } from '.././ProfileButton'
 
 export interface ILink {
   path: string
@@ -24,6 +24,7 @@ const links: ILink[] = [
 
 export const Links = () => {
   const { setMenuIsOpen } = useContext(HeaderContext)
+
   const [userIsLogged, setUserIslogged] = useState(false)
   const userName = useSelector(selectUserName)
 
@@ -33,7 +34,10 @@ export const Links = () => {
   }, [userName])
 
   return (
-    <ul className="flex gap-4 max-md:flex-col max-md:p-4">
+    <ul
+      className="flex gap-4 max-md:flex-col max-md:p-4"
+      data-testid="header-links"
+    >
       {userIsLogged ? (
         <ProfileButton />
       ) : (

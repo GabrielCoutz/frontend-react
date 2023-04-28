@@ -1,9 +1,9 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
 
-import { capitalize } from '../../helpers/capitalize'
-import { selectUserName } from '../../redux/user/userSelectors'
-import { HeaderLink } from './HeaderLink'
+import { capitalize } from '../../../helpers/capitalize'
+import { selectUserName } from '../../../redux/user/userSelectors'
+import { HeaderLink } from '.././HeaderLink'
 
 export const ProfileButton = () => {
   const userName = useSelector(selectUserName)
