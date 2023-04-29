@@ -1,10 +1,11 @@
 import React, { useContext, useEffect } from 'react'
-import { ProfileContext } from '../../contexts/profile'
-import { Config } from '../Configs'
-import { MyProducts } from '../MyProducts'
-import { UserForm } from '../UserForm'
-import { LogoutButton } from './LogoutButton'
-import { Option } from './Option'
+
+import { ProfileContext } from '../../../contexts/profile'
+import { LogoutButton } from '.././LogoutButton'
+import { MyProducts } from '../../MyProducts'
+import { UserForm } from '../../UserForm'
+import { Config } from '../../Configs'
+import { Option } from '.././Option'
 
 export const optionsList = [
   {
@@ -34,6 +35,7 @@ export const Options = () => {
       className={`transition-all flex flex-col gap-3 p-4 md:h-full ${
         menuIsOpen ? '' : 'max-md:hidden'
       }`}
+      data-testid="sidenav-options"
     >
       {optionsList.map((option) => (
         <Option option={option} key={option.name} />

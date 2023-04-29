@@ -1,12 +1,11 @@
 import React, { useContext } from 'react'
-import { IOption, ProfileContext } from '../../contexts/profile'
-import { Button } from '../Button'
+import { IOption, ProfileContext } from '../../../contexts/profile'
+import { Button } from '../../Button'
 
 export const Option = ({ option }: { option: IOption }) => {
   const { activeOption, setActiveOption, setMenuIsOpen, menuIsOpen } =
     useContext(ProfileContext)
   const optionIsSelected = option.name === activeOption?.name
-
   const changeOption = (selectedOption: IOption) => {
     selectedOption.active = true
     setActiveOption(selectedOption)

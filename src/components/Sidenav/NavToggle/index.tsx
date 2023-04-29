@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import { Bars2Icon, XMarkIcon } from '@heroicons/react/24/outline'
 
-import { ProfileContext } from '../../contexts/profile'
+import { ProfileContext } from '../../../contexts/profile'
 
 export const NavToggle = () => {
   const { setMenuIsOpen, menuIsOpen } = useContext(ProfileContext)
@@ -10,6 +10,7 @@ export const NavToggle = () => {
     <button
       className="p-2 rounded-lg text-white transition border border-transparent hover:border-white md:hidden"
       onClick={() => setMenuIsOpen(!menuIsOpen)}
+      data-testid="sidenav-navtoggle"
     >
       {menuIsOpen ? (
         <XMarkIcon className="w-6 h-6" />
