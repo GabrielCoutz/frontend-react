@@ -40,11 +40,10 @@ const SigninForm = () => {
     } catch (error: any) {
       const { response }: ApiErrorResponse = error
 
-      if (response?.data.statusCode == 401)
+      if (response?.data.statusCode === 401)
         return setError('Credenciais inválidas')
 
       setError('Erro inesperado, por favor tente novamente mais tarde.')
-      console.log(response?.data)
     } finally {
       setLoading(false)
     }
