@@ -1,5 +1,5 @@
 import React, { HTMLAttributes, PropsWithChildren } from 'react'
-import { toCurrency } from '../../helpers/toCurrency'
+import { toCurrency } from '../../../helpers/toCurrency'
 
 interface PriceProps
   extends PropsWithChildren<HTMLAttributes<HTMLSpanElement>> {
