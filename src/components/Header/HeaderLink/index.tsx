@@ -10,7 +10,7 @@ export const HeaderLink = (props: HeaderLinkProps) => {
     <Link
       {...props}
       href={props.href || ''}
-      className="py-2 px-3 rounded-lg hover:bg-indigo-500 transition block max-md:hover:bg-slate-600"
+      className="py-2 px-3 rounded-lg hover:bg-primary-500 transition block max-md:hover:bg-slate-600"
     >
       {props.children}
     </Link>

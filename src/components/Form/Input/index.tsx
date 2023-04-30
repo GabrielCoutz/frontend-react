@@ -19,7 +19,7 @@ export const Input = (props: InputProps) => {
           pattern: props.validation,
         })}
         id={props.name}
-        className={`rounded-lg h-9 border-gray-200 shadow hover:shadow-sm focus:ring-inset-indigo-600 ring-inset transition text-sm focus:ring-indigo-700 ${props.className}`}
+        className={`rounded-lg h-9 border-gray-200 shadow hover:shadow-sm focus:ring-inset-primary-600 ring-inset transition text-sm focus:ring-primary-700 ${props.className}`}
       />
     </>
   )

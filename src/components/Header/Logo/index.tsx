@@ -5,7 +5,7 @@ export const Logo = () => {
   return (
     <Link
       href="/"
-      className="flex align-middle p-2 hover:bg-indigo-500 transition rounded-lg"
+      className="flex align-middle p-2 hover:bg-primary-500 transition rounded-lg"
       data-testid="header-logo"
     >
       Meu app

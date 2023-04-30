@@ -46,8 +46,6 @@ export const UserForm = () => {
       dispatch(updateUserSuccess(data))
       setMessage('Dados atualizados')
     } catch (error) {
-      console.log(error)
-
       dispatch(
         updateUserFail(
           'Um erro inesperado ocorreu! Por favor, tente novamente mais tarde.',
