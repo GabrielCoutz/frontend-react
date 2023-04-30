@@ -1,8 +1,8 @@
 import { CakeIcon } from '@heroicons/react/24/outline'
 import React, { useContext } from 'react'
-import { ModalContext } from '../../contexts/modal'
-import { Button } from '../Button'
-import { Modal } from '../Modal'
+import { ModalContext } from '../../../contexts/modal'
+import { Button } from '../../Button'
+import { Modal } from '../../Modal'
 
 export const AccountCreatedModal = () => {
   const { trigger, setTrigger } = useContext(ModalContext)
