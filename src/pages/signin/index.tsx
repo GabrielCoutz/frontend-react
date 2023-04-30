@@ -2,8 +2,8 @@ import { GetServerSideProps } from 'next'
 import { parseCookies } from 'nookies'
 import React from 'react'
 
-import SigninForm from '../components/SigninForm'
-import { api } from '../helpers/request'
+import SigninForm from '../../components/SigninForm'
+import { api } from '../../helpers/request'
 
 const signin = () => {
   return (

@@ -3,13 +3,13 @@ import { GetServerSideProps } from 'next'
 import { parseCookies } from 'nookies'
 import { useDispatch } from 'react-redux'
 
-import { api } from '../helpers/request'
-import { Sidenav } from '../components/Sidenav'
-import { IOption, ProfileContext } from '../contexts/profile'
-import { ProfileDisplay } from '../components/ProfileDisplay'
-import { IUser } from '../interfaces/User'
-import { saveUser } from '../redux/user/userSlice'
-import { saveProducts } from '../redux/product/productSlice'
+import { api } from '../../helpers/request'
+import { Sidenav } from '../../components/Sidenav'
+import { IOption, ProfileContext } from '../../contexts/profile'
+import { ProfileDisplay } from '../../components/ProfileDisplay'
+import { IUser } from '../../interfaces/User'
+import { saveUser } from '../../redux/user/userSlice'
+import { saveProducts } from '../../redux/product/productSlice'
 
 const profile = ({ userData }: { userData: IUser }) => {
   const dispatch = useDispatch()
