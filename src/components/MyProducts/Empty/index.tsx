@@ -10,7 +10,10 @@ export const Empty = () => {
   const [accordionIsOpen, setAccordionIsOpen] = useState(false)
 
   return (
-    <section className="flex align-middle flex-col text-center" data-testid="myproducts-empty">
+    <section
+      className="flex align-middle flex-col text-center"
+      data-testid="myproducts-empty"
+    >
       <Accordion.Wrapper>
         <Accordion.Header>
           <Modal.IconWrapper className="bg-blue-200 mb-2">
@@ -21,15 +24,14 @@ export const Empty = () => {
           </h1>
           <span className="text-slate-600 mb-4 block">Que tal mudar isso?</span>
         </Accordion.Header>
-        <Accordion.Toggle onClick={() => setAccordionIsOpen(!accordionIsOpen)}>
+        <Accordion.Toggle
+          onClick={() => setAccordionIsOpen(!accordionIsOpen)}
+          className="self-center"
+        >
           {accordionIsOpen ? (
-            <Button.Secondary className="self-center">
-              Cancelar
-            </Button.Secondary>
+            <Button.Secondary>Cancelar</Button.Secondary>
           ) : (
-            <Button.Primary className="self-center">
-              Cadastre um produto agora mesmo!
-            </Button.Primary>
+            <Button.Primary>Cadastre um produto agora mesmo!</Button.Primary>
           )}
         </Accordion.Toggle>
 

@@ -16,10 +16,7 @@ export const AccountCreatedModal = () => {
         <Modal.Title>Bem vindo</Modal.Title>
         <Modal.Message>Conta criada com sucesso</Modal.Message>
         <Modal.Actions>
-          <Button.Primary
-            onClick={() => setTrigger(undefined)}
-            className="w-full"
-          >
+          <Button.Primary onClick={() => setTrigger(undefined)} fullWidth>
             Fazer login
           </Button.Primary>
         </Modal.Actions>

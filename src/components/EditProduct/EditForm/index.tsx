@@ -96,9 +96,7 @@ export const EditForm = ({ product }: ContentProps) => {
         <div className="col-span-full flex justify-between">
           <Delete product={product} />
 
-          <Button.Primary disabled={isLoading}>
-            {isLoading ? 'Carregando...' : 'Atualizar dados'}
-          </Button.Primary>
+          <Button.Primary loading={isLoading}>Atualizar dados</Button.Primary>
         </div>
       </form>
     </FormProvider>

@@ -3,7 +3,6 @@ import React from 'react'
 import { useDispatch } from 'react-redux'
 import { clearLocalData } from '../../../helpers/clearLocalData'
 import { logoutUser } from '../../../redux/user/userSlice'
-import { Button } from '../../Button'
 
 export const LogoutButton = () => {
   const { push } = useRouter()
@@ -16,8 +15,11 @@ export const LogoutButton = () => {
   }
 
   return (
-    <Button.Terciary className="w-full text-white" onClick={logout}>
+    <button
+      className="w-full text-white border border-transparent hover:border-slate-100 rounded-lg transition"
+      onClick={logout}
+    >
       Sair
-    </Button.Terciary>
+    </button>
   )
 }

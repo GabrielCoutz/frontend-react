@@ -65,12 +65,9 @@ export const DeleteAccountForm = () => {
 
   return (
     <>
-      <Button.Primary
-        className="bg-red-500 hover:bg-red-700 whitespace-nowrap"
-        onClick={() => setDeleteIntention(true)}
-      >
+      <Button.Danger onClick={() => setDeleteIntention(true)}>
         Deletar conta
-      </Button.Primary>
+      </Button.Danger>
 
       <Modal.Trigger trigger={deleteIntention}>
         <Modal.Body onClose={() => setDeleteIntention(false)}>
@@ -103,16 +100,17 @@ export const DeleteAccountForm = () => {
                   <Button.Primary
                     onClick={() => setDeleteIntention(false)}
                     disabled={isLoading}
-                    className="w-full"
+                    fullWidth
                   >
                     Cancelar
                   </Button.Primary>
-                  <Button.Secondary
+                  <Button.Danger
                     disabled={isLoading}
-                    className="hover:text-white border-red-500 text-red-500 whitespace-nowrap w-full hover:!bg-red-500"
+                    loading={isLoading}
+                    fullWidth
                   >
-                    {isLoading ? 'Aguarde...' : 'Deletar conta'}
-                  </Button.Secondary>
+                    Deletar conta
+                  </Button.Danger>
                 </div>
               </form>
             </FormProvider>

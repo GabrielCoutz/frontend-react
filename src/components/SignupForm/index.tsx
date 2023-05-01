@@ -84,10 +84,11 @@ const SignupForm = () => {
           </Form.Field>
 
           <UI.Erro className="text-center">{error}</UI.Erro>
-
-          <Button.Primary className="mt-2" disabled={loading}>
-            {loading ? 'Aguarde...' : 'Cadastrar-se'}
-          </Button.Primary>
+          <div className="mt-2">
+            <Button.Primary fullWidth loading={loading}>
+              Cadastrar-se
+            </Button.Primary>
+          </div>
         </form>
 
         <p className="mt-10 text-center text-sm text-gray-500">

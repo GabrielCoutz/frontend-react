@@ -1,17 +1,17 @@
 import React from 'react'
 import { ButtonProps } from '..'
 
-export const Primary = ({
+export const Danger = ({
   children,
   disabled,
   fullWidth,
   loading,
   onClick,
-  type
+  type,
 }: ButtonProps) => {
   return (
     <button
-      className={`font-semibold bg-primary hover:bg-primary-700 py-2 px-8 text-slate-50 transition border-transparent border h-min-9 rounded-lg disabled:bg-primary-400 disabled:cursor-not-allowed ${
+      className={`font-semibold bg-red-500 hover:bg-red-700 whitespace-nowrap py-2 px-8 text-slate-50 transition border-transparent border h-min-9 rounded-lg disabled:bg-red-400 disabled:cursor-not-allowed ${
         fullWidth ? 'w-full' : ''
       }`}
       disabled={loading || disabled}

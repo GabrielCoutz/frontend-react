@@ -17,10 +17,7 @@ export const ProductDeletedModal = () => {
         <Modal.Title>Até mais</Modal.Title>
         <Modal.Message>Produto deletado com sucesso</Modal.Message>
         <Modal.Actions>
-          <Button.Primary
-            onClick={() => setTrigger(undefined)}
-            className="w-full"
-          >
+          <Button.Primary onClick={() => setTrigger(undefined)} fullWidth>
             Continuar
           </Button.Primary>
         </Modal.Actions>

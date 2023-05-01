@@ -8,12 +8,14 @@ export default function Home() {
         <h1 className="text-2xl font-semibold text-slate-800 mb-8 max-md:mb-4">
           Cadastre-se ou faça login
         </h1>
-        <Link href="signup" className="block w-full">
-          <Button.Primary className="w-full">Cadastro</Button.Primary>
-        </Link>
-        <Link href="signin" className="block w-full mt-4">
-          <Button.Secondary className="w-full">Login</Button.Secondary>
-        </Link>
+        <div className="flex flex-col gap-4">
+          <Link href="signup">
+            <Button.Primary fullWidth>Cadastro</Button.Primary>
+          </Link>
+          <Link href="signin">
+            <Button.Secondary fullWidth>Login</Button.Secondary>
+          </Link>
+        </div>
       </div>
     </section>
   )

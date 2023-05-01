@@ -98,12 +98,11 @@ export const UserForm = () => {
             {message}
           </UI.Success>
 
-          <Button.Primary
-            className="max-md:w-full max-md:mt-2"
-            disabled={isLoading}
-          >
-            {isLoading ? 'Carregando...' : 'Atualizar dados'}
-          </Button.Primary>
+          <div className="max-md:w-full max-md:mt-2">
+            <Button.Primary fullWidth loading={isLoading}>
+              Atualizar dados
+            </Button.Primary>
+          </div>
         </div>
       </form>
     </FormProvider>

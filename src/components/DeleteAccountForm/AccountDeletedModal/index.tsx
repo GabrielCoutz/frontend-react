@@ -16,10 +16,7 @@ export const AccountDeletedModal = () => {
         <Modal.Title>Até mais</Modal.Title>
         <Modal.Message>Conta deletada com sucesso</Modal.Message>
         <Modal.Actions>
-          <Button.Primary
-            onClick={() => setTrigger(undefined)}
-            className="w-full"
-          >
+          <Button.Primary onClick={() => setTrigger(undefined)} fullWidth>
             Continuar
           </Button.Primary>
         </Modal.Actions>

@@ -97,10 +97,11 @@ export const CreateProductForm = () => {
           </Form.Field>
 
           <UI.Erro className="col-span-full my-2">{error}</UI.Erro>
-
-          <Button.Primary disabled={isLoading} className="md:col-start-2">
-            {isLoading ? 'Aguarde...' : 'Anunciar'}
-          </Button.Primary>
+          <div className="md:col-start-2 md:justify-self-end">
+            <Button.Primary fullWidth loading={isLoading}>
+              Anunciar
+            </Button.Primary>
+          </div>
         </form>
       </FormProvider>
     </>

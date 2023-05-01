@@ -1,18 +1,20 @@
-import {
-  ButtonHTMLAttributes,
-  DetailedHTMLProps,
-  PropsWithChildren,
-} from 'react'
 import { Primary } from './Primary'
 import { Secondary } from './Secondary'
 import { Terciary } from './Terciary'
+import { Danger } from './Danger'
 
-export type ButtonProps = PropsWithChildren<
-  DetailedHTMLProps<ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement>
->
+export interface ButtonProps {
+  children: string
+  loading?: boolean
+  disabled?: boolean
+  fullWidth?: boolean
+  onClick?: () => void
+  type?: 'button' | 'reset' | 'submit'
+}
 
 export const Button = {
   Primary,
   Secondary,
   Terciary,
+  Danger,
 }

@@ -38,13 +38,9 @@ export const Delete = ({ product }: { product: IProduct }) => {
 
   return (
     <>
-      <Button.Terciary
-        className="text-red-500 hover:text-red-900 bg-red-100 py-2 px-4"
-        onClick={() => setDeleteIntention(true)}
-        type="button"
-      >
+      <Button.Secondary onClick={() => setDeleteIntention(true)} type="button">
         Deletar
-      </Button.Terciary>
+      </Button.Secondary>
 
       <Modal.Trigger trigger={deleteIntention}>
         <Modal.Body onClose={setDeleteIntention}>
@@ -65,8 +61,8 @@ export const Delete = ({ product }: { product: IProduct }) => {
             >
               Cancelar
             </Button.Primary>
-            <Button.Secondary onClick={handleClick}>
-              {isLoading ? 'Aguarde...' : 'Sim, tenho certeza'}
+            <Button.Secondary onClick={handleClick} loading={isLoading}>
+              Sim, tenho certeza
             </Button.Secondary>
           </Modal.Actions>
         </Modal.Body>
