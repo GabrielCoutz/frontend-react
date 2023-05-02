@@ -4,13 +4,25 @@ import { Button } from '.'
 export default {
   title: 'Components/Button',
   component: Button.Primary,
+  argTypes: {
+    onClick: {
+      table: {
+        disable: true,
+      },
+    },
+    type: {
+      table: {
+        disable: true,
+      },
+    },
+  },
 } as Meta
 
 type ButtonType = typeof Button.Primary
 
 export const Primary: StoryObj<ButtonType> = {
   args: {
-    children: 'Primary',
+    children: 'Label',
     disabled: false,
     fullWidth: false,
     loading: false,
@@ -24,7 +36,7 @@ export const Primary: StoryObj<ButtonType> = {
 
 export const Secondary: StoryObj<ButtonType> = {
   args: {
-    children: 'Secondary',
+    children: 'Label',
     disabled: false,
     fullWidth: false,
     loading: false,
@@ -42,7 +54,7 @@ export const Secondary: StoryObj<ButtonType> = {
 
 export const Terciary: StoryObj<ButtonType> = {
   args: {
-    children: 'Terciary',
+    children: 'Label',
     disabled: false,
     fullWidth: false,
     loading: false,
@@ -55,5 +67,33 @@ export const Terciary: StoryObj<ButtonType> = {
     >
       {children}
     </Button.Terciary>
+  ),
+}
+
+export const Loading: StoryObj<ButtonType> = {
+  args: {
+    children: 'Label',
+    disabled: false,
+    fullWidth: false,
+    loading: true,
+  },
+  render: ({ children, disabled, fullWidth, loading }) => (
+    <Button.Primary fullWidth={fullWidth} disabled={disabled} loading={loading}>
+      {children}
+    </Button.Primary>
+  ),
+}
+
+export const FullWidth: StoryObj<ButtonType> = {
+  args: {
+    children: 'Label',
+    disabled: false,
+    fullWidth: true,
+    loading: false,
+  },
+  render: ({ children, disabled, fullWidth, loading }) => (
+    <Button.Primary fullWidth={fullWidth} disabled={disabled} loading={loading}>
+      {children}
+    </Button.Primary>
   ),
 }
