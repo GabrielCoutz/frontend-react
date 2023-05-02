@@ -79,7 +79,7 @@ https://user-images.githubusercontent.com/86968853/235247360-ca59754b-6b24-41d5-
 
 ### Storybook
 
-https://user-images.githubusercontent.com/86968853/235800381-5ee6eed3-fabe-4f4a-a8d2-3737a267264b.mp4
+https://user-images.githubusercontent.com/86968853/235800486-11d831ce-2b7a-4855-8694-8ba0ce8297dc.mp4
 
 ---
 
