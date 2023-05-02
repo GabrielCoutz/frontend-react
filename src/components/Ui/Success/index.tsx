@@ -9,7 +9,7 @@ export const Success = ({ children }: SuccessProps) => {
     return (
       <div
         data-testid="ui-success"
-        className={`text-sm font-medium px-4 py-1 text-green-600 max-md:text-center rounded-lg bg-green-100`}
+        className={`text-sm font-medium px-4 py-1 text-green-700 max-md:text-center rounded-lg bg-green-100`}
       >
         {children}
       </div>

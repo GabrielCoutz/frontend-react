@@ -9,7 +9,7 @@ export const Erro = ({ children }: ErroProps) => {
     return (
       <div
         data-testid="ui-erro"
-        className={`text-sm font-medium px-4 py-1 text-red-500 max-md:text-center rounded-lg bg-red-100`}
+        className={`text-sm font-medium px-4 py-1 text-red-700 max-md:text-center rounded-lg bg-red-100`}
       >
         {children}
       </div>

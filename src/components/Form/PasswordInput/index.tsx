@@ -19,6 +19,9 @@ export const PasswordInput = (props: InputProps) => {
     <div className="flex relative">
       <Form.Input {...props} name={props.name} type={inputType} />
       <button
+        aria-label={
+          inputType === 'password' ? 'Mostrar senha' : 'Esconder senha'
+        }
         type="button"
         onClick={togglePassword}
         className="rounded-lg rounded-s-none px-2 shadow border-s-0 border-gray-200 border absolute right-0 top-0 h-full bg-white"
