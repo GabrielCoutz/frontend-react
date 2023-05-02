@@ -60,11 +60,7 @@ export const CreateProductForm = () => {
             <Form.Label htmlFor="name" className="self-start">
               Nome
             </Form.Label>
-            <Form.Input
-              name="name"
-              type="text"
-              errormessage="Preencha este campo"
-            />
+            <Form.Input name="name" errormessage="Preencha este campo" />
             <Form.Error field="name" />
           </Form.Field>
 
@@ -72,15 +68,12 @@ export const CreateProductForm = () => {
             <Form.Label htmlFor="price" className="self-start">
               Preço
             </Form.Label>
-            <div className="flex items-center">
-              <span className="me-2 hover:cursor-default">R$</span>
-              <Form.Input
-                name="price"
-                type="number"
-                errormessage="Preencha o preço"
-                className="flex-1"
-              />
-            </div>
+            <Form.Input
+              name="price"
+              type="number"
+              errormessage="Preencha o preço"
+              prefix="currency"
+            />
             <Form.Error field="price" />
           </Form.Field>
 

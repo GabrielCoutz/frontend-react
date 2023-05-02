@@ -64,7 +64,6 @@ export const UserForm = () => {
           <Form.Label htmlFor="name">Nome</Form.Label>
           <Form.Input
             name="name"
-            type="text"
             errormessage="O nome não pode ser vazio"
             validation={{
               value: /^[a-zA-Z ]{5,}$/,

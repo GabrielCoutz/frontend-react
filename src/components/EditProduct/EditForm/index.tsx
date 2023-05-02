@@ -67,21 +67,18 @@ export const EditForm = ({ product }: ContentProps) => {
       >
         <Form.Field>
           <Form.Label htmlFor="name">Nome</Form.Label>
-          <Form.Input name="name" type="text" errormessage="Preencha o nome" />
+          <Form.Input name="name" errormessage="Preencha o nome" />
           <Form.Error field="name" />
         </Form.Field>
 
-        <Form.Field className="relative">
+        <Form.Field>
           <Form.Label htmlFor="price">Preço</Form.Label>
-          <div className="flex items-center">
-            <span className="me-2 hover:cursor-default">R$</span>
-            <Form.Input
-              name="price"
-              type="number"
-              errormessage="Preencha o preço"
-              className="flex-1"
-            />
-          </div>
+          <Form.Input
+            name="price"
+            type="number"
+            errormessage="Preencha o preço"
+            prefix="currency"
+          />
           <Form.Error field="price" />
         </Form.Field>
 

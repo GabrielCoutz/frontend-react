@@ -51,11 +51,7 @@ const SignupForm = () => {
         >
           <Form.Field>
             <Form.Label htmlFor="name">Nome</Form.Label>
-            <Form.Input
-              name="name"
-              type="text"
-              errormessage="Preencha este campo"
-            />
+            <Form.Input name="name" errormessage="Preencha este campo" />
             <Form.Error field="name" />
           </Form.Field>
 
