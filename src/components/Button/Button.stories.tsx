@@ -2,7 +2,7 @@ import { Meta, StoryObj } from '@storybook/react'
 import { Button } from '.'
 
 export default {
-  title: 'Components/Button',
+  title: 'Form/Button',
   component: Button.Primary,
   argTypes: {
     onClick: {

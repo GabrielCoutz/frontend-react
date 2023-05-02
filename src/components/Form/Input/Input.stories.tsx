@@ -3,7 +3,7 @@ import { FormProvider, useForm } from 'react-hook-form'
 import { Form } from '..'
 
 export default {
-  title: 'Components/Form/Input',
+  title: 'Form/Input',
   component: Form.Input,
   decorators: [
     (Story) => {
