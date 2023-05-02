@@ -7,7 +7,7 @@ export const Primary = ({
   fullWidth,
   loading,
   onClick,
-  type
+  type,
 }: ButtonProps) => {
   return (
     <button

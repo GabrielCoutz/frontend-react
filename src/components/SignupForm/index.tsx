@@ -79,7 +79,9 @@ const SignupForm = () => {
             <Form.Error field="password" />
           </Form.Field>
 
-          <UI.Erro className="text-center">{error}</UI.Erro>
+          <div className="text-center">
+            <UI.Erro>{error}</UI.Erro>
+          </div>
           <div className="mt-2">
             <Button.Primary fullWidth loading={loading}>
               Cadastrar-se

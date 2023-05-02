@@ -17,8 +17,8 @@ describe('[Ui] index', () => {
   it('should not render all components', () => {
     const { queryAllByTestId } = render(
       <>
-        <UI.Erro data-testid="ui-erro"></UI.Erro>
-        <UI.Success data-testid="ui-success"></UI.Success>
+        <UI.Erro></UI.Erro>
+        <UI.Success></UI.Success>
       </>,
     )
 

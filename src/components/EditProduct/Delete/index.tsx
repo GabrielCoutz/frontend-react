@@ -53,17 +53,21 @@ export const Delete = ({ product }: { product: IProduct }) => {
           <Modal.Message>
             Você tem certeza que deseja deletar este produto?
           </Modal.Message>
-          <UI.Erro className="my-4">{error}</UI.Erro>
-          <Modal.Actions className="grid grid-cols-2 gap-4 max-sm:grid-cols-1 max-sm:gap-2">
-            <Button.Primary
-              onClick={() => setDeleteIntention(false)}
-              disabled={isLoading}
-            >
-              Cancelar
-            </Button.Primary>
-            <Button.Secondary onClick={handleClick} loading={isLoading}>
-              Sim, tenho certeza
-            </Button.Secondary>
+          <div className="my-4">
+            <UI.Erro>{error}</UI.Erro>
+          </div>
+          <Modal.Actions>
+            <div className="grid grid-cols-2 gap-4 max-sm:grid-cols-1 max-sm:gap-2">
+              <Button.Primary
+                onClick={() => setDeleteIntention(false)}
+                disabled={isLoading}
+              >
+                Cancelar
+              </Button.Primary>
+              <Button.Secondary onClick={handleClick} loading={isLoading}>
+                Sim, tenho certeza
+              </Button.Secondary>
+            </div>
           </Modal.Actions>
         </Modal.Body>
       </Modal.Trigger>

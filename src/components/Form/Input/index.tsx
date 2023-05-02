@@ -9,12 +9,12 @@ export interface InputProps {
   type?: HTMLInputTypeAttribute
   placeholder?: string
   autoComplete?: string
-  prefix?: 'currency'
+  prefix?: 'currency' | 'default'
 }
 
 export const Input = ({
   name,
-  error,
+  error = false,
   errormessage,
   validation,
   type = 'text',
@@ -26,11 +26,11 @@ export const Input = ({
     register,
     formState: { errors },
   } = useFormContext()
-  const erroExists = errors[name]?.message?.toString()
-  error = !!erroExists
+  const fieldErro = errors[name]?.message?.toString()
+
   return (
     <div className="flex items-center">
-      {prefix && (
+      {prefix === 'currency' && (
         <span className="me-2 inline text-gray-600 hover:cursor-default">
           R$
         </span>
@@ -46,7 +46,7 @@ export const Input = ({
           pattern: validation,
         })}
         className={`rounded-lg h-9 border-gray-200 shadow hover:shadow-sm focus:ring-inset-primary-600 w-full ring-inset transition text-sm focus:ring-primary-700 ${
-          error ? 'border-red-500' : ''
+          fieldErro || error ? 'ring-2 ring-red-500' : ''
         }`}
       />
     </div>

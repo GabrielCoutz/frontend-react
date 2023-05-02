@@ -89,7 +89,9 @@ export const CreateProductForm = () => {
             <Form.Error field="description" />
           </Form.Field>
 
-          <UI.Erro className="col-span-full my-2">{error}</UI.Erro>
+          <div className="col-span-full my-2">
+            <UI.Erro>{error}</UI.Erro>
+          </div>
           <div className="md:col-start-2 md:justify-self-end">
             <Button.Primary fullWidth loading={isLoading}>
               Anunciar

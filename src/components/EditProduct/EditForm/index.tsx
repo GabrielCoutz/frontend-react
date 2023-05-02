@@ -87,8 +87,10 @@ export const EditForm = ({ product }: ContentProps) => {
           <Form.Textarea name="description" cols={5} rows={3} />
         </Form.Field>
 
-        <UI.Erro className="col-span-full text-center">{error}</UI.Erro>
-        <UI.Success className="col-span-full text-center">{message}</UI.Success>
+        <div className="col-span-full text-center">
+          <UI.Erro>{error}</UI.Erro>
+          <UI.Success>{message}</UI.Success>
+        </div>
 
         <div className="col-span-full flex justify-between">
           <Delete product={product} />

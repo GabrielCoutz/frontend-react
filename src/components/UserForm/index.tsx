@@ -91,11 +91,13 @@ export const UserForm = () => {
         </Form.Field>
 
         <div className="flex justify-end col-span-full flex-col items-end">
-          <UI.Erro className="mb-2 max-md:self-stretch">{error}</UI.Erro>
+          <div className="mb-2 max-md:self-stretch">
+            <UI.Erro>{error}</UI.Erro>
+          </div>
 
-          <UI.Success className="mb-2 max-md:self-stretch">
-            {message}
-          </UI.Success>
+          <div className="mb-2 max-md:self-stretch">
+            <UI.Success>{message}</UI.Success>
+          </div>
 
           <div className="max-md:w-full max-md:mt-2">
             <Button.Primary fullWidth loading={isLoading}>
