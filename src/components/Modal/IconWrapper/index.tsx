@@ -1,8 +1,8 @@
 import React from 'react'
 
 interface IconWrapperProps {
-  children: React.ReactNode
-  className: string
+  children: React.ReactNode | string
+  className?: string
 }
 
 export const IconWrapper = ({ children, className }: IconWrapperProps) => {
