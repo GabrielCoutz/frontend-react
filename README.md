@@ -35,7 +35,8 @@ Não é possível replicar o projeto com o container docker, **ainda**, porém a
 <h2 id="tecnologias">🔮 Tecnologias</h2>
 
 [![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)](https://react.dev/) [![Jest](https://img.shields.io/badge/Jest-C21325?style=for-the-badge&logo=jest&logoColor=white)](https://jestjs.io/pt-BR/) [![Redux](https://img.shields.io/badge/Redux-593D88?style=for-the-badge&logo=redux&logoColor=white)](https://redux.js.org/) [![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/pt/) [![Tailwind](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/) [![NextJS](https://img.shields.io/badge/next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white
-)](https://nextjs.org/)
+)](https://nextjs.org/) [![Storybook](https://img.shields.io/badge/storybook-FF4785?style=for-the-badge&logo=storybook&logoColor=white
+)](https://storybook.js.org/)
 
 ---
 
@@ -53,6 +54,8 @@ Não é possível replicar o projeto com o container docker, **ainda**, porém a
 :white_check_mark: <a href="https://betterprogramming.pub/compound-component-design-pattern-in-react-34b50e32dea0">Composite Pattern</a> utilizado
 
 **Plus**
+
+:white_check_mark: Documentação dos componentes com <a href="https://storybook.js.org/">Storybook</a>
 
 :white_check_mark: Todos estados e efeitos são gerenciados pelo Redux
 
