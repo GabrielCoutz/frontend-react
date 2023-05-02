@@ -84,7 +84,6 @@ export const CreateProductForm = () => {
             <Form.Textarea
               name="description"
               errormessage="Preencha este campo"
-              className=""
             ></Form.Textarea>
             <Form.Error field="description" />
           </Form.Field>

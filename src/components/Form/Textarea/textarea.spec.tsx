@@ -17,6 +17,6 @@ describe('[Form] Textarea', () => {
   it('should render', () => {
     const { getByTestId } = renderTextarea()
 
-    expect(getByTestId('textarea')).toBeInTheDocument()
+    expect(getByTestId('form-textarea')).toBeInTheDocument()
   })
 })
