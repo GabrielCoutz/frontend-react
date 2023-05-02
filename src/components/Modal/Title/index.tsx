@@ -1,14 +1,16 @@
-import React, { HTMLAttributes, PropsWithChildren } from 'react'
+import React from 'react'
 
-export const Title = (
-  props: PropsWithChildren<HTMLAttributes<HTMLHeadingElement>>,
-) => {
+interface TitleProps {
+  children: React.ReactNode
+}
+
+export const Title = ({ children }: TitleProps) => {
   return (
     <h3
-      {...props}
-      className={`text-base font-semibold leading-6 text-slate-900 mb-2 ${props.className}`}
+      data-testid="modal-title"
+      className="text-base font-semibold leading-6 text-slate-900 mb-2"
     >
-      {props.children}
+      {children}
     </h3>
   )
 }

@@ -1,7 +1,9 @@
-import React, { HTMLAttributes, PropsWithChildren } from 'react'
+import React from 'react'
 
-export const Actions = (
-  props: PropsWithChildren<HTMLAttributes<HTMLDivElement>>,
-) => {
-  return <div {...props}>{props.children}</div>
+interface ActionsProps {
+  children: React.ReactNode
+}
+
+export const Actions = ({ children }: ActionsProps) => {
+  return <div data-testid="modal-actions">{children}</div>
 }

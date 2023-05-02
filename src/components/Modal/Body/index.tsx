@@ -1,16 +1,22 @@
 import { Dialog, Transition } from '@headlessui/react'
-import React, { HtmlHTMLAttributes, PropsWithChildren } from 'react'
+import React from 'react'
+
 import { Blur } from '../Blur'
 import { Wrapper } from '../Wrapper'
 
-interface BodyProps
-  extends PropsWithChildren<HtmlHTMLAttributes<HTMLDivElement>> {
+interface BodyProps {
   onClose: React.Dispatch<React.SetStateAction<boolean>>
+  children: React.ReactNode
 }
 
-export const Body = (props: BodyProps) => {
+export const Body = ({ onClose, children }: BodyProps) => {
   return (
-    <Dialog as="div" className="relative z-10" onClose={props.onClose}>
+    <Dialog
+      data-testid="modal-body"
+      as="div"
+      className="relative z-10"
+      onClose={onClose}
+    >
       <Blur />
       <Wrapper>
         <Transition.Child
@@ -24,7 +30,7 @@ export const Body = (props: BodyProps) => {
           className="max-sm:self-center"
         >
           <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white text-center shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:self-center px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
-            {props.children}
+            {children}
           </Dialog.Panel>
         </Transition.Child>
       </Wrapper>

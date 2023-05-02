@@ -1,14 +1,17 @@
-import React, { HtmlHTMLAttributes, PropsWithChildren } from 'react'
+import React from 'react'
 
-export const IconWrapper = (
-  props: PropsWithChildren<HtmlHTMLAttributes<HTMLDivElement>>,
-) => {
+interface IconWrapperProps {
+  children: React.ReactNode
+  className: string
+}
+
+export const IconWrapper = ({ children, className }: IconWrapperProps) => {
   return (
     <div
-      {...props}
-      className={`mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full sm:h-10 sm:w-10 mb-2 ${props.className}`}
+      data-testid="modal-iconwrapper"
+      className={`mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full sm:h-10 sm:w-10 mb-2 ${className}`}
     >
-      {props.children}
+      {children}
     </div>
   )
 }

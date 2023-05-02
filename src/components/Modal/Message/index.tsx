@@ -1,11 +1,13 @@
-import React, { HTMLAttributes, PropsWithChildren } from 'react'
+import React from 'react'
 
-export const Message = (
-  props: PropsWithChildren<HTMLAttributes<HTMLParagraphElement>>,
-) => {
+interface MessageProps {
+  children: React.ReactNode
+}
+
+export const Message = ({ children }: MessageProps) => {
   return (
-    <p {...props} className={`text-sm text-gray-500 mb-4 ${props.className}`}>
-      {props.children}
+    <p data-testid="modal-message" className="text-sm text-gray-500 mb-4">
+      {children}
     </p>
   )
 }
