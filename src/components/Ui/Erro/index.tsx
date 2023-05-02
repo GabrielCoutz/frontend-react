@@ -1,13 +1,17 @@
-import React, { HTMLAttributes } from 'react'
+import React from 'react'
 
-export const Erro = (props: HTMLAttributes<HTMLDivElement>) => {
-  if (props.children)
+interface ErroProps {
+  children?: string | null
+}
+
+export const Erro = ({ children }: ErroProps) => {
+  if (children)
     return (
       <div
-        {...props}
-        className={`text-sm font-medium text-red-500 max-md:text-center max-md:p-1 max-md:rounded-lg max-md:bg-red-100 ${props.className}`}
+        data-testid="ui-erro"
+        className={`text-sm font-medium px-4 py-1 text-red-500 max-md:text-center rounded-lg bg-red-100`}
       >
-        {props.children}
+        {children}
       </div>
     )
   return null

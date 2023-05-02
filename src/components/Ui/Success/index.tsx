@@ -1,13 +1,17 @@
-import React, { HTMLAttributes } from 'react'
+import React from 'react'
 
-export const Success = (props: HTMLAttributes<HTMLDivElement>) => {
-  if (props.children)
+interface SuccessProps {
+  children?: string | null
+}
+
+export const Success = ({ children }: SuccessProps) => {
+  if (children)
     return (
       <div
-        {...props}
-        className={`text-sm font-medium text-green-600 max-md:text-center max-md:p-1 max-md:rounded-lg max-md:bg-green-100 ${props.className}`}
+        data-testid="ui-success"
+        className={`text-sm font-medium px-4 py-1 text-green-600 max-md:text-center rounded-lg bg-green-100`}
       >
-        {props.children}
+        {children}
       </div>
     )
   return null
