@@ -11,14 +11,104 @@ export default {
       return <FormProvider {...mockForm}>{Story()}</FormProvider>
     },
   ],
+  argTypes: {
+    name: {
+      table: {
+        disable: true,
+      },
+    },
+    errormessage: {
+      table: {
+        disable: true,
+      },
+    },
+    validation: {
+      table: {
+        disable: true,
+      },
+    },
+    type: {
+      table: {
+        disable: true,
+      },
+    },
+    autoComplete: {
+      table: {
+        disable: true,
+      },
+    },
+  },
 } as Meta
 
 export const Default: StoryObj<typeof Form.Input> = {
   args: {
     placeholder: 'Placeholder',
-    name: 'name',
+    error: false,
   },
-  render: ({ name, placeholder }) => (
-    <Form.Input name={name} type="text" placeholder={placeholder} />
+  render: ({ placeholder, error, prefix }) => (
+    <Form.Input
+      name="name"
+      error={error}
+      prefix={prefix}
+      errormessage="message"
+      placeholder={placeholder}
+    />
+  ),
+}
+
+export const Currency: StoryObj<typeof Form.Input> = {
+  args: {
+    placeholder: 'Placeholder',
+    error: false,
+    prefix: 'currency',
+  },
+  render: ({ placeholder, error, prefix }) => (
+    <Form.Input
+      name="name"
+      error={error}
+      prefix={prefix}
+      errormessage="message"
+      placeholder={placeholder}
+    />
+  ),
+}
+
+export const Erro: StoryObj<typeof Form.Input> = {
+  args: {
+    placeholder: 'Placeholder',
+    error: true,
+    prefix: 'default',
+  },
+  render: ({ placeholder, error, prefix }) => (
+    <Form.Input
+      name="name"
+      error={error}
+      prefix={prefix}
+      errormessage="message"
+      placeholder={placeholder}
+    />
+  ),
+}
+
+export const Password: StoryObj<typeof Form.PasswordInput> = {
+  args: {
+    placeholder: 'Placeholder',
+    error: false,
+  },
+  argTypes: {
+    prefix: {
+      table: {
+        disable: true,
+      },
+    },
+  },
+  render: ({ placeholder, error, prefix }) => (
+    <Form.PasswordInput
+      name="name"
+      error={error}
+      prefix={prefix}
+      errormessage="message"
+      placeholder={placeholder}
+    />
   ),
 }
