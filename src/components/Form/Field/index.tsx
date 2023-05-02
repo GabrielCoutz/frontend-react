@@ -1,17 +1,17 @@
-import React, { HTMLAttributes } from 'react'
+import React from 'react'
 
-interface FieldProps extends HTMLAttributes<HTMLDivElement> {
+interface FieldProps {
   children: React.ReactNode
+  className?: string
 }
 
-export const Field = (item: FieldProps) => {
+export const Field = ({ children, className }: FieldProps) => {
   return (
     <div
       data-testid="form-field"
-      {...item}
-      className={`flex flex-col gap-2 ${item?.className}`}
+      className={`flex flex-col gap-2 ${className}`}
     >
-      {item.children}
+      {children}
     </div>
   )
 }
