@@ -77,6 +77,10 @@ https://user-images.githubusercontent.com/86968853/235247313-5b9cb4c3-8dc8-419c-
 
 https://user-images.githubusercontent.com/86968853/235247360-ca59754b-6b24-41d5-baaa-6e1028b903e1.mp4
 
+### Storybook
+
+https://user-images.githubusercontent.com/86968853/235800381-5ee6eed3-fabe-4f4a-a8d2-3737a267264b.mp4
+
 ---
 
 <h2 id="author">😎 Entre em contato</h2>
