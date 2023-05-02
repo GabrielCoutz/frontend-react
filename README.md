@@ -11,7 +11,7 @@
  • <a href="#sobre">📋 Sobre o Projeto</a> </br>
  • <a href="#tecnologias">🔮 Tecnologias</a> </br>
  • <a href="#funcionalidades">🛠 Funcionalidades</a> </br>
- • <a href="#demonstração">🎥 Demonstração</a> </br>
+ • <a href="#demo">🎥 Demonstração</a> </br>
  • <a href="#author">😎 Autor</a> </br>
 </div>
 
@@ -65,7 +65,7 @@ Não é possível replicar o projeto com o container docker, **ainda**, porém a
 
 ---
 
-<h2 id="demonstração">📷 Demonstração</h2>
+<h2 id="demo">📷 Demonstração</h2>
 
 
 
@@ -76,6 +76,10 @@ https://user-images.githubusercontent.com/86968853/235247313-5b9cb4c3-8dc8-419c-
 #### Mobile
 
 https://user-images.githubusercontent.com/86968853/235247360-ca59754b-6b24-41d5-baaa-6e1028b903e1.mp4
+
+### Storybook
+
+https://user-images.githubusercontent.com/86968853/235800172-3b1665ee-e499-45d7-beb3-4055bcdf5470.mp
 
 ---
 
