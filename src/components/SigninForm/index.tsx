@@ -89,7 +89,7 @@ const SigninForm = () => {
 
         <p className="mt-10 text-center text-sm text-gray-500">
           Não tem conta?{' '}
-          <Link href="signup">
+          <Link href="/signup">
             <Button.Terciary>Faça uma agora!</Button.Terciary>
           </Link>
         </p>

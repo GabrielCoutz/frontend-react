@@ -11,5 +11,5 @@ export const ProfileButton = () => {
   if (!userName) return null
   const firstName = userName.split(' ')[0]
 
-  return <HeaderLink href="profile">{capitalize(firstName)}</HeaderLink>
+  return <HeaderLink href="/profile">{capitalize(firstName)}</HeaderLink>
 }

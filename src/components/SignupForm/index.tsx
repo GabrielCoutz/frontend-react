@@ -91,7 +91,7 @@ const SignupForm = () => {
 
         <p className="mt-10 text-center text-sm text-gray-500">
           Já tem conta?{' '}
-          <Link href="signin">
+          <Link href="/signin">
             <Button.Terciary>Faça login</Button.Terciary>
           </Link>
         </p>

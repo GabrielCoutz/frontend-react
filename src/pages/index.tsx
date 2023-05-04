@@ -9,10 +9,10 @@ export default function Home() {
           Cadastre-se ou faça login
         </h1>
         <div className="flex flex-col gap-4">
-          <Link href="signup">
+          <Link href="/signup">
             <Button.Primary fullWidth>Cadastro</Button.Primary>
           </Link>
-          <Link href="signin">
+          <Link href="/signin">
             <Button.Secondary fullWidth>Login</Button.Secondary>
           </Link>
         </div>
