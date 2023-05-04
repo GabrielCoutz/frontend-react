@@ -26,19 +26,19 @@ const signupFormSchema = z.object({
     .nonempty(),
 })
 
-type SignupFormSchema = z.infer<typeof signupFormSchema>
+type ISignupFormSchema = z.infer<typeof signupFormSchema>
 
 const SignupForm = () => {
   const { push } = useRouter()
   const { setTrigger } = useContext(ModalContext)
   const [error, setError] = useState<string>('')
   const [loading, setLoading] = useState(false)
-  const signupFormMethods = useForm<SignupFormSchema>({
+  const signupFormMethods = useForm<ISignupFormSchema>({
     resolver: zodResolver(signupFormSchema),
   })
   const { handleSubmit } = signupFormMethods
 
-  const handleSignup = async (payload: SignupFormSchema) => {
+  const handleSignup = async (payload: ISignupFormSchema) => {
     setError('')
     setLoading(true)
 
