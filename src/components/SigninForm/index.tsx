@@ -1,28 +1,36 @@
-import Link from 'next/link'
-import React, { useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
+import { useRouter } from 'next/router'
+import React, { useState } from 'react'
 import { setCookie } from 'nookies'
+import Link from 'next/link'
 
-import { api } from '../../helpers/request'
 import { ApiErrorResponse } from '../../helpers/request/error'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { api } from '../../helpers/request'
 import { Button } from '../Button'
 import { Form } from '../Form'
-import { useRouter } from 'next/router'
 import { UI } from '../Ui'
+import { z } from 'zod'
 
-interface SigninFormSchema {
-  email: string
-  password: string
-}
+const signinFormSchema = z.object({
+  email: z.string().nonempty('Preencha o email').email('Email inválido'),
+  password: z
+    .string()
+    .min(6, 'A senha precisa ter no mínimo 6 caracteres')
+    .nonempty(),
+})
+type ISigninFormSchema = z.infer<typeof signinFormSchema>
 
 const SigninForm = () => {
-  const signinFormMethods = useForm<SigninFormSchema>()
+  const signinFormMethods = useForm<ISigninFormSchema>({
+    resolver: zodResolver(signinFormSchema),
+  })
   const { push } = useRouter()
   const { handleSubmit } = signinFormMethods
   const [error, setError] = useState<string>('')
   const [loading, setLoading] = useState<boolean>(false)
 
-  const handleSignin = async (payload: SigninFormSchema) => {
+  const handleSignin = async (payload: ISigninFormSchema) => {
     setError('')
     setLoading(true)
 
@@ -58,22 +66,13 @@ const SigninForm = () => {
         >
           <Form.Field>
             <Form.Label htmlFor="email">Email</Form.Label>
-            <Form.Input
-              name="email"
-              type="email"
-              errormessage="Preencha este campo"
-              validation={{ value: /\S+@\S+\.\S+/, message: 'Email inválido' }}
-            />
+            <Form.Input name="email" type="email" />
             <Form.Error field="email" />
           </Form.Field>
 
           <Form.Field>
             <Form.Label htmlFor="password">Senha</Form.Label>
-            <Form.PasswordInput
-              name="password"
-              errormessage="Preencha este campo"
-              autoComplete="password"
-            />
+            <Form.PasswordInput name="password" autoComplete="password" />
             <Form.Error field="password" />
           </Form.Field>
 
