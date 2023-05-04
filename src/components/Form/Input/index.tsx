@@ -38,7 +38,7 @@ export const Input = ({
         placeholder={placeholder}
         autoComplete={autoComplete}
         {...register(name)}
-        className={`rounded-lg h-9 border-gray-200 shadow hover:shadow-sm focus:ring-inset-primary-600 w-full ring-inset transition text-sm focus:ring-primary-700 ${
+        className={`rounded-lg h-9 border-gray-200 self-start shadow hover:shadow-sm focus:ring-inset-primary-600 w-full ring-inset transition text-sm focus:ring-primary-700 ${
           fieldErro || error ? 'ring-2 ring-red-500' : ''
         }`}
       />
