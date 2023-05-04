@@ -1,24 +1,34 @@
-import React, { useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { useDispatch, useSelector } from 'react-redux'
+import { zodResolver } from '@hookform/resolvers/zod'
+import React, { useState } from 'react'
+import { z } from 'zod'
 
-import { api } from '../../helpers/request'
+import { selectUserState } from '../../redux/user/userSelectors'
 import { IUpdateUserPayload } from '../../helpers/request/user'
+import { useCookie } from '../../hooks/useCookie'
 import { IUser } from '../../interfaces/User'
+import { api } from '../../helpers/request'
 import { Button } from '../Button'
 import { Form } from '../Form'
-import { selectUserState } from '../../redux/user/userSelectors'
 import { UI } from '../Ui'
 import {
   updateUserSuccess,
   updateUserStart,
   updateUserFail,
 } from '../../redux/user/userSlice'
-import { useCookie } from '../../hooks/useCookie'
 
-interface UserFormSchema extends IUser {
-  password: string
-}
+const userFormSchema = z.object({
+  name: z.string().nonempty().min(6, 'O nome precisa ter no mínimo 4 letras'),
+  email: z.string().email('Email inválido').nonempty(),
+  password: z
+    .string()
+    .refine(
+      (password) => (password.length ? password.length > 6 : true),
+      'A senha precisa ter no mínimo 6 caracteres',
+    ),
+})
+type IUserFormSchema = z.infer<typeof userFormSchema> & IUser
 
 export const UserForm = () => {
   const [message, setMessage] = useState('')
@@ -26,19 +36,20 @@ export const UserForm = () => {
   const dispatch = useDispatch()
 
   const { token } = useCookie()
-  const userFormMethods = useForm<UserFormSchema>({
+  const userFormMethods = useForm<IUserFormSchema>({
+    resolver: zodResolver(userFormSchema),
     defaultValues: user as IUser,
   })
   const { handleSubmit } = userFormMethods
 
-  const handleUpdate = async (data: UserFormSchema) => {
+  const handleUpdate = async (payload: IUserFormSchema) => {
     if (!user?.id) return
 
     dispatch(updateUserStart())
     setMessage('')
     const updateUserDto: IUpdateUserPayload = {
-      email: data.email,
-      name: data.name,
+      email: payload.email,
+      name: payload.name,
     }
 
     try {
@@ -62,25 +73,13 @@ export const UserForm = () => {
       >
         <Form.Field className="max-w-xs">
           <Form.Label htmlFor="name">Nome</Form.Label>
-          <Form.Input
-            name="name"
-            errormessage="O nome não pode ser vazio"
-            validation={{
-              value: /^[a-zA-Z ]{5,}$/,
-              message: 'O nome precisa ser maior que 5 letras',
-            }}
-          />
+          <Form.Input name="name" />
           <Form.Error field="name" />
         </Form.Field>
 
         <Form.Field className="max-w-xs">
           <Form.Label htmlFor="email">Email</Form.Label>
-          <Form.Input
-            name="email"
-            type="email"
-            errormessage="Preencha este campo"
-            validation={{ value: /\S+@\S+\.\S+/, message: 'Email inválido' }}
-          />
+          <Form.Input name="email" type="email" />
           <Form.Error field="email" />
         </Form.Field>
 

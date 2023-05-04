@@ -68,6 +68,7 @@ describe('[UserForm] index', () => {
     const emailInput = getByLabelText('Email') as HTMLInputElement
     const form = container.getElementsByTagName('form')[0] as HTMLFormElement
 
+    await userEvent.clear(emailInput)
     await userEvent.type(nameInput, 'newName')
     await userEvent.type(emailInput, 'newEmail@gmail.com')
     form.submit()
