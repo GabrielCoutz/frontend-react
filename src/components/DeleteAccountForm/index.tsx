@@ -1,7 +1,9 @@
 import { ExclamationTriangleIcon } from '@heroicons/react/24/outline'
 import { FormProvider, useForm } from 'react-hook-form'
 import { useDispatch, useSelector } from 'react-redux'
+import { zodResolver } from '@hookform/resolvers/zod'
 import React, { useContext, useState } from 'react'
+import { z } from 'zod'
 
 import { selectUserState } from '../../redux/user/userSelectors'
 import { Button } from '../Button'
@@ -21,13 +23,16 @@ import { ModalContext } from '../../contexts/modal'
 import { clearLocalData } from '../../helpers/clearLocalData'
 import { LoginUserPayload } from '../../helpers/request/auth'
 
-interface DeleteAccountSchema {
-  password: string
-}
+const deleteAccountSchema = z.object({
+  password: z.string().min(6, 'A senha deve ter no mínimo 6 caracteres'),
+})
+type IDeleteAccountSchema = z.infer<typeof deleteAccountSchema>
 
 export const DeleteAccountForm = () => {
   const [deleteIntention, setDeleteIntention] = useState(false)
-  const deleteAccountMethods = useForm<DeleteAccountSchema>()
+  const deleteAccountMethods = useForm<IDeleteAccountSchema>({
+    resolver: zodResolver(deleteAccountSchema),
+  })
   const { token } = useCookie()
   const { setTrigger } = useContext(ModalContext)
   const { handleSubmit } = deleteAccountMethods
@@ -35,7 +40,7 @@ export const DeleteAccountForm = () => {
   const dispatch = useDispatch()
   const { push } = useRouter()
 
-  const handleDelete = async (payload: DeleteAccountSchema) => {
+  const handleDelete = async (payload: IDeleteAccountSchema) => {
     dispatch(deleteUserStart())
     const loginPayloadDto = {
       email: user?.email,
@@ -88,11 +93,7 @@ export const DeleteAccountForm = () => {
               >
                 <Form.Field className="flex self-center max-md:self-stretch">
                   <Form.Label className="self-start">Senha</Form.Label>
-                  <Form.PasswordInput
-                    name="password"
-                    errormessage="Por favor, insira sua senha"
-                    autoComplete="off"
-                  />
+                  <Form.PasswordInput name="password" autoComplete="off" />
                   <Form.Error field="password" />
                 </Form.Field>
                 <UI.Erro>{error}</UI.Erro>
