@@ -16,7 +16,6 @@ export const Products = () => {
   return (
     <>
       <Accordion.Wrapper>
-        <Accordion.Header></Accordion.Header>
         <Accordion.Toggle
           onClick={() => setAccordionIsOpen(!accordionIsOpen)}
           className="flex justify-center"
