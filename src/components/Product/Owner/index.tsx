@@ -6,7 +6,7 @@ const Owner = (
   return (
     <span
       {...props}
-      className={`italic text-gray-400 text-sm mb-2 ${props.className}`}
+      className={`italic block text-gray-400 text-sm mb-2 ${props.className}`}
     >
       @{props.children}
     </span>

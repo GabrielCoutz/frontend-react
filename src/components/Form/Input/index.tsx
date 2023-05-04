@@ -29,7 +29,7 @@ export const Input = ({
   const fieldErro = errors[name]?.message?.toString()
 
   return (
-    <div className="flex items-center">
+    <div className="flex items-center flex-1">
       {prefix === 'currency' && (
         <span className="me-2 inline text-gray-600 hover:cursor-default">
           R$
