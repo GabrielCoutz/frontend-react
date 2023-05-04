@@ -1,10 +1,13 @@
-import React, { useContext } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { useDispatch, useSelector } from 'react-redux'
-import { ModalContext } from '../../contexts/modal'
-import { api } from '../../helpers/request'
-import { useCookie } from '../../hooks/useCookie'
+import { zodResolver } from '@hookform/resolvers/zod'
+import React, { useContext } from 'react'
+import { z } from 'zod'
+
 import { selectUserProductsState } from '../../redux/product/productSelectors'
+import { ModalContext } from '../../contexts/modal'
+import { useCookie } from '../../hooks/useCookie'
+import { api } from '../../helpers/request'
 import {
   createProductFail,
   createProductStart,
@@ -14,30 +17,31 @@ import { Button } from '../Button'
 import { Form } from '../Form'
 import { UI } from '../Ui'
 
-interface createProductFormSchema {
-  name: string
-  price: number
-  description: string
-}
+const createProductFormSchema = z.object({
+  name: z.string().nonempty('Preencha o nome'),
+  price: z
+    .string()
+    .refine((price) => +price > 0, 'O preço precisa ser maior que 0')
+    .transform((price) => +price),
+  description: z.string().nonempty('Preencha a descrição'),
+})
+type ICreatedProductFormSchema = z.infer<typeof createProductFormSchema>
 
 export const CreateProductForm = () => {
-  const createProductFormMethods = useForm<createProductFormSchema>()
+  const createProductFormMethods = useForm<ICreatedProductFormSchema>({
+    resolver: zodResolver(createProductFormSchema),
+  })
   const { isLoading, error } = useSelector(selectUserProductsState)
   const { handleSubmit } = createProductFormMethods
   const dispatch = useDispatch()
   const { token } = useCookie()
   const { setTrigger } = useContext(ModalContext)
 
-  const handleCreateProduct = async (payload: createProductFormSchema) => {
+  const handleCreateProduct = async (payload: ICreatedProductFormSchema) => {
     dispatch(createProductStart())
-    const createProductDto = {
-      name: payload.name,
-      price: Number(payload.price),
-      description: payload.description,
-    }
 
     try {
-      const { data } = await api.product.create(createProductDto, token)
+      const { data } = await api.product.create(payload, token)
       dispatch(createProductSuccess(data))
       setTrigger('CreatedProduct')
     } catch (error) {
@@ -60,7 +64,7 @@ export const CreateProductForm = () => {
             <Form.Label htmlFor="name" className="self-start">
               Nome
             </Form.Label>
-            <Form.Input name="name" errormessage="Preencha este campo" />
+            <Form.Input name="name" />
             <Form.Error field="name" />
           </Form.Field>
 
@@ -68,12 +72,7 @@ export const CreateProductForm = () => {
             <Form.Label htmlFor="price" className="self-start">
               Preço
             </Form.Label>
-            <Form.Input
-              name="price"
-              type="number"
-              errormessage="Preencha o preço"
-              prefix="currency"
-            />
+            <Form.Input name="price" type="number" prefix="currency" />
             <Form.Error field="price" />
           </Form.Field>
 
@@ -81,10 +80,7 @@ export const CreateProductForm = () => {
             <Form.Label htmlFor="description" className="self-start">
               Descrição
             </Form.Label>
-            <Form.Textarea
-              name="description"
-              errormessage="Preencha este campo"
-            ></Form.Textarea>
+            <Form.Textarea name="description"></Form.Textarea>
             <Form.Error field="description" />
           </Form.Field>
 
