@@ -1,5 +1,6 @@
-import React from 'react'
 import { useSelector } from 'react-redux'
+import Link from 'next/link'
+import React from 'react'
 
 import { selectUserProducts } from '../../../redux/product/productSelectors'
 import { EditProduct } from '../../EditProduct'
@@ -23,6 +24,9 @@ export const Products = () => {
             <Accordion.Toggle className="col-start-2 self-start justify-self-end">
               <Button.Terciary>Editar</Button.Terciary>
             </Accordion.Toggle>
+            <Link href={`/product/${product.id}`}>
+              <Button.Terciary>Ver produto</Button.Terciary>
+            </Link>
 
             <Accordion.Content className="col-span-full">
               <EditProduct.EditForm product={product} />

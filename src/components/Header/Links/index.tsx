@@ -13,11 +13,11 @@ export interface ILink {
 
 const links: ILink[] = [
   {
-    path: 'signup',
+    path: '/signup',
     name: 'Cadastrar-se',
   },
   {
-    path: 'signin',
+    path: '/signin',
     name: 'Login',
   },
 ]

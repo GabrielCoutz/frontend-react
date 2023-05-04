@@ -20,7 +20,7 @@ export default signin
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const redirectObject = {
-    destination: 'profile',
+    destination: '/profile',
     permanent: false,
   }
 
