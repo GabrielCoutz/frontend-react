@@ -1,10 +1,8 @@
 import { HTMLInputTypeAttribute } from 'react'
-import { useFormContext, ValidationRule } from 'react-hook-form'
+import { useFormContext } from 'react-hook-form'
 
 export interface InputProps {
   name: string
-  errormessage?: string
-  validation?: ValidationRule<RegExp> | undefined
   error?: boolean
   type?: HTMLInputTypeAttribute
   placeholder?: string
@@ -15,8 +13,6 @@ export interface InputProps {
 export const Input = ({
   name,
   error = false,
-  errormessage,
-  validation,
   type = 'text',
   placeholder,
   autoComplete,
@@ -41,10 +37,7 @@ export const Input = ({
         type={type}
         placeholder={placeholder}
         autoComplete={autoComplete}
-        {...register(name, {
-          required: errormessage,
-          pattern: validation,
-        })}
+        {...register(name)}
         className={`rounded-lg h-9 border-gray-200 shadow hover:shadow-sm focus:ring-inset-primary-600 w-full ring-inset transition text-sm focus:ring-primary-700 ${
           fieldErro || error ? 'ring-2 ring-red-500' : ''
         }`}
