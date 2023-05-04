@@ -1,27 +1,41 @@
-import Link from 'next/link'
-import { useRouter } from 'next/router'
-import React, { useContext, useState } from 'react'
 import { useForm, FormProvider } from 'react-hook-form'
-import { ModalContext } from '../../contexts/modal'
+import React, { useContext, useState } from 'react'
+import { useRouter } from 'next/router'
+import Link from 'next/link'
 
-import { api } from '../../helpers/request'
 import { ApiErrorResponse } from '../../helpers/request/error'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { ModalContext } from '../../contexts/modal'
+import { api } from '../../helpers/request'
 import { Button } from '../Button'
 import { Form } from '../Form'
 import { UI } from '../Ui'
+import { z } from 'zod'
 
-interface SignupFormSchema {
-  name: string
-  email: string
-  password: string
-}
+const signupFormSchema = z.object({
+  name: z
+    .string()
+    .min(4, 'O nome precisa ter no mínimo 4 letras')
+    .nonempty()
+    .trim()
+    .transform((name) => name.replace(/\s+/g, ' ')),
+  email: z.string().email('Email inválido').nonempty(),
+  password: z
+    .string()
+    .min(6, 'A senha precisa ter no mínimo 6 caracteres')
+    .nonempty(),
+})
+
+type SignupFormSchema = z.infer<typeof signupFormSchema>
 
 const SignupForm = () => {
   const { push } = useRouter()
   const { setTrigger } = useContext(ModalContext)
   const [error, setError] = useState<string>('')
   const [loading, setLoading] = useState(false)
-  const signupFormMethods = useForm<SignupFormSchema>()
+  const signupFormMethods = useForm<SignupFormSchema>({
+    resolver: zodResolver(signupFormSchema),
+  })
   const { handleSubmit } = signupFormMethods
 
   const handleSignup = async (payload: SignupFormSchema) => {
@@ -51,31 +65,19 @@ const SignupForm = () => {
         >
           <Form.Field>
             <Form.Label htmlFor="name">Nome</Form.Label>
-            <Form.Input name="name" errormessage="Preencha este campo" />
+            <Form.Input name="name" />
             <Form.Error field="name" />
           </Form.Field>
 
           <Form.Field>
             <Form.Label htmlFor="email">Email</Form.Label>
-            <Form.Input
-              name="email"
-              type="email"
-              errormessage="Preencha este campo"
-              validation={{
-                value: /\S+@\S+\.\S+/,
-                message: 'Email inválido',
-              }}
-            />
+            <Form.Input name="email" type="email" />
             <Form.Error field="email" />
           </Form.Field>
 
           <Form.Field>
             <Form.Label htmlFor="password">Senha</Form.Label>
-            <Form.PasswordInput
-              name="password"
-              errormessage="Preencha este campo"
-              autoComplete="password"
-            />
+            <Form.PasswordInput name="password" autoComplete="password" />
             <Form.Error field="password" />
           </Form.Field>
 
