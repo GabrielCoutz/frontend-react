@@ -17,16 +17,6 @@ export default {
         disable: true,
       },
     },
-    errormessage: {
-      table: {
-        disable: true,
-      },
-    },
-    validation: {
-      table: {
-        disable: true,
-      },
-    },
     type: {
       table: {
         disable: true,
@@ -50,7 +40,6 @@ export const Default: StoryObj<typeof Form.Input> = {
       name="name"
       error={error}
       prefix={prefix}
-      errormessage="message"
       placeholder={placeholder}
     />
   ),
@@ -67,7 +56,6 @@ export const Currency: StoryObj<typeof Form.Input> = {
       name="name"
       error={error}
       prefix={prefix}
-      errormessage="message"
       placeholder={placeholder}
     />
   ),
@@ -84,7 +72,6 @@ export const Erro: StoryObj<typeof Form.Input> = {
       name="name"
       error={error}
       prefix={prefix}
-      errormessage="message"
       placeholder={placeholder}
     />
   ),
@@ -107,7 +94,6 @@ export const Password: StoryObj<typeof Form.PasswordInput> = {
       name="name"
       error={error}
       prefix={prefix}
-      errormessage="message"
       placeholder={placeholder}
     />
   ),
