@@ -14,16 +14,15 @@ export const Empty = () => {
       className="flex align-middle flex-col text-center"
       data-testid="myproducts-empty"
     >
+      <Modal.IconWrapper className="bg-blue-200 mb-2">
+        <SparklesIcon className="h-6 w-6 text-blue-500" />
+      </Modal.IconWrapper>
+      <h1 className="text-2xl font-medium text-slate-800 mb-2">
+        Tudo vazio por aqui
+      </h1>
+      <span className="text-slate-600 mb-4 block">Que tal mudar isso?</span>
       <Accordion.Wrapper>
-        <Accordion.Header>
-          <Modal.IconWrapper className="bg-blue-200 mb-2">
-            <SparklesIcon className="h-6 w-6 text-blue-500" />
-          </Modal.IconWrapper>
-          <h1 className="text-2xl font-medium text-slate-800 mb-2">
-            Tudo vazio por aqui
-          </h1>
-          <span className="text-slate-600 mb-4 block">Que tal mudar isso?</span>
-        </Accordion.Header>
+        <Accordion.Header></Accordion.Header>
         <Accordion.Toggle
           onClick={() => setAccordionIsOpen(!accordionIsOpen)}
           className="self-center"

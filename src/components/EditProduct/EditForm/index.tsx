@@ -92,7 +92,7 @@ export const EditForm = ({ product }: ContentProps) => {
           <UI.Success>{message}</UI.Success>
         </div>
 
-        <div className="col-span-full flex justify-between">
+        <div className="col-span-full flex justify-between max-md:flex-col max-md:gap-4">
           <Delete product={product} />
 
           <Button.Primary loading={isLoading}>Atualizar dados</Button.Primary>
