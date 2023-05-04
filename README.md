@@ -21,11 +21,11 @@
 
 Desenvolvendo este projeto tive um contato maior com o React e principalmente o NextJS, como utilizá-lo, e onde utilizá-lo.
 
-Todos formulários foram feitos usando o React Hook Form, o que deixou o manuseio de dados, como consumir e validar, mais rápido e simples.
+Todos formulários foram feitos usando o React Hook Form, e validados com o Zod, deixando todo processo de manuseio/checagem de dados mais rápido e simples.
 
 Tive o primeiro contato com o Tailwind, e como já me sinto muito confortável com o CSS Vanilla, utilizá-lo aumentou a produtividade em 1000%.
 
-Também estão sendo feitos testes unitários, com Jest e React Testing Library, em toda aplicação.
+Foram feitos testes unitários com o Jest + React Testing Library, tendo 90% de coverage.
 
 Não é possível replicar o projeto com o container docker, **ainda**, porém a API está disponível em: <a href="https://github.com/GabrielCoutz/nestjs-prisma-api">github.com/GabrielCoutz/nestjs-prisma-api</a>
 
@@ -54,6 +54,8 @@ Não é possível replicar o projeto com o container docker, **ainda**, porém a
 :white_check_mark: <a href="https://betterprogramming.pub/compound-component-design-pattern-in-react-34b50e32dea0">Composite Pattern</a> utilizado
 
 **Plus**
+
+:white_check_mark: Validação de dados com <a href="https://zod.dev/">Zod</a>
 
 :white_check_mark: Documentação dos componentes com <a href="https://storybook.js.org/">Storybook</a>
 
