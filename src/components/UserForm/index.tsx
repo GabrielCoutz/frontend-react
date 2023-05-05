@@ -47,13 +47,9 @@ export const UserForm = () => {
 
     dispatch(updateUserStart())
     setMessage('')
-    const updateUserDto: IUpdateUserPayload = {
-      email: payload.email,
-      name: payload.name,
-    }
 
     try {
-      const { data } = await api.user.update(user.id, updateUserDto, token)
+      const { data } = await api.user.update(user.id, payload, token)
       dispatch(updateUserSuccess(data))
       setMessage('Dados atualizados')
     } catch (error) {
@@ -99,7 +95,11 @@ export const UserForm = () => {
           </div>
 
           <div className="max-md:w-full max-md:mt-2">
-            <Button.Primary fullWidth loading={isLoading}>
+            <Button.Primary
+              data-testid="update-user-data"
+              fullWidth
+              loading={isLoading}
+            >
               Atualizar dados
             </Button.Primary>
           </div>
