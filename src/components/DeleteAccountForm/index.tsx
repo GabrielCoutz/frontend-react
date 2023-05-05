@@ -70,7 +70,10 @@ export const DeleteAccountForm = () => {
 
   return (
     <>
-      <Button.Danger onClick={() => setDeleteIntention(true)}>
+      <Button.Danger
+        data-testid="deleteaccountform-delete"
+        onClick={() => setDeleteIntention(true)}
+      >
         Deletar conta
       </Button.Danger>
 
@@ -99,6 +102,7 @@ export const DeleteAccountForm = () => {
                 <UI.Erro>{error}</UI.Erro>
                 <div className="flex gap-2 max-md:flex-col mt-2">
                   <Button.Primary
+                    data-testid="deleteaccountform-cancel"
                     onClick={() => setDeleteIntention(false)}
                     disabled={isLoading}
                     fullWidth
@@ -106,6 +110,7 @@ export const DeleteAccountForm = () => {
                     Cancelar
                   </Button.Primary>
                   <Button.Danger
+                    data-testid="deleteaccountform-confirm"
                     disabled={isLoading}
                     loading={isLoading}
                     fullWidth

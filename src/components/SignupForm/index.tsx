@@ -85,7 +85,11 @@ const SignupForm = () => {
             <UI.Erro>{error}</UI.Erro>
           </div>
           <div className="mt-2">
-            <Button.Primary fullWidth loading={loading}>
+            <Button.Primary
+              data-testid="signupform-submit"
+              fullWidth
+              loading={loading}
+            >
               Cadastrar-se
             </Button.Primary>
           </div>
@@ -94,7 +98,9 @@ const SignupForm = () => {
         <p className="mt-10 text-center text-sm text-gray-500">
           Já tem conta?{' '}
           <Link href="/signin">
-            <Button.Terciary>Faça login</Button.Terciary>
+            <Button.Terciary data-testid="signupform-singin-link">
+              Faça login
+            </Button.Terciary>
           </Link>
         </p>
       </FormProvider>

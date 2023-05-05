@@ -16,6 +16,7 @@ export const LogoutButton = () => {
 
   return (
     <button
+      data-testid="logoutbutton"
       className="w-full text-white border border-transparent hover:border-slate-100 rounded-lg transition"
       onClick={logout}
     >

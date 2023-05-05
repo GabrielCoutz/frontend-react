@@ -10,6 +10,7 @@ export interface ButtonProps {
   fullWidth?: boolean
   onClick?: () => void
   type?: 'button' | 'reset' | 'submit'
+  'data-testid'?: string
 }
 
 export const Button = {

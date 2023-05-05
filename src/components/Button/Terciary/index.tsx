@@ -1,24 +1,18 @@
 import React from 'react'
 import { ButtonProps } from '..'
 
-export const Terciary = ({
-  children,
-  disabled,
-  fullWidth,
-  loading,
-  onClick,
-  type
-}: ButtonProps) => {
+export const Terciary = (props: ButtonProps) => {
   return (
     <button
+      data-testid={props['data-testid']}
       className={`font-semibold text-primary-600 transition hover:text-primary-950 border-transparent border h-min-9 rounded-lg ${
-        fullWidth ? 'w-full' : ''
+        props.fullWidth ? 'w-full' : ''
       }`}
-      disabled={loading || disabled}
-      onClick={onClick}
-      type={type}
+      disabled={props.loading || props.disabled}
+      onClick={props.onClick}
+      type={props.type}
     >
-      {loading ? 'Aguarde...' : children}
+      {props.loading ? 'Aguarde...' : props.children}
     </button>
   )
 }

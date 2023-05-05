@@ -15,11 +15,19 @@ export const Option = ({ option }: { option: IOption }) => {
   return (
     <li>
       {optionIsSelected ? (
-        <Button.Primary fullWidth onClick={() => changeOption(option)}>
+        <Button.Primary
+          data-testid="sidenav-option"
+          fullWidth
+          onClick={() => changeOption(option)}
+        >
           {option.name}
         </Button.Primary>
       ) : (
-        <Button.Secondary fullWidth onClick={() => changeOption(option)}>
+        <Button.Secondary
+          data-testid="sidenav-option"
+          fullWidth
+          onClick={() => changeOption(option)}
+        >
           {option.name}
         </Button.Secondary>
       )}
