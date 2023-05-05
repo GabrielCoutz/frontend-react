@@ -19,24 +19,23 @@
 
 <h2 id="sobre">📋 Sobre o projeto</h2>
 
-Desenvolvendo este projeto tive um contato maior com o React e principalmente o NextJS, como utilizá-lo, e onde utilizá-lo.
+Desenvolvendo este projeto tive um contato maior com o **React** e principalmente o **NextJS**, como utilizá-lo, e onde utilizá-lo.
 
-Todos formulários foram feitos usando o React Hook Form, e validados com o Zod, deixando todo processo de manuseio/checagem de dados mais rápido e simples.
+Todos formulários foram feitos usando o **React Hook Form**, e validados com o **Zod**, deixando todo processo de manuseio/checagem de dados mais rápido e simples.
 
-Tive o primeiro contato com o Tailwind, e como já me sinto muito confortável com o CSS Vanilla, utilizá-lo aumentou a produtividade em 1000%.
+Tive o primeiro contato com o **Tailwind**, e como já me sinto muito confortável com o CSS Vanilla, utilizá-lo aumentou a produtividade em 1000%.
 
-Foram feitos testes unitários com o Jest + React Testing Library, tendo 90% de coverage.
+Foram feitos testes unitários com o Jest + React Testing Library, tendo **90%** de coverage. Em adicional, testes **E2E** com Cypress.
 
-Não é possível replicar o projeto com o container docker, **ainda**, porém a API está disponível em: <a href="https://github.com/GabrielCoutz/nestjs-prisma-api">github.com/GabrielCoutz/nestjs-prisma-api</a>
+Não é possível replicar o projeto com o container docker, ainda, porém a API está disponível em: <a href="https://github.com/GabrielCoutz/nestjs-prisma-api">github.com/GabrielCoutz/nestjs-prisma-api</a>
 
 ---
 
 
 <h2 id="tecnologias">🔮 Tecnologias</h2>
 
-[![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)](https://react.dev/) [![Jest](https://img.shields.io/badge/Jest-C21325?style=for-the-badge&logo=jest&logoColor=white)](https://jestjs.io/pt-BR/) [![Redux](https://img.shields.io/badge/Redux-593D88?style=for-the-badge&logo=redux&logoColor=white)](https://redux.js.org/) [![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/pt/) [![Tailwind](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/) [![NextJS](https://img.shields.io/badge/next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white
-)](https://nextjs.org/) [![Storybook](https://img.shields.io/badge/storybook-FF4785?style=for-the-badge&logo=storybook&logoColor=white
-)](https://storybook.js.org/)
+[![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)](https://react.dev/) [![Jest](https://img.shields.io/badge/Jest-C21325?style=for-the-badge&logo=jest&logoColor=white)](https://jestjs.io/pt-BR/) [![Redux](https://img.shields.io/badge/Redux-593D88?style=for-the-badge&logo=redux&logoColor=white)](https://redux.js.org/) [![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/pt/) [![Tailwind](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/) [![NextJS](https://img.shields.io/badge/next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white)](https://nextjs.org/) [![Storybook](https://img.shields.io/badge/storybook-FF4785?style=for-the-badge&logo=storybook&logoColor=white
+)](https://storybook.js.org/) [![Cypress](https://img.shields.io/badge/Cypress-17202C?style=for-the-badge&logo=cypress&logoColor=white)](https://www.cypress.io/)
 
 ---
 
