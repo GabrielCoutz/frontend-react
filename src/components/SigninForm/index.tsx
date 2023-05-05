@@ -13,7 +13,7 @@ import { UI } from '../Ui'
 import { z } from 'zod'
 
 const signinFormSchema = z.object({
-  email: z.string().nonempty('Preencha o email').email('Email inválido'),
+  email: z.string().email('Email inválido').nonempty(),
   password: z
     .string()
     .min(6, 'A senha precisa ter no mínimo 6 caracteres')
@@ -80,7 +80,11 @@ const SigninForm = () => {
             <UI.Erro>{error}</UI.Erro>
           </div>
           <div className="mt-2">
-            <Button.Primary fullWidth loading={loading}>
+            <Button.Primary
+              data-testid="signinform-submit"
+              fullWidth
+              loading={loading}
+            >
               Entrar
             </Button.Primary>
           </div>
@@ -89,7 +93,9 @@ const SigninForm = () => {
         <p className="mt-10 text-center text-sm text-gray-500">
           Não tem conta?{' '}
           <Link href="/signup">
-            <Button.Terciary>Faça uma agora!</Button.Terciary>
+            <Button.Terciary data-testid="signinform-signup-link">
+              Faça uma agora!
+            </Button.Terciary>
           </Link>
         </p>
       </FormProvider>
