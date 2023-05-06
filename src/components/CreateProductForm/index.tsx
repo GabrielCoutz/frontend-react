@@ -1,11 +1,10 @@
 import { FormProvider, useForm } from 'react-hook-form'
 import { useDispatch, useSelector } from 'react-redux'
 import { zodResolver } from '@hookform/resolvers/zod'
-import React, { useContext } from 'react'
+import React from 'react'
 import { z } from 'zod'
 
 import { selectUserProductsState } from '../../redux/product/productSelectors'
-import { ModalContext } from '../../contexts/modal'
 import { useCookie } from '../../hooks/useCookie'
 import { api } from '../../helpers/request'
 import {
@@ -16,6 +15,7 @@ import {
 import { Button } from '../Button'
 import { Form } from '../Form'
 import { UI } from '../Ui'
+import { useModal } from '../../hooks/useModal'
 
 const createProductFormSchema = z.object({
   name: z.string().nonempty('Preencha o nome'),
@@ -32,18 +32,19 @@ export const CreateProductForm = () => {
     resolver: zodResolver(createProductFormSchema),
   })
   const { isLoading, error } = useSelector(selectUserProductsState)
-  const { handleSubmit } = createProductFormMethods
+  const { handleSubmit, reset } = createProductFormMethods
+  const { showModal, Modal } = useModal()
   const dispatch = useDispatch()
   const { token } = useCookie()
-  const { setTrigger } = useContext(ModalContext)
 
   const handleCreateProduct = async (payload: ICreatedProductFormSchema) => {
     dispatch(createProductStart())
 
     try {
       const { data } = await api.product.create(payload, token)
+      showModal('createdProduct')
       dispatch(createProductSuccess(data))
-      setTrigger('CreatedProduct')
+      reset()
     } catch (error) {
       dispatch(
         createProductFail(
@@ -55,6 +56,8 @@ export const CreateProductForm = () => {
 
   return (
     <>
+      {Modal ? <Modal /> : null}
+
       <FormProvider {...createProductFormMethods}>
         <form
           onSubmit={handleSubmit(handleCreateProduct)}

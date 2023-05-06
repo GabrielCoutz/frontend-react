@@ -2,7 +2,7 @@ import { ExclamationTriangleIcon } from '@heroicons/react/24/outline'
 import { FormProvider, useForm } from 'react-hook-form'
 import { useDispatch, useSelector } from 'react-redux'
 import { zodResolver } from '@hookform/resolvers/zod'
-import React, { useContext, useState } from 'react'
+import React, { useState } from 'react'
 import { z } from 'zod'
 
 import { selectUserState } from '../../redux/user/userSelectors'
@@ -19,9 +19,9 @@ import {
 import { ApiErrorResponse } from '../../helpers/request/error'
 import { useRouter } from 'next/router'
 import { useCookie } from '../../hooks/useCookie'
-import { ModalContext } from '../../contexts/modal'
 import { clearLocalData } from '../../helpers/clearLocalData'
 import { LoginUserPayload } from '../../helpers/request/auth'
+import { useModal } from '../../hooks/useModal'
 
 const deleteAccountSchema = z.object({
   password: z.string().min(6, 'A senha deve ter no mínimo 6 caracteres'),
@@ -29,15 +29,15 @@ const deleteAccountSchema = z.object({
 type IDeleteAccountSchema = z.infer<typeof deleteAccountSchema>
 
 export const DeleteAccountForm = () => {
-  const [deleteIntention, setDeleteIntention] = useState(false)
   const deleteAccountMethods = useForm<IDeleteAccountSchema>({
     resolver: zodResolver(deleteAccountSchema),
   })
-  const { token } = useCookie()
-  const { setTrigger } = useContext(ModalContext)
-  const { handleSubmit } = deleteAccountMethods
   const { error, isLoading, data: user } = useSelector(selectUserState)
+  const [deleteIntention, setDeleteIntention] = useState(false)
+  const { showModal, Modal: DeletedAccountModal } = useModal()
+  const { handleSubmit } = deleteAccountMethods
   const dispatch = useDispatch()
+  const { token } = useCookie()
   const { push } = useRouter()
 
   const handleDelete = async (payload: IDeleteAccountSchema) => {
@@ -51,10 +51,10 @@ export const DeleteAccountForm = () => {
       await api.auth.login(loginPayloadDto)
 
       await api.user.delete(user?.id as string, token)
+      setDeleteIntention(false)
       dispatch(deleteUserSuccess())
-      setTrigger('DeletedAccount')
       clearLocalData()
-      push('signin')
+      showModal('deletedAccount')
     } catch (error: any) {
       const { response }: ApiErrorResponse = error
       if (response?.data.statusCode === 401)
@@ -70,6 +70,10 @@ export const DeleteAccountForm = () => {
 
   return (
     <>
+      {DeletedAccountModal ? (
+        <DeletedAccountModal callback={() => push('signin')} />
+      ) : null}
+
       <Button.Danger
         data-testid="deleteaccountform-delete"
         onClick={() => setDeleteIntention(true)}
