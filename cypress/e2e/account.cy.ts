@@ -259,6 +259,9 @@ describe('[Account] Delete', () => {
     cy.get('button[data-testid="deleteaccountform-confirm"]').click()
 
     cy.get('p').contains('Conta deletada com sucesso').should('be.visible')
+    cy.get('button[data-testid="modal-continue-button"')
+      .contains('Continuar')
+      .click()
     cy.url().should('include', 'signin')
   })
 })
