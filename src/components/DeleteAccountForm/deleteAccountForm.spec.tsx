@@ -8,16 +8,13 @@ import { DeleteAccountForm } from '.'
 import * as mockRedux from '../../redux/__mocks__/redux.mock'
 import * as mockRequest from '../../helpers/request/__mocks__/request.mock'
 import { mockUserState } from '../../redux/user/__mocks__/user.mock'
-import { MockModalContext } from '../../contexts/modal/__mocks__/modal.mock'
 import { MockResizeObserver } from '../../__mocks__/headlessui.mock'
 
 const renderDeleteAccountForm = () => {
   return render(
-    <MockModalContext>
-      <Provider store={mockRedux.mockStore({})}>
-        <DeleteAccountForm />
-      </Provider>
-    </MockModalContext>,
+    <Provider store={mockRedux.mockStore({})}>
+      <DeleteAccountForm />
+    </Provider>,
   )
 }
 

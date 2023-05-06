@@ -1,10 +1,6 @@
 import { render } from '@testing-library/react'
 import { MyProducts } from '.'
 
-jest.mock('./ProductsEventListener', () => ({
-  ProductsEventListener: jest.fn(),
-}))
-
 const mockUseSelector = jest.fn(() => [])
 jest.mock('react-redux', () => ({
   ...jest.requireActual('react-redux'),

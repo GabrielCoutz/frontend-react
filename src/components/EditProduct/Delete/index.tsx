@@ -45,7 +45,11 @@ export const Delete = ({ product }: { product: IProduct }) => {
         />
       ) : null}
 
-      <Button.Secondary onClick={() => setDeleteIntention(true)} type="button">
+      <Button.Secondary
+        data-testid="button-delete-product"
+        onClick={() => setDeleteIntention(true)}
+        type="button"
+      >
         Deletar
       </Button.Secondary>
 

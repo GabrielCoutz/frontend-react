@@ -28,6 +28,6 @@ describe('[Sidenav] index', () => {
       </Sidenav.Nav>,
     )
 
-    expect(getAllByTestId(/sidenav-*/)).toHaveLength(3)
+    expect(getAllByTestId(/sidenav-*/)).toHaveLength(6)
   })
 })

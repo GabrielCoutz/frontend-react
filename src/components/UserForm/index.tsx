@@ -5,7 +5,6 @@ import React, { useState } from 'react'
 import { z } from 'zod'
 
 import { selectUserState } from '../../redux/user/userSelectors'
-import { IUpdateUserPayload } from '../../helpers/request/user'
 import { useCookie } from '../../hooks/useCookie'
 import { IUser } from '../../interfaces/User'
 import { api } from '../../helpers/request'

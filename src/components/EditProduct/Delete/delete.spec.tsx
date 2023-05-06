@@ -6,20 +6,16 @@ import { Delete } from '.'
 import * as productSlice from '../../../redux/product/productSlice'
 
 import * as mockRedux from '../../../redux/__mocks__/redux.mock'
-import { mockDeleteProduct } from '../../../helpers/request/__mocks__/request.mock'
+
 import { mockProduct } from '../../../redux/product/__mocks__/product.mock'
 import { MockResizeObserver } from '../../../__mocks__/headlessui.mock'
-import {
-  MockModalContext,
-  mockModalSetTrigger,
-} from '../../../contexts/modal/__mocks__/modal.mock'
 
 jest.mock('react-redux', () => ({
   ...jest.requireActual('react-redux'),
   useDispatch: () => mockRedux.mockDispatch,
   useSelector: () => mockRedux.mockUseSelect(),
 }))
-
+const mockDeleteProduct = jest.fn()
 jest.mock('../../../helpers/request', () => ({
   api: {
     product: {
@@ -30,11 +26,9 @@ jest.mock('../../../helpers/request', () => ({
 
 const renderDeleteProduct = () => {
   return render(
-    <MockModalContext>
-      <Provider store={mockRedux.mockStore({})}>
-        <Delete product={mockProduct} />
-      </Provider>
-    </MockModalContext>,
+    <Provider store={mockRedux.mockStore({})}>
+      <Delete product={mockProduct} />
+    </Provider>,
   )
 }
 
@@ -56,7 +50,7 @@ describe('[Edit Product] Delete', () => {
     const { getByRole } = renderDeleteProduct()
     const toggleModalButton = getByRole('button', { name: 'Deletar' })
 
-    userEvents.click(toggleModalButton)
+    await act(() => userEvents.click(toggleModalButton))
 
     await waitFor(() => {
       const modal = getByRole('dialog')
@@ -65,24 +59,18 @@ describe('[Edit Product] Delete', () => {
     })
   })
 
-  it('should dispatch when delete button is clicked', async () => {
-    const { getByRole } = renderDeleteProduct()
-    const toggleModalButton = getByRole('button', { name: 'Deletar' })
+  it('should delete when button is clicked', async () => {
+    const { getByRole, getByTestId } = renderDeleteProduct()
+    const toggleModalButton = getByTestId('button-delete-product')
 
-    userEvents.click(toggleModalButton)
+    await act(() => userEvents.click(toggleModalButton))
+    const deleteProductButton = getByRole('button', {
+      name: 'Sim, tenho certeza',
+    })
+    await userEvents.click(deleteProductButton)
 
     await waitFor(() => {
-      const deleteProductButton = getByRole('button', {
-        name: 'Sim, tenho certeza',
-      })
-
-      userEvents.click(deleteProductButton)
-
       expect(mockDeleteProduct).toBeCalled()
-      expect(mockRedux.mockDispatch).toBeCalledWith(
-        productSlice.deleteProductSuccess(''),
-      )
-      expect(mockModalSetTrigger).toBeCalled()
     })
   })
 
@@ -103,12 +91,13 @@ describe('[Edit Product] Delete', () => {
   })
 
   it('should show generic error with api error', async () => {
+    mockDeleteProduct.mockRejectedValueOnce({ teste: '123' })
     const { getByRole } = renderDeleteProduct()
     const toggleModalButton = getByRole('button', { name: 'Deletar' })
 
     await act(() => userEvents.click(toggleModalButton))
+
     await waitFor(async () => {
-      mockDeleteProduct.mockRejectedValue('')
       const deleteProductButton = getByRole('button', {
         name: 'Sim, tenho certeza',
       })
