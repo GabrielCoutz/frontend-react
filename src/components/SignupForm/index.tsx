@@ -1,11 +1,11 @@
 import { useForm, FormProvider } from 'react-hook-form'
-import React, { useState } from 'react'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
+import React from 'react'
 
 import { ISignupFormSchema, signupFormSchema } from './schema'
-import { ApiErrorResponse } from '../../helpers/request/error'
-import { zodResolver } from '@hookform/resolvers/zod'
+import { useAxios } from '../../hooks/useAxios'
 import { useModal } from '../../hooks/useModal'
 import { api } from '../../helpers/request'
 import { Button } from '../Button'
@@ -17,26 +17,14 @@ const SignupForm = () => {
     resolver: zodResolver(signupFormSchema),
   })
   const { handleSubmit } = signupFormMethods
-  const [error, setError] = useState<string>('')
-  const [loading, setLoading] = useState(false)
   const { showModal, Modal } = useModal()
   const { push } = useRouter()
+  const { error, loading, send } = useAxios(api.user.create)
 
   const handleSignup = async (payload: ISignupFormSchema) => {
-    setError('')
-    setLoading(true)
+    const result = await send({ payload })
 
-    try {
-      await api.user.create(payload)
-      showModal('createdAccount')
-    } catch (error: any) {
-      const { response }: ApiErrorResponse = error
-      if (response?.data.statusCode === 409) return setError('Email já em uso.')
-
-      setError('Erro inesperado, por favor tente novamente mais tarde.')
-    } finally {
-      setLoading(false)
-    }
+    if (result) showModal('createdAccount')
   }
 
   return (
