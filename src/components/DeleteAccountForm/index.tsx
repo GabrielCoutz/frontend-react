@@ -3,7 +3,6 @@ import { FormProvider, useForm } from 'react-hook-form'
 import { useDispatch, useSelector } from 'react-redux'
 import { zodResolver } from '@hookform/resolvers/zod'
 import React, { useState } from 'react'
-import { z } from 'zod'
 
 import { selectUserState } from '../../redux/user/userSelectors'
 import { Button } from '../Button'
@@ -22,11 +21,7 @@ import { useCookie } from '../../hooks/useCookie'
 import { clearLocalData } from '../../helpers/clearLocalData'
 import { LoginUserPayload } from '../../helpers/request/auth'
 import { useModal } from '../../hooks/useModal'
-
-const deleteAccountSchema = z.object({
-  password: z.string().min(6, 'A senha deve ter no mínimo 6 caracteres'),
-})
-type IDeleteAccountSchema = z.infer<typeof deleteAccountSchema>
+import { deleteAccountSchema, IDeleteAccountSchema } from './schema'
 
 export const DeleteAccountForm = () => {
   const deleteAccountMethods = useForm<IDeleteAccountSchema>({

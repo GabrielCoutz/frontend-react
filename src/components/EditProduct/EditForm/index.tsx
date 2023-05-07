@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { useDispatch, useSelector } from 'react-redux'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { z } from 'zod'
 
 import { IProduct } from '../../../interfaces/Product'
 import { api } from '../../../helpers/request'
@@ -17,16 +16,7 @@ import {
   updateProductSuccess,
 } from '../../../redux/product/productSlice'
 import { useCookie } from '../../../hooks/useCookie'
-
-const productFormSchema = z.object({
-  name: z.string().nonempty('Preencha o nome'),
-  price: z
-    .string()
-    .refine((price) => +price > 0, 'O preço precisa ser maior que 0')
-    .transform((price) => +price),
-  description: z.string().nonempty('Preencha a descrição'),
-})
-type IProductFormSchema = z.infer<typeof productFormSchema>
+import { IProductFormSchema, productFormSchema } from './schema'
 
 interface ContentProps {
   product: IProduct

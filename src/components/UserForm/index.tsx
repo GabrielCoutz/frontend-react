@@ -2,7 +2,6 @@ import { FormProvider, useForm } from 'react-hook-form'
 import { useDispatch, useSelector } from 'react-redux'
 import { zodResolver } from '@hookform/resolvers/zod'
 import React, { useState } from 'react'
-import { z } from 'zod'
 
 import { selectUserState } from '../../redux/user/userSelectors'
 import { useCookie } from '../../hooks/useCookie'
@@ -16,18 +15,7 @@ import {
   updateUserStart,
   updateUserFail,
 } from '../../redux/user/userSlice'
-
-const userFormSchema = z.object({
-  name: z.string().nonempty().min(6, 'O nome precisa ter no mínimo 4 letras'),
-  email: z.string().email('Email inválido').nonempty(),
-  password: z
-    .string()
-    .refine(
-      (password) => (password.length ? password.length > 6 : true),
-      'A senha precisa ter no mínimo 6 caracteres',
-    ),
-})
-type IUserFormSchema = z.infer<typeof userFormSchema> & IUser
+import { IUserFormSchema, userFormSchema } from './schema'
 
 export const UserForm = () => {
   const [message, setMessage] = useState('')
