@@ -10,7 +10,7 @@ export const LogoutButton = () => {
 
   const logout = () => {
     dispatch(logoutUser())
-    clearLocalData()
+    clearLocalData(['token', 'id'])
     push('signin')
   }
 

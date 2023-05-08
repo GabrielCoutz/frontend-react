@@ -1,6 +1,4 @@
 import { destroyCookie } from 'nookies'
 
-export const clearLocalData = (): void => {
-  destroyCookie(undefined, 'token')
-  destroyCookie(undefined, 'id')
-}
+export const clearLocalData = (keys: string[]): void =>
+  keys.forEach((key) => destroyCookie(undefined, key))
