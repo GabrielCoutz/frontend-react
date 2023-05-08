@@ -8,13 +8,14 @@ jest.mock('next/router', () => ({
   useRouter: jest.fn(() => ({ push: () => mockPush() })),
 }))
 
-const mockLogin = jest.fn(() => {})
-jest.mock('../../helpers/request', () => ({
-  api: {
-    auth: {
-      login: () => mockLogin(),
-    },
-  },
+const mockSend = jest.fn()
+const mockError = jest.fn(() => '')
+jest.mock('../../hooks/useAxios', () => ({
+  ...jest.requireActual('../../hooks/useAxios'),
+  useAxios: () => ({
+    send: () => mockSend(),
+    error: mockError(),
+  }),
 }))
 
 describe('[SigninForm] index', () => {
@@ -38,7 +39,7 @@ describe('[SigninForm] index', () => {
   })
 
   it('should login and redirect to profile', async () => {
-    mockLogin.mockReturnValue({ data: {} } as any)
+    mockSend.mockReturnValue({ data: { token: '', id: '' } })
 
     const { getByRole, getByLabelText } = render(<SigninForm />)
     const emailInput = getByLabelText('Email')
@@ -50,19 +51,14 @@ describe('[SigninForm] index', () => {
     await userEvent.click(submitButton)
 
     await waitFor(() => {
-      expect(mockLogin).toBeCalled()
+      expect(mockSend).toBeCalled()
       expect(mockPush).toBeCalled()
     })
   })
 
   it('should show credentials invalid error', async () => {
-    mockLogin.mockRejectedValue({
-      response: {
-        data: {
-          statusCode: 401,
-        },
-      },
-    } as never)
+    mockSend.mockReturnValue(undefined)
+    mockError.mockReturnValue('Credenciais inválidas')
 
     const { getByRole, getByLabelText, getByText } = render(<SigninForm />)
     const emailInput = getByLabelText('Email')
@@ -75,27 +71,6 @@ describe('[SigninForm] index', () => {
 
     await waitFor(() => {
       expect(getByText('Credenciais inválidas')).toBeInTheDocument()
-    })
-  })
-
-  it('should show generical api error', async () => {
-    mockLogin.mockRejectedValue({} as never)
-
-    const { getByRole, getByLabelText, getByText } = render(<SigninForm />)
-    const emailInput = getByLabelText('Email')
-    const passwordInput = getByLabelText('Senha')
-    const submitButton = getByRole('button', { name: 'Entrar' })
-
-    await userEvent.type(emailInput, 'email@gmail.com')
-    await userEvent.type(passwordInput, 'password')
-    await userEvent.click(submitButton)
-
-    await waitFor(() => {
-      expect(
-        getByText(
-          'Não foi possível realizar esta ação agora. Por favor, tente novamente mais tarde',
-        ),
-      ).toBeInTheDocument()
     })
   })
 })
