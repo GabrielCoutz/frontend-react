@@ -2,7 +2,11 @@ import { TrashIcon } from '@heroicons/react/24/outline'
 import { useDispatch, useSelector } from 'react-redux'
 import React, { useState } from 'react'
 
+import { selectUserProductsState } from '../../../redux/product/productSelectors'
 import { IProduct } from '../../../interfaces/Product'
+import { useCookie } from '../../../hooks/useCookie'
+import { useModal } from '../../../hooks/useModal'
+import { useAxios } from '../../../hooks/useAxios'
 import { api } from '../../../helpers/request'
 import { Button } from '../../Button'
 import { Modal } from '../../Modal'
@@ -11,12 +15,10 @@ import {
   deleteProductFail,
   deleteProductSuccess,
 } from '../../../redux/product/productSlice'
-import { selectUserProductsState } from '../../../redux/product/productSelectors'
-import { useCookie } from '../../../hooks/useCookie'
-import { useModal } from '../../../hooks/useModal'
 
 export const Delete = ({ product }: { product: IProduct }) => {
   const { isLoading, error } = useSelector(selectUserProductsState)
+  const { send, error: requestErro } = useAxios(api.product.delete)
   const [deleteIntention, setDeleteIntention] = useState(false)
   const { showModal, Modal: DeletedProductModal } = useModal()
   const dispatch = useDispatch()
@@ -25,16 +27,10 @@ export const Delete = ({ product }: { product: IProduct }) => {
   const handleClick = async () => {
     setDeleteIntention(false)
 
-    try {
-      await api.product.delete(product.id, token)
-      showModal('deletedProduct')
-    } catch (error) {
-      dispatch(
-        deleteProductFail(
-          'Não foi possível realizar essa ação. Por favor, tente novamente mais tarde',
-        ),
-      )
-    }
+    await send({ id: product.id, token })
+    if (requestErro) return deleteProductFail(requestErro)
+
+    showModal('deletedProduct')
   }
 
   return (
