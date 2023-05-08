@@ -4,19 +4,28 @@ import SignupForm from '.'
 
 import userEvent from '@testing-library/user-event'
 
-const mockPush = jest.fn()
 jest.mock('next/router', () => ({
   ...jest.requireActual('next/router'),
-  useRouter: jest.fn(() => ({ push: mockPush() })),
+  useRouter: () => jest.fn(() => ({ push: jest.fn() })),
 }))
 
-const mockCreateUser = jest.fn(() => {})
-jest.mock('../../helpers/request', () => ({
-  api: {
-    user: {
-      create: () => mockCreateUser(),
-    },
-  },
+const mockSend = jest.fn()
+const mockError = jest.fn(() => '')
+jest.mock('../../hooks/useAxios', () => ({
+  ...jest.requireActual('../../hooks/useAxios'),
+  useAxios: () => ({
+    send: () => mockSend(),
+    error: mockError(),
+  }),
+}))
+
+const mockShowModal = jest.fn()
+jest.mock('../../hooks/useModal', () => ({
+  ...jest.requireActual('../../hooks/useModal'),
+  useModal: () => ({
+    showModal: () => mockShowModal(),
+    Modal: () => jest.fn(() => <div></div>),
+  }),
 }))
 
 describe('[SignupForm] index', () => {
@@ -39,7 +48,9 @@ describe('[SignupForm] index', () => {
     })
   })
 
-  it('should create account and redirect to signin', async () => {
+  it('should create account and show modal', async () => {
+    mockSend.mockReturnValue({})
+
     const { getByRole, getByLabelText } = render(<SignupForm />)
     const nameInput = getByLabelText('Nome')
     const emailInput = getByLabelText('Email')
@@ -52,19 +63,14 @@ describe('[SignupForm] index', () => {
     await userEvent.click(submitButton)
 
     await waitFor(() => {
-      expect(mockCreateUser).toBeCalled()
-      expect(mockPush).toBeCalled()
+      expect(mockSend).toBeCalled()
+      expect(mockShowModal).toBeCalled()
     })
   })
 
   it('should show email already in use error', async () => {
-    mockCreateUser.mockRejectedValue({
-      response: {
-        data: {
-          statusCode: 409,
-        },
-      },
-    } as never)
+    mockSend.mockReturnValue(undefined)
+    mockError.mockReturnValue('Email já em uso')
 
     const { getByRole, getByLabelText, getByText } = render(<SignupForm />)
     const nameInput = getByLabelText('Nome')
@@ -78,12 +84,13 @@ describe('[SignupForm] index', () => {
     await userEvent.click(submitButton)
 
     await waitFor(() => {
-      expect(getByText('Email já em uso.')).toBeInTheDocument()
+      expect(getByText('Email já em uso')).toBeInTheDocument()
     })
   })
 
   it('should show generical api error', async () => {
-    mockCreateUser.mockRejectedValue({} as never)
+    mockSend.mockReturnValue(undefined)
+    mockError.mockReturnValue('Any error')
 
     const { getByRole, getByLabelText, getByText } = render(<SignupForm />)
     const nameInput = getByLabelText('Nome')
@@ -97,9 +104,7 @@ describe('[SignupForm] index', () => {
     await userEvent.click(submitButton)
 
     await waitFor(() => {
-      expect(
-        getByText('Erro inesperado, por favor tente novamente mais tarde.'),
-      ).toBeInTheDocument()
+      expect(getByText('Any error')).toBeInTheDocument()
     })
   })
 })
