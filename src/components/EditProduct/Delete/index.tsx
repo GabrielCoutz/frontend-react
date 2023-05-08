@@ -28,7 +28,7 @@ export const Delete = ({ product }: { product: IProduct }) => {
     setDeleteIntention(false)
 
     await send({ id: product.id, token })
-    if (requestErro) return deleteProductFail(requestErro)
+    if (requestErro) return dispatch(deleteProductFail(requestErro))
 
     showModal('deletedProduct')
   }

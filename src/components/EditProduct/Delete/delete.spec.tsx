@@ -15,13 +15,14 @@ jest.mock('react-redux', () => ({
   useDispatch: () => mockRedux.mockDispatch,
   useSelector: () => mockRedux.mockUseSelect(),
 }))
-const mockDeleteProduct = jest.fn()
-jest.mock('../../../helpers/request', () => ({
-  api: {
-    product: {
-      delete: () => mockDeleteProduct(),
-    },
-  },
+
+const mockError = jest.fn(() => '')
+const mockSend = jest.fn()
+jest.mock('../../../hooks/useAxios', () => ({
+  useAxios: () => ({
+    send: () => mockSend(),
+    error: mockError(),
+  }),
 }))
 
 const renderDeleteProduct = () => {
@@ -36,9 +37,11 @@ describe('[Edit Product] Delete', () => {
   beforeAll(() => {
     global.ResizeObserver = MockResizeObserver
   })
+
   beforeEach(() => {
     jest.clearAllMocks()
   })
+
   it('should render', () => {
     const { getByRole } = renderDeleteProduct()
     const deleteProductButton = getByRole('button', { name: 'Deletar' })
@@ -70,7 +73,7 @@ describe('[Edit Product] Delete', () => {
     await userEvents.click(deleteProductButton)
 
     await waitFor(() => {
-      expect(mockDeleteProduct).toBeCalled()
+      expect(mockSend).toBeCalled()
     })
   })
 
@@ -91,7 +94,9 @@ describe('[Edit Product] Delete', () => {
   })
 
   it('should show generic error with api error', async () => {
-    mockDeleteProduct.mockRejectedValueOnce({ teste: '123' })
+    mockSend.mockReturnValue(undefined)
+    mockError.mockReturnValue('Any error')
+
     const { getByRole } = renderDeleteProduct()
     const toggleModalButton = getByRole('button', { name: 'Deletar' })
 
@@ -104,11 +109,9 @@ describe('[Edit Product] Delete', () => {
       await userEvents.click(deleteProductButton)
 
       expect(mockRedux.mockDispatch).toBeCalledWith(
-        productSlice.deleteProductFail(
-          'Não foi possível realizar essa ação. Por favor, tente novamente mais tarde',
-        ),
+        productSlice.deleteProductFail('Any error'),
       )
-      expect(mockRedux.mockDispatch).toBeCalledTimes(1)
+      expect(mockSend).toBeCalled()
     })
   })
 })
