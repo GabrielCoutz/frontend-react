@@ -1,22 +1,22 @@
 import { useState } from 'react'
 import { IApiErrorResponse, errorMessages } from '../../helpers/request/error'
 
-type IReponse<T extends AnyFunction> = Awaited<ReturnType<T>>
 type AnyFunction = (...args: any) => any
+type IResult<T extends AnyFunction> = Awaited<ReturnType<T>>
 
 export const useAxios = <T extends AnyFunction>(request: T) => {
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
 
   const send = async (payload: Parameters<T>[0]) => {
-    let teste: IReponse<T> | null = null
+    let result: IResult<T> | null = null
     setLoading(false)
     setError(null)
 
     try {
       setLoading(true)
-      const { data } = await request(payload)
-      teste = data
+      const response = await request(payload)
+      result = response
     } catch (error: any) {
       const { response }: IApiErrorResponse = error
       const statusCode = response?.data.statusCode || 500
@@ -27,7 +27,7 @@ export const useAxios = <T extends AnyFunction>(request: T) => {
       setLoading(false)
     }
 
-    return teste
+    return result
   }
 
   return {

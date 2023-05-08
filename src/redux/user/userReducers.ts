@@ -1,5 +1,6 @@
 import { PayloadAction } from '@reduxjs/toolkit'
-import { IUpdateUserPayload } from '../../helpers/request/user'
+import { IUserResponse } from '../../helpers/request/user/interface'
+
 import { IUser } from '../../interfaces/User'
 import { IUserState } from './userSlice'
 
@@ -30,7 +31,7 @@ const updateUserFail = (
 
 const updateUserSuccess = (
   state: IUserState,
-  { payload }: PayloadAction<IUpdateUserPayload>,
+  { payload }: PayloadAction<IUserResponse>,
 ): IUserState => {
   const updatedUser = {
     ...state.data,

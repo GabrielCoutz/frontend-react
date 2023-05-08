@@ -9,6 +9,8 @@ export const userFormSchema = z.object({
     .refine(
       (password) => (password.length ? password.length > 6 : true),
       'A senha precisa ter no mínimo 6 caracteres',
-    ),
+    )
+    .transform((field) => (!field ? undefined : field)),
 })
+
 export type IUserFormSchema = z.infer<typeof userFormSchema> & IUser
