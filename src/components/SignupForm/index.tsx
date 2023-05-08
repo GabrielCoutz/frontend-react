@@ -16,13 +16,13 @@ const SignupForm = () => {
   const signupFormMethods = useForm<ISignupFormSchema>({
     resolver: zodResolver(signupFormSchema),
   })
+  const { error, loading, send } = useAxios(api.user.create)
   const { handleSubmit } = signupFormMethods
   const { showModal, Modal } = useModal()
   const { push } = useRouter()
-  const { error, loading, send } = useAxios(api.user.create)
 
   const handleSignup = async (payload: ISignupFormSchema) => {
-    const result = await send({ payload })
+    const result = await send(payload)
 
     if (result) showModal('createdAccount')
   }
