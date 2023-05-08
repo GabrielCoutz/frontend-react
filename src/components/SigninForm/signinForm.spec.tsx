@@ -5,7 +5,7 @@ import userEvent from '@testing-library/user-event'
 const mockPush = jest.fn()
 jest.mock('next/router', () => ({
   ...jest.requireActual('next/router'),
-  useRouter: jest.fn(() => ({ push: mockPush() })),
+  useRouter: jest.fn(() => ({ push: () => mockPush() })),
 }))
 
 const mockLogin = jest.fn(() => {})
@@ -92,7 +92,9 @@ describe('[SigninForm] index', () => {
 
     await waitFor(() => {
       expect(
-        getByText('Erro inesperado, por favor tente novamente mais tarde.'),
+        getByText(
+          'Não foi possível realizar esta ação agora. Por favor, tente novamente mais tarde',
+        ),
       ).toBeInTheDocument()
     })
   })

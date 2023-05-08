@@ -1,16 +1,16 @@
 import { FormProvider, useForm } from 'react-hook-form'
 import { useRouter } from 'next/router'
-import React, { useState } from 'react'
 import { setCookie } from 'nookies'
 import Link from 'next/link'
+import React from 'react'
 
-import { ApiErrorResponse } from '../../helpers/request/error'
+import { ISigninFormSchema, signinFormSchema } from './schema'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useAxios } from '../../hooks/useAxios'
 import { api } from '../../helpers/request'
 import { Button } from '../Button'
 import { Form } from '../Form'
 import { UI } from '../Ui'
-import { ISigninFormSchema, signinFormSchema } from './schema'
 
 const SigninForm = () => {
   const signinFormMethods = useForm<ISigninFormSchema>({
@@ -18,34 +18,24 @@ const SigninForm = () => {
   })
   const { push } = useRouter()
   const { handleSubmit } = signinFormMethods
-  const [error, setError] = useState<string>('')
-  const [loading, setLoading] = useState<boolean>(false)
+  const { error, loading, send } = useAxios(api.auth.login)
 
   const handleSignin = async (payload: ISigninFormSchema) => {
-    setError('')
-    setLoading(true)
+    const result = await send(payload)
+    if (!result) return
 
-    try {
-      const { data } = await api.auth.login(payload)
-      const cookieMaxAge = 60 * 60 * 24 * 1 // 1 day
+    const { data } = result
 
-      setCookie(undefined, 'token', data.token, {
-        maxAge: cookieMaxAge,
-      })
-      setCookie(undefined, 'id', data.id, {
-        maxAge: cookieMaxAge,
-      })
-      push('profile')
-    } catch (error: any) {
-      const { response }: ApiErrorResponse = error
+    const cookieMaxAge = 60 * 60 * 24 * 1 // 1 day
 
-      if (response?.data.statusCode === 401)
-        return setError('Credenciais inválidas')
+    setCookie(undefined, 'token', data.token, {
+      maxAge: cookieMaxAge,
+    })
+    setCookie(undefined, 'id', data.id, {
+      maxAge: cookieMaxAge,
+    })
 
-      setError('Erro inesperado, por favor tente novamente mais tarde.')
-    } finally {
-      setLoading(false)
-    }
+    push('profile')
   }
 
   return (
