@@ -2,34 +2,36 @@ import { ExclamationTriangleIcon } from '@heroicons/react/24/outline'
 import { FormProvider, useForm } from 'react-hook-form'
 import { useDispatch, useSelector } from 'react-redux'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useRouter } from 'next/router'
 import React, { useState } from 'react'
 
+import { deleteAccountSchema, IDeleteAccountSchema } from './schema'
 import { selectUserState } from '../../redux/user/userSelectors'
-import { Button } from '../Button'
-import { Form } from '../Form'
-import { Modal } from '../Modal'
-import { UI } from '../Ui'
+import { clearLocalData } from '../../helpers/clearLocalData'
+import { LoginUserPayload } from '../../helpers/request/auth'
+import { useCookie } from '../../hooks/useCookie'
+import { useModal } from '../../hooks/useModal'
+import { useAxios } from '../../hooks/useAxios'
 import { api } from '../../helpers/request'
+import { Button } from '../Button'
+import { Modal } from '../Modal'
+import { Form } from '../Form'
+import { UI } from '../Ui'
 import {
   deleteUserFail,
   deleteUserStart,
   deleteUserSuccess,
 } from '../../redux/user/userSlice'
-import { ApiErrorResponse } from '../../helpers/request/error'
-import { useRouter } from 'next/router'
-import { useCookie } from '../../hooks/useCookie'
-import { clearLocalData } from '../../helpers/clearLocalData'
-import { LoginUserPayload } from '../../helpers/request/auth'
-import { useModal } from '../../hooks/useModal'
-import { deleteAccountSchema, IDeleteAccountSchema } from './schema'
 
 export const DeleteAccountForm = () => {
   const deleteAccountMethods = useForm<IDeleteAccountSchema>({
     resolver: zodResolver(deleteAccountSchema),
   })
+  const { send: sendDelete, error: deleteError } = useAxios(api.user.delete)
   const { error, isLoading, data: user } = useSelector(selectUserState)
   const [deleteIntention, setDeleteIntention] = useState(false)
   const { showModal, Modal: DeletedAccountModal } = useModal()
+  const { send: sendLogin } = useAxios(api.auth.login)
   const { handleSubmit } = deleteAccountMethods
   const dispatch = useDispatch()
   const { token } = useCookie()
@@ -37,30 +39,21 @@ export const DeleteAccountForm = () => {
 
   const handleDelete = async (payload: IDeleteAccountSchema) => {
     dispatch(deleteUserStart())
+
     const loginPayloadDto = {
       email: user?.email,
       password: payload.password,
     } as LoginUserPayload
+    const resultLogin = await sendLogin(loginPayloadDto)
+    if (!resultLogin) return dispatch(deleteUserFail('Senha inválida'))
 
-    try {
-      await api.auth.login(loginPayloadDto)
+    await sendDelete({ id: `${user?.id}`, token })
+    if (deleteError) return dispatch(deleteUserFail(deleteError))
 
-      await api.user.delete(user?.id as string, token)
-      setDeleteIntention(false)
-      dispatch(deleteUserSuccess())
-      clearLocalData()
-      showModal('deletedAccount')
-    } catch (error: any) {
-      const { response }: ApiErrorResponse = error
-      if (response?.data.statusCode === 401)
-        return dispatch(deleteUserFail('Senha inválida'))
-
-      dispatch(
-        deleteUserFail(
-          'Não foi possível realizar esta ação. Tente novamente mais tarde',
-        ),
-      )
-    }
+    dispatch(deleteUserSuccess())
+    setDeleteIntention(false)
+    clearLocalData()
+    showModal('deletedAccount')
   }
 
   return (
