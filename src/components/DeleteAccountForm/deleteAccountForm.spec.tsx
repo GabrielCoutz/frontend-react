@@ -6,7 +6,6 @@ import * as userSlice from '../../redux/user/userSlice'
 import { DeleteAccountForm } from '.'
 
 import * as mockRedux from '../../redux/__mocks__/redux.mock'
-import * as mockRequest from '../../helpers/request/__mocks__/request.mock'
 import { mockUserState } from '../../redux/user/__mocks__/user.mock'
 import { MockResizeObserver } from '../../__mocks__/headlessui.mock'
 
@@ -29,15 +28,14 @@ jest.mock('react-redux', () => ({
   useSelector: () => mockRedux.mockUseSelect(mockUserState),
 }))
 
-jest.mock('../../helpers/request', () => ({
-  api: {
-    auth: {
-      login: () => mockRequest.mockLogin(),
-    },
-    user: {
-      delete: () => mockRequest.mockDeleteUser(),
-    },
-  },
+const mockSend = jest.fn()
+const mockError = jest.fn(() => '')
+jest.mock('../../hooks/useAxios', () => ({
+  ...jest.requireActual('../../hooks/useAxios'),
+  useAxios: () => ({
+    send: () => mockSend(),
+    error: mockError(),
+  }),
 }))
 
 describe('[DeleteAccountForm] index', () => {
@@ -68,7 +66,7 @@ describe('[DeleteAccountForm] index', () => {
   })
 
   it('should not dispatch if data is invalid', async () => {
-    const { container, getByRole } = renderDeleteAccountForm()
+    const { container, getByRole, getByTestId } = renderDeleteAccountForm()
     const toggleModalButton = container.getElementsByTagName('button')[0]
 
     userEvent.click(toggleModalButton)
@@ -78,10 +76,13 @@ describe('[DeleteAccountForm] index', () => {
       userEvent.click(deleteAccountButton)
 
       expect(mockRedux.mockDispatch).not.toBeCalled()
+      expect(getByTestId('form-error')).toBeInTheDocument()
     })
   })
 
   it('should dispatch with valid data', async () => {
+    mockSend.mockReturnValue({})
+
     const { container, getByRole } = renderDeleteAccountForm()
     const toggleModalButton = container.getElementsByTagName('button')[0]
 
@@ -95,25 +96,17 @@ describe('[DeleteAccountForm] index', () => {
       await userEvent.click(deleteAccountButton)
 
       expect(mockRedux.mockDispatch).toBeCalledWith(userSlice.deleteUserStart())
+      expect(mockSend).toBeCalled()
       expect(mockRedux.mockDispatch).toBeCalledWith(
         userSlice.deleteUserSuccess(),
       )
-      expect(mockRedux.mockDispatch).toHaveBeenCalledTimes(2)
-      expect(mockRequest.mockDeleteUser).toBeCalled()
     })
   })
 
-  it('should not delete account with invalid password, and dispatch fail action', async () => {
-    mockRequest.mockLogin.mockRejectedValue({
-      data: {
-        id: '',
-      },
-      response: {
-        data: {
-          statusCode: 401,
-        },
-      },
-    } as never)
+  it('should not delete account with invalid password', async () => {
+    mockSend.mockReturnValue(undefined)
+    mockError.mockReturnValue('Senha inválida')
+
     const { container, getByRole } = renderDeleteAccountForm()
     const toggleModalButton = container.getElementsByTagName('button')[0]
 
@@ -127,18 +120,18 @@ describe('[DeleteAccountForm] index', () => {
       await userEvent.click(deleteAccountButton)
 
       expect(mockRedux.mockDispatch).toBeCalledWith(userSlice.deleteUserStart())
+      expect(mockSend).toBeCalled()
       expect(mockRedux.mockDispatch).toBeCalledWith(
         userSlice.deleteUserFail('Senha inválida'),
       )
-      expect(mockRedux.mockDispatch).toHaveBeenCalledTimes(2)
-      expect(mockRequest.mockDeleteUser).not.toBeCalled()
     })
   })
 
-  it('should show generical error with api error', async () => {
-    mockRequest.mockLogin.mockRejectedValue(jest.fn())
+  it('should dispatch generical error', async () => {
+    mockSend.mockReturnValue({})
+    mockError.mockReturnValue('generial error')
 
-    const { getByRole, container } = renderDeleteAccountForm()
+    const { container, getByRole } = renderDeleteAccountForm()
     const toggleModalButton = container.getElementsByTagName('button')[0]
 
     await act(() => userEvent.click(toggleModalButton))
@@ -151,18 +144,14 @@ describe('[DeleteAccountForm] index', () => {
       await userEvent.click(deleteAccountButton)
 
       expect(mockRedux.mockDispatch).toBeCalledWith(userSlice.deleteUserStart())
+      expect(mockSend).toBeCalled()
       expect(mockRedux.mockDispatch).toBeCalledWith(
-        userSlice.deleteUserFail(
-          'Não foi possível realizar esta ação. Tente novamente mais tarde',
-        ),
+        userSlice.deleteUserFail('generial error'),
       )
-      expect(mockRedux.mockDispatch).toHaveBeenCalledTimes(2)
-      expect(mockRequest.mockDeleteUser).not.toBeCalled()
     })
   })
 
   it('should close modal when cancel button is clicked', async () => {
-    mockRequest.mockLogin.mockRejectedValue(jest.fn())
     const { getByRole, container } = renderDeleteAccountForm()
     const toggleModalButton = container.getElementsByTagName('button')[0]
 

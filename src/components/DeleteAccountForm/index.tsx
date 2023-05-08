@@ -2,13 +2,13 @@ import { ExclamationTriangleIcon } from '@heroicons/react/24/outline'
 import { FormProvider, useForm } from 'react-hook-form'
 import { useDispatch, useSelector } from 'react-redux'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useRouter } from 'next/router'
 import React, { useState } from 'react'
+import { useRouter } from 'next/router'
 
+import { LoginUserPayload } from '../../helpers/request/auth/interface'
 import { deleteAccountSchema, IDeleteAccountSchema } from './schema'
 import { selectUserState } from '../../redux/user/userSelectors'
 import { clearLocalData } from '../../helpers/clearLocalData'
-import { LoginUserPayload } from '../../helpers/request/auth'
 import { useCookie } from '../../hooks/useCookie'
 import { useModal } from '../../hooks/useModal'
 import { useAxios } from '../../hooks/useAxios'
@@ -52,7 +52,7 @@ export const DeleteAccountForm = () => {
 
     dispatch(deleteUserSuccess())
     setDeleteIntention(false)
-    clearLocalData()
+    clearLocalData(['token', 'id'])
     showModal('deletedAccount')
   }
 
