@@ -40,7 +40,7 @@ export const UserForm = () => {
       payload,
       token,
     })
-    if (!result) return updateUserFail(`${requestErro}`)
+    if (!result) return dispatch(updateUserFail(`${requestErro}`))
 
     const { data } = result
 

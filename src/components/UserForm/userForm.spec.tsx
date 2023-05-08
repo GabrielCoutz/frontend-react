@@ -27,13 +27,13 @@ jest.mock('react-redux', () => ({
   useDispatch: () => mockDispatch,
 }))
 
-const mockUpdateUser = jest.fn(() => ({}))
-jest.mock('../../helpers/request', () => ({
-  api: {
-    user: {
-      update: () => mockUpdateUser(),
-    },
-  },
+const mockError = jest.fn(() => '')
+const mockSend = jest.fn()
+jest.mock('../../hooks/useAxios', () => ({
+  useAxios: () => ({
+    send: () => mockSend(),
+    error: mockError(),
+  }),
 }))
 
 const renderUserForm = () => {
@@ -61,7 +61,7 @@ describe('[UserForm] index', () => {
   })
 
   it('should dispatch and update user with valid data', async () => {
-    mockUpdateUser.mockReturnValue({ data: {} })
+    mockSend.mockReturnValue({ data: {} })
 
     const { getByLabelText, container } = renderUserForm()
     const nameInput = getByLabelText('Nome') as HTMLInputElement
@@ -75,13 +75,15 @@ describe('[UserForm] index', () => {
 
     await waitFor(() => {
       expect(mockDispatch).toBeCalledWith(updateUserStart())
-      expect(mockUpdateUser).toBeCalled()
-      expect(mockDispatch).toBeCalledWith(updateUserSuccess({}))
+      expect(mockSend).toBeCalled()
+      expect(mockDispatch).toBeCalledWith(updateUserSuccess({} as any))
     })
   })
 
   it('should show generic error with api error', async () => {
-    mockUpdateUser.mockRejectedValue({} as never)
+    mockSend.mockReturnValue(undefined)
+    mockError.mockReturnValue('Any error')
+
     const { container } = renderUserForm()
     const form = container.getElementsByTagName('form')[0] as HTMLFormElement
 
@@ -89,12 +91,8 @@ describe('[UserForm] index', () => {
 
     await waitFor(() => {
       expect(mockDispatch).toBeCalledWith(updateUserStart())
-      expect(mockUpdateUser).toBeCalled()
-      expect(mockDispatch).toBeCalledWith(
-        updateUserFail(
-          'Um erro inesperado ocorreu! Por favor, tente novamente mais tarde.',
-        ),
-      )
+      expect(mockSend).toBeCalled()
+      expect(mockDispatch).toBeCalledWith(updateUserFail('Any error'))
     })
   })
 })
