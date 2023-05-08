@@ -16,36 +16,36 @@ import {
   updateUserFail,
 } from '../../redux/user/userSlice'
 import { IUserFormSchema, userFormSchema } from './schema'
+import { useAxios } from '../../hooks/useAxios'
 
 export const UserForm = () => {
-  const [message, setMessage] = useState('')
   const { data: user, error, isLoading } = useSelector(selectUserState)
-  const dispatch = useDispatch()
-
-  const { token } = useCookie()
   const userFormMethods = useForm<IUserFormSchema>({
     resolver: zodResolver(userFormSchema),
     defaultValues: user as IUser,
   })
+  const { send, error: requestErro } = useAxios(api.user.update)
+
+  const [message, setMessage] = useState('')
   const { handleSubmit } = userFormMethods
+  const dispatch = useDispatch()
+  const { token } = useCookie()
 
   const handleUpdate = async (payload: IUserFormSchema) => {
-    if (!user?.id) return
-
     dispatch(updateUserStart())
     setMessage('')
 
-    try {
-      const { data } = await api.user.update(user.id, payload, token)
-      dispatch(updateUserSuccess(data))
-      setMessage('Dados atualizados')
-    } catch (error) {
-      dispatch(
-        updateUserFail(
-          'Um erro inesperado ocorreu! Por favor, tente novamente mais tarde.',
-        ),
-      )
-    }
+    const result = await send({
+      id: `${user?.id}`,
+      payload,
+      token,
+    })
+    if (!result) return updateUserFail(`${requestErro}`)
+
+    const { data } = result
+
+    dispatch(updateUserSuccess(data))
+    setMessage('Dados atualizados')
   }
 
   return (
