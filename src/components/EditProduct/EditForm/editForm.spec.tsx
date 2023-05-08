@@ -17,12 +17,14 @@ jest.mock('react-redux', () => ({
   useDispatch: () => mockDispatch,
 }))
 
-jest.mock('../../../helpers/request', () => ({
-  api: {
-    product: {
-      update: () => mockUpdateProduct(),
-    },
-  },
+const mockSend = jest.fn()
+const mockError = jest.fn(() => 'xax')
+jest.mock('../../../hooks/useAxios', () => ({
+  ...jest.requireActual('../../../hooks/useAxios'),
+  useAxios: () => ({
+    send: () => mockSend(),
+    error: mockError(),
+  }),
 }))
 
 const renderEditForm = () => {
@@ -71,7 +73,7 @@ describe('[Edit Product] EditForm', () => {
   })
 
   it('should dispatch when update button is clicked', async () => {
-    mockUpdateProduct.mockResolvedValue(jest.fn(() => ({ data: {} })))
+    mockSend.mockReturnValue({})
     const { getByRole } = renderEditForm()
 
     await waitFor(async () => {
@@ -80,14 +82,16 @@ describe('[Edit Product] EditForm', () => {
       await userEvent.click(uploadButton)
 
       expect(mockDispatch).toBeCalledWith(productSlice.updateProductStart())
+      expect(mockSend).toBeCalled()
       expect(mockDispatch).toBeCalledWith(
         productSlice.updateProductSuccess(undefined as any),
       )
-      expect(mockUpdateProduct).toBeCalled()
     })
   })
 
   it('should dispatch fail with error on update', async () => {
+    mockError.mockReturnValue('error')
+    mockSend.mockReturnValue(undefined)
     const { getByRole } = renderEditForm()
 
     await waitFor(async () => {
@@ -97,12 +101,10 @@ describe('[Edit Product] EditForm', () => {
       await userEvent.click(uploadButton)
 
       expect(mockDispatch).toBeCalledWith(productSlice.updateProductStart())
+      expect(mockSend).toBeCalled()
       expect(mockDispatch).toBeCalledWith(
-        productSlice.updateProductFail(
-          'Um erro inesperado ocorreu. Por favor, tente novamente mais tarde',
-        ),
+        productSlice.updateProductFail('error'),
       )
-      expect(mockUpdateProduct).toBeCalled()
     })
   })
 })
