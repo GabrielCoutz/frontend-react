@@ -18,7 +18,7 @@ jest.mock('react-redux', () => ({
 }))
 
 const mockSend = jest.fn()
-const mockError = jest.fn(() => 'xax')
+const mockError = jest.fn(() => '')
 jest.mock('../../../hooks/useAxios', () => ({
   ...jest.requireActual('../../../hooks/useAxios'),
   useAxios: () => ({
