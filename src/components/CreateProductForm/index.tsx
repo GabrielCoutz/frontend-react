@@ -2,30 +2,21 @@ import { FormProvider, useForm } from 'react-hook-form'
 import { useDispatch, useSelector } from 'react-redux'
 import { zodResolver } from '@hookform/resolvers/zod'
 import React from 'react'
-import { z } from 'zod'
 
+import { createProductFormSchema, ICreatedProductFormSchema } from './schema'
 import { selectUserProductsState } from '../../redux/product/productSelectors'
 import { useCookie } from '../../hooks/useCookie'
+import { useModal } from '../../hooks/useModal'
+import { useAxios } from '../../hooks/useAxios'
 import { api } from '../../helpers/request'
+import { Button } from '../Button'
+import { Form } from '../Form'
+import { UI } from '../Ui'
 import {
   createProductFail,
   createProductStart,
   createProductSuccess,
 } from '../../redux/product/productSlice'
-import { Button } from '../Button'
-import { Form } from '../Form'
-import { UI } from '../Ui'
-import { useModal } from '../../hooks/useModal'
-
-const createProductFormSchema = z.object({
-  name: z.string().nonempty('Preencha o nome'),
-  price: z
-    .string()
-    .refine((price) => +price > 0, 'O preço precisa ser maior que 0')
-    .transform((price) => +price),
-  description: z.string().nonempty('Preencha a descrição'),
-})
-type ICreatedProductFormSchema = z.infer<typeof createProductFormSchema>
 
 export const CreateProductForm = () => {
   const createProductFormMethods = useForm<ICreatedProductFormSchema>({
@@ -33,30 +24,25 @@ export const CreateProductForm = () => {
   })
   const { isLoading, error } = useSelector(selectUserProductsState)
   const { handleSubmit, reset } = createProductFormMethods
-  const { showModal, Modal } = useModal()
+  const { Modal, showModal } = useModal()
+  const { send, error: requestErro } = useAxios(api.product.create)
   const dispatch = useDispatch()
   const { token } = useCookie()
 
   const handleCreateProduct = async (payload: ICreatedProductFormSchema) => {
     dispatch(createProductStart())
+    const result = await send({ payload, token })
 
-    try {
-      const { data } = await api.product.create(payload, token)
-      showModal('createdProduct')
-      dispatch(createProductSuccess(data))
-      reset()
-    } catch (error) {
-      dispatch(
-        createProductFail(
-          'Não foi possível realizar esta ação. Por favor, tente novamente mais tarde',
-        ),
-      )
-    }
+    if (!result) return dispatch(createProductFail(`${requestErro}`))
+
+    const { data } = result
+    dispatch(createProductSuccess(data))
+    showModal('createdProduct')
   }
 
   return (
     <>
-      {Modal ? <Modal /> : null}
+      {Modal ? <Modal callback={reset} /> : null}
 
       <FormProvider {...createProductFormMethods}>
         <form
