@@ -3,7 +3,11 @@ import { Provider } from 'react-redux'
 import userEvent from '@testing-library/user-event'
 
 import { CreateProductForm } from '.'
-import { createProductStart } from '../../redux/product/productSlice'
+import {
+  createProductFail,
+  createProductStart,
+  createProductSuccess,
+} from '../../redux/product/productSlice'
 
 import {
   mockDispatch,
@@ -21,12 +25,14 @@ const renderCreateProductForm = () => {
   )
 }
 
-jest.mock('../../helpers/request', () => ({
-  api: {
-    product: {
-      create: () => mockProductCreate(),
-    },
-  },
+const mockSend = jest.fn()
+const mockError = jest.fn(() => '')
+jest.mock('../../hooks/useAxios', () => ({
+  ...jest.requireActual('../../hooks/useAxios'),
+  useAxios: () => ({
+    send: () => mockSend(),
+    error: mockError(),
+  }),
 }))
 
 jest.mock('react-redux', () => ({
@@ -55,19 +61,10 @@ describe('[CreateProductForm] index', () => {
     expect(queryByTestId('form-error')).not.toBeInTheDocument()
   })
 
-  it('should show error with empty inputs', async () => {
-    const { getAllByTestId, container } = renderCreateProductForm()
-    const button = container.getElementsByTagName('button')[0]
-    userEvent.click(button)
-
-    await waitFor(() => {
-      expect(getAllByTestId('form-error')).toHaveLength(3)
-    })
-  })
-
   it('should dispatch with valid data', async () => {
-    const { container, queryAllByTestId, getByLabelText } =
-      renderCreateProductForm()
+    mockSend.mockReturnValue({})
+
+    const { container, getByLabelText } = renderCreateProductForm()
     const button = container.getElementsByTagName('button')[0]
     const nameInput = getByLabelText('Nome')
     const priceInput = getByLabelText('Preço')
@@ -78,9 +75,9 @@ describe('[CreateProductForm] index', () => {
     await userEvent.type(descriptionInput, 'desc')
     await userEvent.click(button)
 
-    expect(queryAllByTestId('form-error')).toHaveLength(0)
     expect(mockDispatch).toBeCalledWith(createProductStart())
-    expect(mockProductCreate).toBeCalled()
+    expect(mockSend).toBeCalled()
+    expect(mockDispatch).toBeCalledWith(createProductSuccess(undefined))
   })
 
   it('should not dispatch with invalid data', async () => {
@@ -94,6 +91,26 @@ describe('[CreateProductForm] index', () => {
 
     expect(queryAllByTestId('form-error')).toHaveLength(2)
     expect(mockDispatch).not.toBeCalled()
-    expect(mockProductCreate).not.toBeCalled()
+    expect(mockSend).not.toBeCalled()
+  })
+
+  it('should dispatch error if no result', async () => {
+    mockSend.mockReturnValue(undefined)
+    mockError.mockReturnValue('Any error')
+
+    const { container, getByLabelText } = renderCreateProductForm()
+    const button = container.getElementsByTagName('button')[0]
+    const nameInput = getByLabelText('Nome')
+    const priceInput = getByLabelText('Preço')
+    const descriptionInput = getByLabelText('Descrição')
+
+    await userEvent.type(nameInput, 'name')
+    await userEvent.type(priceInput, '123')
+    await userEvent.type(descriptionInput, 'desc')
+    await userEvent.click(button)
+
+    expect(mockDispatch).toBeCalledWith(createProductStart())
+    expect(mockSend).toBeCalled()
+    expect(mockDispatch).toBeCalledWith(createProductFail('Any error'))
   })
 })
