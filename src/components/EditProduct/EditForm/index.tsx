@@ -1,32 +1,31 @@
-import React, { useState } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { useDispatch, useSelector } from 'react-redux'
 import { zodResolver } from '@hookform/resolvers/zod'
+import React, { useState } from 'react'
 
+import { selectUserProductsState } from '../../../redux/product/productSelectors'
+import { IProductFormSchema, productFormSchema } from './schema'
 import { IProduct } from '../../../interfaces/Product'
+import { useCookie } from '../../../hooks/useCookie'
+import { useAxios } from '../../../hooks/useAxios'
 import { api } from '../../../helpers/request'
-import { Delete } from '../Delete'
 import { Button } from '../../Button'
+import { Delete } from '../Delete'
 import { Form } from '../../Form'
 import { UI } from '../../Ui'
-import { selectUserProductsState } from '../../../redux/product/productSelectors'
 import {
   updateProductFail,
   updateProductStart,
   updateProductSuccess,
 } from '../../../redux/product/productSlice'
-import { useCookie } from '../../../hooks/useCookie'
-import { IProductFormSchema, productFormSchema } from './schema'
 
 interface ContentProps {
   product: IProduct
 }
 
 export const EditForm = ({ product }: ContentProps) => {
-  const [message, setMessage] = useState('')
-  const { token } = useCookie()
   const { error, isLoading } = useSelector(selectUserProductsState)
-  const dispatch = useDispatch()
+  const { send, error: requestErro } = useAxios(api.product.update)
   const productFormMethods = useForm<IProductFormSchema>({
     resolver: zodResolver(productFormSchema),
     defaultValues: {
@@ -36,22 +35,20 @@ export const EditForm = ({ product }: ContentProps) => {
     },
   })
   const { handleSubmit } = productFormMethods
+  const [message, setMessage] = useState('')
+  const dispatch = useDispatch()
+  const { token } = useCookie()
 
   const handleUpdate = async (payload: IProductFormSchema) => {
     setMessage('')
     dispatch(updateProductStart())
 
-    try {
-      const { data } = await api.product.update(product.id, payload, token)
-      dispatch(updateProductSuccess(data))
-      setMessage('Produto atualizado')
-    } catch (error) {
-      dispatch(
-        updateProductFail(
-          'Um erro inesperado ocorreu. Por favor, tente novamente mais tarde',
-        ),
-      )
-    }
+    const result = await send({ payload, id: product.id, token })
+    if (!result) return dispatch(updateProductFail(`${requestErro}`))
+
+    const { data } = result
+    dispatch(updateProductSuccess(data))
+    setMessage('Produto atualizado')
   }
 
   return (
