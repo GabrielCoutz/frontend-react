@@ -59,7 +59,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     const { data: authData } = await api.auth.validate(token)
     if (authData.id !== id) throw new Error()
 
-    const { data: userData } = await api.user.get(id)
+    const { data: userData } = await api.user.get({ id })
     if (!userData.id) throw new Error()
 
     return {

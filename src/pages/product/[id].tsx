@@ -67,7 +67,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   let product = null
 
   try {
-    const { data } = await api.product.get(productId)
+    const { data } = await api.product.get({ id: productId })
     product = {
       ...data,
       ...fakeInfo,
