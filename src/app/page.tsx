@@ -1,11 +1,6 @@
-import { Metadata } from 'next'
 import Link from 'next/link'
 
 import { Button } from '../components/Button'
-
-export const metadata: Metadata = {
-  title: 'My Page Title',
-}
 
 export default function Page() {
   return (

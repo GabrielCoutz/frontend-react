@@ -4,9 +4,12 @@ import { SignupForm } from '.'
 
 import userEvent from '@testing-library/user-event'
 
+const mockPush = jest.fn()
 jest.mock('next/navigation', () => ({
   ...jest.requireActual('next/navigation'),
-  useRouter: () => jest.fn(() => ({ push: jest.fn() })),
+  useRouter: () => ({
+    push: () => mockPush(),
+  }),
 }))
 
 const mockSend = jest.fn()
@@ -16,15 +19,6 @@ jest.mock('../../hooks/useAxios', () => ({
   useAxios: () => ({
     send: () => mockSend(),
     error: mockError(),
-  }),
-}))
-
-const mockShowModal = jest.fn()
-jest.mock('../../hooks/useModal', () => ({
-  ...jest.requireActual('../../hooks/useModal'),
-  useModal: () => ({
-    showModal: () => mockShowModal(),
-    Modal: () => <div></div>,
   }),
 }))
 
@@ -48,7 +42,7 @@ describe('[SignupForm] index', () => {
     })
   })
 
-  it('should create account and show modal', async () => {
+  it('should create account and redirect to modal route', async () => {
     mockSend.mockReturnValue({})
 
     const { getByRole, getByLabelText } = render(<SignupForm />)
@@ -64,7 +58,7 @@ describe('[SignupForm] index', () => {
 
     await waitFor(() => {
       expect(mockSend).toBeCalled()
-      expect(mockShowModal).toBeCalled()
+      expect(mockPush).toBeCalled()
     })
   })
 
