@@ -1,7 +1,7 @@
 import React from 'react'
-import SignupForm from '../../components/SignupForm'
+import { SignupForm } from '../../components/SignupForm'
 
-const Signup = () => {
+const SignupPage = () => {
   return (
     <section>
       <h1 className="text-center text-2xl text-slate-800 font-semibold mt-48 max-md:mt-24">
@@ -12,4 +12,4 @@ const Signup = () => {
   )
 }
 
-export default Signup
+export default SignupPage

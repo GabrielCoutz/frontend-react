@@ -1,11 +1,11 @@
 import { render, waitFor } from '@testing-library/react'
 
-import SignupForm from '.'
+import { SignupForm } from '.'
 
 import userEvent from '@testing-library/user-event'
 
-jest.mock('next/router', () => ({
-  ...jest.requireActual('next/router'),
+jest.mock('next/navigation', () => ({
+  ...jest.requireActual('next/navigation'),
   useRouter: () => jest.fn(() => ({ push: jest.fn() })),
 }))
 
@@ -24,7 +24,7 @@ jest.mock('../../hooks/useModal', () => ({
   ...jest.requireActual('../../hooks/useModal'),
   useModal: () => ({
     showModal: () => mockShowModal(),
-    Modal: () => jest.fn(() => <div></div>),
+    Modal: () => <div></div>,
   }),
 }))
 

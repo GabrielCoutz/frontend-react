@@ -1,6 +1,8 @@
+'use client'
+
 import { useForm, FormProvider } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import React from 'react'
 
@@ -12,7 +14,7 @@ import { Button } from '../Button'
 import { Form } from '../Form'
 import { UI } from '../Ui'
 
-const SignupForm = () => {
+export const SignupForm = () => {
   const signupFormMethods = useForm<ISignupFormSchema>({
     resolver: zodResolver(signupFormSchema),
   })
@@ -82,5 +84,3 @@ const SignupForm = () => {
     </>
   )
 }
-
-export default SignupForm
