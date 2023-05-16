@@ -1,7 +1,13 @@
+import { Metadata } from 'next'
 import Link from 'next/link'
+
 import { Button } from '../components/Button'
 
-export default function Home() {
+export const metadata: Metadata = {
+  title: 'My Page Title',
+}
+
+export default function Page() {
   return (
     <section className="flex align-middle p-8 mt-32 max-md:mt-16">
       <div className="mx-auto">
