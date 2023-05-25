@@ -1,8 +1,21 @@
 import { z } from 'zod'
 import { IUser } from '../../interfaces/User'
 
+export const userFormDefaultValues = {
+  created_at: '',
+  email: '',
+  id: '',
+  name: '',
+  password: '',
+  products: undefined,
+}
+
+const minNameLength = 4
+
 export const userFormSchema = z.object({
-  name: z.string().nonempty().min(6, 'O nome precisa ter no mínimo 4 letras'),
+  name: z
+    .string()
+    .min(minNameLength, `O nome precisa ter no mínimo ${minNameLength} letras`),
   email: z.string().email('Email inválido').nonempty(),
   password: z
     .string()
