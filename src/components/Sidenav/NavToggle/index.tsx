@@ -1,10 +1,12 @@
-import React, { useContext } from 'react'
+'use client'
+
+import React from 'react'
 import { Bars2Icon, XMarkIcon } from '@heroicons/react/24/outline'
 
-import { ProfileContext } from '../../../contexts/profile'
+import { useProfileContext } from '../../../hooks/useProfileContext'
 
 export const NavToggle = () => {
-  const { setMenuIsOpen, menuIsOpen } = useContext(ProfileContext)
+  const { setMenuIsOpen, menuIsOpen } = useProfileContext()
 
   return (
     <button

@@ -1,6 +1,8 @@
-import React, { useContext, useEffect } from 'react'
+'use client'
 
-import { ProfileContext } from '../../../contexts/profile'
+import React, { useEffect } from 'react'
+
+import { useProfileContext } from '../../../hooks/useProfileContext'
 import { LogoutButton } from '.././LogoutButton'
 import { MyProducts } from '../../MyProducts'
 import { UserForm } from '../../UserForm'
@@ -26,7 +28,7 @@ export const optionsList = [
 ]
 
 export const Options = () => {
-  const { menuIsOpen, setActiveOption } = useContext(ProfileContext)
+  const { menuIsOpen, setActiveOption } = useProfileContext()
 
   useEffect(() => setActiveOption(optionsList[0]), [])
 
