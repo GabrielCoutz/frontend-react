@@ -1,11 +1,12 @@
+'use client'
+
 import { FormProvider, useForm } from 'react-hook-form'
 import { useDispatch, useSelector } from 'react-redux'
 import { zodResolver } from '@hookform/resolvers/zod'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import { selectUserState } from '../../redux/user/userSelectors'
 import { useCookie } from '../../hooks/useCookie'
-import { IUser } from '../../interfaces/User'
 import { api } from '../../helpers/request'
 import { Button } from '../Button'
 import { Form } from '../Form'
@@ -15,21 +16,32 @@ import {
   updateUserStart,
   updateUserFail,
 } from '../../redux/user/userSlice'
-import { IUserFormSchema, userFormSchema } from './schema'
+import {
+  IUserFormSchema,
+  userFormDefaultValues,
+  userFormSchema,
+} from './schema'
 import { useAxios } from '../../hooks/useAxios'
 
 export const UserForm = () => {
   const { data: user, error, isLoading } = useSelector(selectUserState)
+  const { send, error: requestErro } = useAxios(api.user.update)
   const userFormMethods = useForm<IUserFormSchema>({
     resolver: zodResolver(userFormSchema),
-    defaultValues: user as IUser,
+    defaultValues: userFormDefaultValues,
   })
-  const { send, error: requestErro } = useAxios(api.user.update)
-
   const [message, setMessage] = useState('')
-  const { handleSubmit } = userFormMethods
+  const { handleSubmit, reset } = userFormMethods
   const dispatch = useDispatch()
   const { token } = useCookie()
+
+  useEffect(
+    () =>
+      reset({
+        ...user,
+      }),
+    [user],
+  )
 
   const handleUpdate = async (payload: IUserFormSchema) => {
     dispatch(updateUserStart())
