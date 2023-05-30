@@ -8,16 +8,26 @@ import { saveUser } from '../../redux/user/userSlice'
 import { Sidenav } from '../../components/Sidenav'
 import { useCookie } from '../../hooks/useCookie'
 import { api } from '../../helpers/request'
+import { saveProducts } from '../../redux/product/productSlice'
+import { useRouter } from 'next/navigation'
+import { useAxios } from '../../hooks/useAxios'
 
 const ProfilePage = () => {
   const dispatch = useDispatch()
+  const { send } = useAxios(api.user.get)
+  const { push } = useRouter()
 
   useEffect(() => {
     const { userId } = useCookie()
 
     const fetchUser = async () => {
-      const data = await api.user.get({ id: userId })
-      if (data) dispatch(saveUser(data.data))
+      const result = await send({ id: userId })
+      if (!result) return push('/signin')
+
+      const { data } = result
+      dispatch(saveUser(data))
+
+      if (data.products) dispatch(saveProducts(data.products))
     }
 
     fetchUser()
