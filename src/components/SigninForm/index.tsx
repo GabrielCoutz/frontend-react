@@ -33,7 +33,7 @@ const SigninForm = () => {
     setCookie(undefined, 'token', data.token, {
       maxAge: cookieMaxAge,
     })
-    setCookie(undefined, 'id', data.id, {
+    setCookie(undefined, 'userId', data.id, {
       maxAge: cookieMaxAge,
     })
 
