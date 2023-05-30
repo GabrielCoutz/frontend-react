@@ -1,12 +1,14 @@
+'use client'
+
 import { FormProvider, useForm } from 'react-hook-form'
 import { useDispatch, useSelector } from 'react-redux'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useRouter } from 'next/navigation'
 import React from 'react'
 
 import { selectUserProductsState } from '../../redux/product/productSelectors'
 import { createProductFormSchema, ICreatedProductFormSchema } from './schema'
 import { useCookie } from '../../hooks/useCookie'
-import { useModal } from '../../hooks/useModal'
 import { useAxios } from '../../hooks/useAxios'
 import { api } from '../../helpers/request'
 import { Button } from '../Button'
@@ -24,10 +26,10 @@ export const CreateProductForm = () => {
   })
   const { isLoading, error } = useSelector(selectUserProductsState)
   const { handleSubmit, reset } = createProductFormMethods
-  const { Modal, showModal } = useModal()
   const { send, error: requestErro } = useAxios(api.product.create)
   const dispatch = useDispatch()
   const { token } = useCookie()
+  const { push } = useRouter()
 
   const handleCreateProduct = async (payload: ICreatedProductFormSchema) => {
     dispatch(createProductStart())
@@ -37,52 +39,49 @@ export const CreateProductForm = () => {
 
     const { data } = result
     dispatch(createProductSuccess(data))
-    showModal('createdProduct')
+    push('/profile/product/created')
+    reset()
   }
 
   return (
-    <>
-      {Modal ? <Modal callback={reset} /> : null}
+    <FormProvider {...createProductFormMethods}>
+      <form
+        onSubmit={handleSubmit(handleCreateProduct)}
+        className="grid grid-cols-2 gap-4 max-md:grid-cols-1 my-6"
+      >
+        <Form.Field>
+          <Form.Label htmlFor="name" className="self-start">
+            Nome
+          </Form.Label>
+          <Form.Input name="name" />
+          <Form.Error field="name" />
+        </Form.Field>
 
-      <FormProvider {...createProductFormMethods}>
-        <form
-          onSubmit={handleSubmit(handleCreateProduct)}
-          className="grid grid-cols-2 gap-4 max-md:grid-cols-1 my-6"
-        >
-          <Form.Field>
-            <Form.Label htmlFor="name" className="self-start">
-              Nome
-            </Form.Label>
-            <Form.Input name="name" />
-            <Form.Error field="name" />
-          </Form.Field>
+        <Form.Field className="relative">
+          <Form.Label htmlFor="price" className="self-start">
+            Preço
+          </Form.Label>
+          <Form.Input name="price" type="number" prefix="currency" />
+          <Form.Error field="price" />
+        </Form.Field>
 
-          <Form.Field className="relative">
-            <Form.Label htmlFor="price" className="self-start">
-              Preço
-            </Form.Label>
-            <Form.Input name="price" type="number" prefix="currency" />
-            <Form.Error field="price" />
-          </Form.Field>
+        <Form.Field className="col-span-full">
+          <Form.Label htmlFor="description" className="self-start">
+            Descrição
+          </Form.Label>
+          <Form.Textarea name="description"></Form.Textarea>
+          <Form.Error field="description" />
+        </Form.Field>
 
-          <Form.Field className="col-span-full">
-            <Form.Label htmlFor="description" className="self-start">
-              Descrição
-            </Form.Label>
-            <Form.Textarea name="description"></Form.Textarea>
-            <Form.Error field="description" />
-          </Form.Field>
-
-          <div className="col-span-full my-2">
-            <UI.Erro>{error}</UI.Erro>
-          </div>
-          <div className="md:col-start-2 md:justify-self-end">
-            <Button.Primary fullWidth loading={isLoading}>
-              Anunciar
-            </Button.Primary>
-          </div>
-        </form>
-      </FormProvider>
-    </>
+        <div className="col-span-full my-2">
+          <UI.Erro>{error}</UI.Erro>
+        </div>
+        <div className="md:col-start-2 md:justify-self-end">
+          <Button.Primary fullWidth loading={isLoading}>
+            Anunciar
+          </Button.Primary>
+        </div>
+      </form>
+    </FormProvider>
   )
 }
