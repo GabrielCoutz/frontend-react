@@ -2,21 +2,24 @@ import { redirect } from 'next/navigation'
 import React, { ReactNode } from 'react'
 import { cookies } from 'next/headers'
 
+import { tokenIsValid } from '../../helpers/tokenIsValid'
 import { ProfileContext } from '../../contexts/profile'
 
 interface ProfileLayoutProps {
   children: ReactNode
+  modal: ReactNode
 }
 
-const ProfileLayout = async ({ children }: ProfileLayoutProps) => {
-  const userIsLogged = cookies().get('token')?.value
+const ProfileLayout = async ({ children, modal }: ProfileLayoutProps) => {
+  const tokenExist = cookies().get('token')?.value
 
-  if (!userIsLogged) redirect('/signin')
+  if (tokenExist && !(await tokenIsValid(tokenExist))) redirect('/signin')
 
   return (
-    <>
-      <ProfileContext>{children}</ProfileContext>
-    </>
+    <ProfileContext>
+      {modal}
+      {children}
+    </ProfileContext>
   )
 }
 
