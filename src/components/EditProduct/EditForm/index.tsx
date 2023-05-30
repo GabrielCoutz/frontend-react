@@ -1,6 +1,7 @@
 import { FormProvider, useForm } from 'react-hook-form'
 import { useDispatch, useSelector } from 'react-redux'
 import { zodResolver } from '@hookform/resolvers/zod'
+import Link from 'next/link'
 import React, { useState } from 'react'
 
 import { selectUserProductsState } from '../../../redux/product/productSelectors'
@@ -10,7 +11,6 @@ import { useCookie } from '../../../hooks/useCookie'
 import { useAxios } from '../../../hooks/useAxios'
 import { api } from '../../../helpers/request'
 import { Button } from '../../Button'
-import { Delete } from '../Delete'
 import { Form } from '../../Form'
 import { UI } from '../../Ui'
 import {
@@ -81,7 +81,9 @@ export const EditForm = ({ product }: ContentProps) => {
         </div>
 
         <div className="col-span-full flex justify-between max-md:flex-col max-md:gap-4">
-          <Delete product={product} />
+          <Link href={`/profile/product/delete/${product.id}`}>
+            <Button.Terciary>Deletar</Button.Terciary>
+          </Link>
 
           <Button.Primary loading={isLoading}>Atualizar dados</Button.Primary>
         </div>
