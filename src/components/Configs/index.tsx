@@ -1,8 +1,14 @@
+'use client'
+
+import { useRouter } from 'next/navigation'
 import React from 'react'
+import { Button } from '../Button'
+
 import { Dangerzone } from '../Dangerzone'
-import { DeleteAccountForm } from '../DeleteAccountForm'
 
 export const Config = () => {
+  const { push } = useRouter()
+
   return (
     <Dangerzone.Wrapper>
       <Dangerzone.Header>
@@ -26,7 +32,9 @@ export const Config = () => {
         </Dangerzone.Description>
 
         <Dangerzone.Action>
-          <DeleteAccountForm />
+          <Button.Danger onClick={() => push('/profile/account/delete')}>
+            Deletar conta
+          </Button.Danger>
         </Dangerzone.Action>
       </Dangerzone.Row>
     </Dangerzone.Wrapper>
