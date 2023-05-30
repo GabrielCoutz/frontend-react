@@ -5,8 +5,8 @@ import { Options } from '.'
 
 import { mockStore } from '../../../redux/__mocks__/redux.mock'
 
-jest.mock('next/router', () => ({
-  ...jest.requireActual('next/router'),
+jest.mock('next/navigation', () => ({
+  ...jest.requireActual('next/navigation'),
   useRouter: jest.fn(() => ({ push: jest.fn() })),
 }))
 

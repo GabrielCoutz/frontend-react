@@ -19,4 +19,10 @@ describe('[Button] index', () => {
 
     expect(getByText('terciary')).toBeInTheDocument()
   })
+
+  it('should render danger button', () => {
+    const { getByText } = render(<Button.Danger>danger</Button.Danger>)
+
+    expect(getByText('danger')).toBeInTheDocument()
+  })
 })

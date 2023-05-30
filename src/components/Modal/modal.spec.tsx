@@ -1,20 +1,26 @@
-import { render } from '@testing-library/react'
-import { Modal } from '.'
+import { render, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
-const modalTrigger = jest.fn(() => true)
+import { Modal } from '.'
 
 const renderModal = () => {
   return render(
-    <Modal.Trigger trigger={modalTrigger()}>
-      <Modal.Body onClose={jest.fn()}>
-        <Modal.Title>title</Modal.Title>
-        <Modal.IconWrapper>icon</Modal.IconWrapper>
-        <Modal.Message>message</Modal.Message>
-        <Modal.Actions>actions</Modal.Actions>
-      </Modal.Body>
-    </Modal.Trigger>,
+    <Modal.Wrapper>
+      <Modal.Title>title</Modal.Title>
+      <Modal.IconWrapper>icon</Modal.IconWrapper>
+      <Modal.Message>message</Modal.Message>
+      <Modal.Actions>actions</Modal.Actions>
+    </Modal.Wrapper>,
   )
 }
+
+const mockBack = jest.fn()
+jest.mock('next/navigation', () => ({
+  ...jest.requireActual('next/navigation'),
+  useRouter: () => ({
+    back: () => mockBack(),
+  }),
+}))
 
 describe('[Modal] index', () => {
   it('should render', () => {
@@ -26,13 +32,25 @@ describe('[Modal] index', () => {
     expect(getByText('message')).toBeInTheDocument()
   })
 
-  it('should not render', () => {
-    modalTrigger.mockReturnValue(false)
-    const { queryByText } = renderModal()
+  it('should back if background is clicked', async () => {
+    const { getByTestId } = renderModal()
+    const background = getByTestId('modal-background')
 
-    expect(queryByText('title')).not.toBeInTheDocument()
-    expect(queryByText('icon')).not.toBeInTheDocument()
-    expect(queryByText('title')).not.toBeInTheDocument()
-    expect(queryByText('message')).not.toBeInTheDocument()
+    await userEvent.click(background)
+
+    await waitFor(() => {
+      expect(mockBack).toBeCalled()
+    })
+  })
+
+  it('should back if close button (X) is clicked', async () => {
+    const { getByTestId } = renderModal()
+    const background = getByTestId('modal-close-button')
+
+    await userEvent.click(background)
+
+    await waitFor(() => {
+      expect(mockBack).toBeCalled()
+    })
   })
 })

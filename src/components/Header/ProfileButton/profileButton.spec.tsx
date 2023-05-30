@@ -8,6 +8,13 @@ jest.mock('react-redux', () => ({
   useSelector: () => mockUseSelector(),
 }))
 
+jest.mock('../../../contexts/header', () =>
+  jest.fn(() => ({
+    menuIsOpen: false,
+    setMenuIsOpen: () => jest.fn(),
+  })),
+)
+
 describe('[Header] ProfileButton', () => {
   it('should render', () => {
     const { getByRole } = render(<ProfileButton />)

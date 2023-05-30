@@ -9,8 +9,15 @@ jest.mock('react', () => ({
   useContext: () => mockHeaderContextValues(),
 }))
 
+jest.mock('../../../contexts/header', () =>
+  jest.fn(() => ({
+    menuIsOpen: false,
+    setMenuIsOpen: () => jest.fn(),
+  })),
+)
+
 describe('[Header] Nav', () => {
-  it('should render', async () => {
+  it('should render', () => {
     const { container } = render(<Nav>nav</Nav>)
     const nav = container.getElementsByTagName('nav')[0]
 

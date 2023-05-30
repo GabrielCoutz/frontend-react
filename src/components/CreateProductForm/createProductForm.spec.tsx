@@ -1,4 +1,4 @@
-import { render, waitFor } from '@testing-library/react'
+import { render } from '@testing-library/react'
 import { Provider } from 'react-redux'
 import userEvent from '@testing-library/user-event'
 
@@ -14,7 +14,6 @@ import {
   mockStore,
   mockUseSelect,
 } from '../../redux/__mocks__/redux.mock'
-import { mockProductCreate } from '../../redux/product/__mocks__/product.mock'
 import { mockUserState } from '../../redux/user/__mocks__/user.mock'
 
 const renderCreateProductForm = () => {
@@ -39,6 +38,11 @@ jest.mock('react-redux', () => ({
   ...jest.requireActual('react-redux'),
   useDispatch: () => mockDispatch,
   useSelector: () => mockUseSelect(mockUserState),
+}))
+
+jest.mock('next/navigation', () => ({
+  ...jest.requireActual('next/navigation'),
+  useRouter: jest.fn(() => ({ push: jest.fn() })),
 }))
 
 describe('[CreateProductForm] index', () => {

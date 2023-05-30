@@ -13,6 +13,13 @@ jest.mock('react', () => ({
   useContext: () => mockHeaderContextValues(),
 }))
 
+jest.mock('../../../contexts/header', () =>
+  jest.fn(() => ({
+    menuIsOpen: false,
+    setMenuIsOpen: () => jest.fn(),
+  })),
+)
+
 describe('[Header] MobileButton', () => {
   it('should render', () => {
     const { getByRole } = render(<MobileButton />)

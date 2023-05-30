@@ -1,8 +1,8 @@
 import { render } from '@testing-library/react'
 import { Sidenav } from '.'
 
-jest.mock('next/router', () => ({
-  ...jest.requireActual('next/router'),
+jest.mock('next/navigation', () => ({
+  ...jest.requireActual('next/navigation'),
   useRouter: jest.fn(() => ({ push: jest.fn() })),
 }))
 

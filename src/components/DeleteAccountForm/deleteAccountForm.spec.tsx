@@ -17,8 +17,8 @@ const renderDeleteAccountForm = () => {
   )
 }
 
-jest.mock('next/router', () => ({
-  ...jest.requireActual('next/router'),
+jest.mock('next/navigation', () => ({
+  ...jest.requireActual('next/navigation'),
   useRouter: jest.fn(() => ({ push: jest.fn() })),
 }))
 
@@ -52,17 +52,6 @@ describe('[DeleteAccountForm] index', () => {
     const button = container.getElementsByTagName('button')[0]
 
     expect(button).toBeInTheDocument()
-  })
-
-  it('should show modal when click in button', async () => {
-    const { container, getByRole } = renderDeleteAccountForm()
-    const button = container.getElementsByTagName('button')[0]
-
-    userEvent.click(button)
-
-    await waitFor(() => {
-      expect(getByRole('dialog')).toBeInTheDocument()
-    })
   })
 
   it('should not dispatch if data is invalid', async () => {
@@ -148,23 +137,6 @@ describe('[DeleteAccountForm] index', () => {
       expect(mockRedux.mockDispatch).toBeCalledWith(
         userSlice.deleteUserFail('generial error'),
       )
-    })
-  })
-
-  it('should close modal when cancel button is clicked', async () => {
-    const { getByRole, container } = renderDeleteAccountForm()
-    const toggleModalButton = container.getElementsByTagName('button')[0]
-
-    await act(() => userEvent.click(toggleModalButton))
-    await waitFor(async () => {
-      const modal = getByRole('dialog')
-      const cancelButton = getByRole('button', {
-        name: 'Cancelar',
-      })
-
-      await userEvent.click(cancelButton)
-
-      expect(modal).not.toBeInTheDocument()
     })
   })
 })

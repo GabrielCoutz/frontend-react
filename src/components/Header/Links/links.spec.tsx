@@ -17,6 +17,13 @@ jest.mock('react', () => ({
   useContext: () => mockHeaderContextValues,
 }))
 
+jest.mock('../../../contexts/header', () =>
+  jest.fn(() => ({
+    menuIsOpen: false,
+    setMenuIsOpen: () => jest.fn(),
+  })),
+)
+
 const renderLinks = () => {
   return render(
     <Provider store={mockStore({})}>
