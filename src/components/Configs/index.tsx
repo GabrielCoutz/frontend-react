@@ -32,7 +32,10 @@ export const Config = () => {
         </Dangerzone.Description>
 
         <Dangerzone.Action>
-          <Button.Danger onClick={() => push('/profile/account/delete')}>
+          <Button.Danger
+            onClick={() => push('/profile/account/delete')}
+            data-testid="deleteaccountform-delete"
+          >
             Deletar conta
           </Button.Danger>
         </Dangerzone.Action>

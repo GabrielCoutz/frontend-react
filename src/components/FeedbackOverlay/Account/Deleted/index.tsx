@@ -17,7 +17,11 @@ export const Deleted = () => {
       <Modal.Title>Nos vemos em breve</Modal.Title>
       <Modal.Message>Conta deletada</Modal.Message>
       <Modal.Actions>
-        <Button.Primary fullWidth onClick={() => push('/signin')}>
+        <Button.Primary
+          fullWidth
+          onClick={() => push('/signin')}
+          data-testid="modal-continue-button"
+        >
           Continuar
         </Button.Primary>
       </Modal.Actions>

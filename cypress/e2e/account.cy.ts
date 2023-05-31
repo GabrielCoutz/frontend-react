@@ -32,6 +32,11 @@ describe('[Account] Create', () => {
   })
 
   it('should create account and show success modal', () => {
+    cy.intercept({
+      method: 'GET',
+      url: '*/success',
+    }).as('createdAccount')
+
     cy.get('input[id="name"]').type(fakeUserData.create.name)
     cy.get('input[id="email"]').type(fakeUserData.create.email)
     cy.get('input[id="password"]').type(fakeUserData.create.password)
@@ -39,6 +44,9 @@ describe('[Account] Create', () => {
     cy.get('button[data-testid="signupform-submit"]')
       .contains('Cadastrar-se')
       .click()
+
+    cy.wait('@createdAccount')
+    cy.url().should('include', '/success')
 
     cy.contains('Conta criada com sucesso').should('be.visible')
   })
@@ -127,6 +135,7 @@ describe('[Account] Login', () => {
       .should('be.visible')
     cy.get('button[data-testid="logoutbutton"]').contains('Sair').click()
 
+    cy.url().should('include', '/signin')
     cy.get('h1').contains('É bom te ver de novo').should('be.visible')
   })
 })
@@ -199,12 +208,19 @@ describe('[Account] Delete', () => {
       .should('be.visible')
   })
 
-  it('should toggle modal with all form components', () => {
+  it('should see modal with all form components', () => {
+    cy.intercept({
+      method: 'GET',
+      url: '*/account/delete',
+    }).as('accountDelete')
+
     cy.get('button[data-testid="deleteaccountform-delete"]')
       .contains('Deletar conta')
       .click()
 
-    cy.get('[data-testid="modal-iconwrapper"]').should('be.visible')
+    cy.wait('@accountDelete')
+    cy.url().should('include', '/account/delete')
+    cy.get('[data-testid="modal-wrapper"]').should('be.visible')
 
     cy.get('[data-testid="modal-title"]')
       .contains('Deletar conta')
@@ -246,10 +262,15 @@ describe('[Account] Delete', () => {
 
     cy.get('button[data-testid="deleteaccountform-cancel"]').click()
 
-    cy.get('[data-testid="modal-iconwrapper"]').not('be.visible')
+    cy.url().should('include', '/profile')
   })
 
   it('should delete account and be redirected to signin page', () => {
+    cy.intercept({
+      method: 'GET',
+      url: '*/account/deleted',
+    }).as('accountDeleted')
+
     cy.get('button[data-testid="deleteaccountform-delete"]')
       .contains('Deletar conta')
       .click()
@@ -258,10 +279,14 @@ describe('[Account] Delete', () => {
 
     cy.get('button[data-testid="deleteaccountform-confirm"]').click()
 
-    cy.get('p').contains('Conta deletada com sucesso').should('be.visible')
+    cy.wait('@accountDeleted')
+    cy.get('p').contains('Conta deletada').should('be.visible')
     cy.get('button[data-testid="modal-continue-button"')
       .contains('Continuar')
       .click()
+
+    cy.get('[data-testid="modal-continue-button"]').should('be.visible').click()
+
     cy.url().should('include', 'signin')
   })
 })
