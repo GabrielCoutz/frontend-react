@@ -7,7 +7,7 @@ import { Empty } from './Empty'
 import { Text } from './Text'
 import { Box } from './Box'
 
-export const ProductPage = {
+export const Page = {
   AnnouncedBy,
   Subtitle,
   DotList,
