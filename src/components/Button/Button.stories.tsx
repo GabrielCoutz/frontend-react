@@ -15,6 +15,11 @@ export default {
         disable: true,
       },
     },
+    'data-testid': {
+      table: {
+        disable: true,
+      },
+    },
   },
 } as Meta
 
