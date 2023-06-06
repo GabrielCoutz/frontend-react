@@ -77,7 +77,11 @@ export const CreateProductForm = () => {
           <UI.Erro>{error}</UI.Erro>
         </div>
         <div className="md:col-start-2 md:justify-self-end">
-          <Button.Primary fullWidth loading={isLoading}>
+          <Button.Primary
+            fullWidth
+            loading={isLoading}
+            data-testid="announce-product-button"
+          >
             Anunciar
           </Button.Primary>
         </div>

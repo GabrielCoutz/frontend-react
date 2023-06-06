@@ -44,7 +44,9 @@ export const Products = () => {
               </Accordion.Header>
 
               <Accordion.Toggle className="col-start-2 self-start justify-self-end">
-                <Button.Terciary>Editar</Button.Terciary>
+                <Button.Terciary data-testid="edit-product-button">
+                  Editar
+                </Button.Terciary>
               </Accordion.Toggle>
               <Link href={`/product/${product.id}`}>
                 <Button.Terciary>Ver produto</Button.Terciary>

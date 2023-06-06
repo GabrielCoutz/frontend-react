@@ -82,10 +82,14 @@ export const EditForm = ({ product }: ContentProps) => {
 
         <div className="col-span-full flex justify-between max-md:flex-col max-md:gap-4">
           <Link href={`/profile/product/delete/${product.id}`}>
-            <Button.Terciary>Deletar</Button.Terciary>
+            <Button.Terciary data-testid="delete-product-button">
+              Deletar
+            </Button.Terciary>
           </Link>
 
-          <Button.Primary loading={isLoading}>Atualizar dados</Button.Primary>
+          <Button.Primary loading={isLoading} data-testid="update-product-data">
+            Atualizar dados
+          </Button.Primary>
         </div>
       </form>
     </FormProvider>

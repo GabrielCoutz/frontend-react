@@ -5,7 +5,10 @@ import { useRouter } from 'next/navigation'
 import { useDispatch } from 'react-redux'
 import React from 'react'
 
-import { deleteProductFail } from '../../redux/product/productSlice'
+import {
+  deleteProductFail,
+  deleteProductSuccess,
+} from '../../redux/product/productSlice'
 import { IProduct } from '../../interfaces/Product'
 import { useCookie } from '../../hooks/useCookie'
 import { useAxios } from '../../hooks/useAxios'
@@ -21,9 +24,10 @@ export const DeleteProductForm = ({ product }: { product: IProduct }) => {
   const dispatch = useDispatch()
 
   const handleClick = async () => {
-    await send({ id: productToDelete?.id!, token })
+    await send({ id: productToDelete.id, token })
     if (error) return dispatch(deleteProductFail(error))
 
+    dispatch(deleteProductSuccess(productToDelete.id))
     push('/profile/product/deleted')
   }
 
@@ -40,10 +44,20 @@ export const DeleteProductForm = ({ product }: { product: IProduct }) => {
       </Modal.Message>
 
       <Modal.Actions>
-        <Button.Secondary fullWidth onClick={back} loading={loading}>
+        <Button.Secondary
+          fullWidth
+          onClick={back}
+          loading={loading}
+          data-testid="cancel-delete-product-button"
+        >
           Cancelar
         </Button.Secondary>
-        <Button.Danger fullWidth onClick={handleClick} loading={loading}>
+        <Button.Danger
+          fullWidth
+          onClick={handleClick}
+          loading={loading}
+          data-testid="confirm-delete-product-button"
+        >
           Sim, tenho certeza
         </Button.Danger>
       </Modal.Actions>

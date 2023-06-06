@@ -28,9 +28,13 @@ export const Empty = () => {
           className="self-center"
         >
           {accordionIsOpen ? (
-            <Button.Secondary>Cancelar</Button.Secondary>
+            <Button.Secondary data-testid="cancel-create-product-button">
+              Cancelar
+            </Button.Secondary>
           ) : (
-            <Button.Primary>Cadastre um produto agora mesmo!</Button.Primary>
+            <Button.Primary data-testid="create-product-button">
+              Cadastre um produto agora mesmo!
+            </Button.Primary>
           )}
         </Accordion.Toggle>
 

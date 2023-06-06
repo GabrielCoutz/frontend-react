@@ -1,5 +1,6 @@
 import { PayloadAction } from '@reduxjs/toolkit'
-import { IProductResponse } from '../../helpers/request/product'
+import { IProductResponse } from '../../helpers/request/product/interface'
+
 import { IProduct, IProductList } from '../../interfaces/Product'
 import { IProductState } from './productSlice'
 
