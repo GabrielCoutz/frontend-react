@@ -1,17 +1,18 @@
-import { useSelector } from 'react-redux'
+'use client'
+
 import Link from 'next/link'
 import React, { useState } from 'react'
 
-import { selectUserProducts } from '../../../redux/product/productSelectors'
 import { EditProduct } from '../../EditProduct'
 import { Accordion } from '../../Accordion'
 import { Product } from '../../Product'
 import { Button } from '../../Button'
 import { CreateProductForm } from '../../CreateProductForm'
+import { useProductStore } from '../../../hooks/useProductStore'
 
 export const Products = () => {
   const [accordionIsOpen, setAccordionIsOpen] = useState(false)
-  const products = useSelector(selectUserProducts)
+  const { data: products } = useProductStore()
 
   return (
     <>

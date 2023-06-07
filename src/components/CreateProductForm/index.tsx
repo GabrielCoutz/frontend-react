@@ -1,12 +1,10 @@
 'use client'
 
 import { FormProvider, useForm } from 'react-hook-form'
-import { useDispatch, useSelector } from 'react-redux'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useRouter } from 'next/navigation'
 import React from 'react'
 
-import { selectUserProductsState } from '../../redux/product/productSelectors'
 import { createProductFormSchema, ICreatedProductFormSchema } from './schema'
 import { useCookie } from '../../hooks/useCookie'
 import { useAxios } from '../../hooks/useAxios'
@@ -14,31 +12,32 @@ import { api } from '../../helpers/request'
 import { Button } from '../Button'
 import { Form } from '../Form'
 import { UI } from '../Ui'
-import {
-  createProductFail,
-  createProductStart,
-  createProductSuccess,
-} from '../../redux/product/productSlice'
+import { useProductStore } from '../../hooks/useProductStore'
 
 export const CreateProductForm = () => {
   const createProductFormMethods = useForm<ICreatedProductFormSchema>({
     resolver: zodResolver(createProductFormSchema),
   })
-  const { isLoading, error } = useSelector(selectUserProductsState)
   const { handleSubmit, reset } = createProductFormMethods
   const { send, error: requestErro } = useAxios(api.product.create)
-  const dispatch = useDispatch()
+  const {
+    createProductStart,
+    createProductFail,
+    createProductSuccess,
+    isLoading,
+    error,
+  } = useProductStore()
   const { token } = useCookie()
   const { push } = useRouter()
 
   const handleCreateProduct = async (payload: ICreatedProductFormSchema) => {
-    dispatch(createProductStart())
+    createProductStart()
     const result = await send({ payload, token })
 
-    if (!result) return dispatch(createProductFail(`${requestErro}`))
+    if (!result) return createProductFail(`${requestErro}`)
 
     const { data } = result
-    dispatch(createProductSuccess(data))
+    createProductSuccess(data)
     push('/profile/product/created')
     reset()
   }

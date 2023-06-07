@@ -1,10 +1,8 @@
 import { FormProvider, useForm } from 'react-hook-form'
-import { useDispatch, useSelector } from 'react-redux'
 import { zodResolver } from '@hookform/resolvers/zod'
 import Link from 'next/link'
 import React, { useState } from 'react'
 
-import { selectUserProductsState } from '../../../redux/product/productSelectors'
 import { IProductFormSchema, productFormSchema } from './schema'
 import { IProduct } from '../../../interfaces/Product'
 import { useCookie } from '../../../hooks/useCookie'
@@ -13,18 +11,14 @@ import { api } from '../../../helpers/request'
 import { Button } from '../../Button'
 import { Form } from '../../Form'
 import { UI } from '../../Ui'
-import {
-  updateProductFail,
-  updateProductStart,
-  updateProductSuccess,
-} from '../../../redux/product/productSlice'
+
+import { useProductStore } from '../../../hooks/useProductStore'
 
 interface ContentProps {
   product: IProduct
 }
 
 export const EditForm = ({ product }: ContentProps) => {
-  const { error, isLoading } = useSelector(selectUserProductsState)
   const { send, error: requestErro } = useAxios(api.product.update)
   const productFormMethods = useForm<IProductFormSchema>({
     resolver: zodResolver(productFormSchema),
@@ -36,18 +30,24 @@ export const EditForm = ({ product }: ContentProps) => {
   })
   const { handleSubmit } = productFormMethods
   const [message, setMessage] = useState('')
-  const dispatch = useDispatch()
+  const {
+    updateProductFail,
+    updateProductStart,
+    updateProductSuccess,
+    error,
+    isLoading,
+  } = useProductStore()
   const { token } = useCookie()
 
   const handleUpdate = async (payload: IProductFormSchema) => {
     setMessage('')
-    dispatch(updateProductStart())
+    updateProductStart()
 
     const result = await send({ payload, id: product.id, token })
-    if (!result) return dispatch(updateProductFail(`${requestErro}`))
+    if (!result) return updateProductFail(`${requestErro}`)
 
     const { data } = result
-    dispatch(updateProductSuccess(data))
+    updateProductSuccess(data)
     setMessage('Produto atualizado')
   }
 

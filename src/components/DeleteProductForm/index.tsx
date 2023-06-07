@@ -2,32 +2,28 @@
 
 import { TrashIcon } from '@heroicons/react/24/outline'
 import { useRouter } from 'next/navigation'
-import { useDispatch } from 'react-redux'
 import React from 'react'
 
-import {
-  deleteProductFail,
-  deleteProductSuccess,
-} from '../../redux/product/productSlice'
 import { IProduct } from '../../interfaces/Product'
 import { useCookie } from '../../hooks/useCookie'
 import { useAxios } from '../../hooks/useAxios'
 import { api } from '../../helpers/request'
 import { Button } from '../Button'
 import { Modal } from '../Modal'
+import { useProductStore } from '../../hooks/useProductStore'
 
 export const DeleteProductForm = ({ product }: { product: IProduct }) => {
   const productToDelete = product
   const { back, push } = useRouter()
   const { error, loading, send } = useAxios(api.product.delete)
+  const { deleteProductFail, deleteProductSuccess } = useProductStore()
   const { token } = useCookie()
-  const dispatch = useDispatch()
 
   const handleClick = async () => {
     await send({ id: productToDelete.id, token })
-    if (error) return dispatch(deleteProductFail(error))
+    if (error) return deleteProductFail(error)
 
-    dispatch(deleteProductSuccess(productToDelete.id))
+    deleteProductSuccess(productToDelete.id)
     push('/profile/product/deleted')
   }
 
