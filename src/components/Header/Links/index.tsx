@@ -1,10 +1,9 @@
 'use client'
 
 import React, { useContext, useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
 
 import { HeaderContext } from '../../../contexts/header'
-import { selectUserName } from '../../../redux/user/userSelectors'
+import { useUserStore } from '../../../hooks/useUserStore'
 import { HeaderLink } from '.././HeaderLink'
 import { ProfileButton } from '.././ProfileButton'
 
@@ -28,12 +27,12 @@ export const Links = () => {
   const { setMenuIsOpen } = useContext(HeaderContext)
 
   const [userIsLogged, setUserIslogged] = useState(false)
-  const userName = useSelector(selectUserName)
+  const { data } = useUserStore()
 
   useEffect(() => {
-    if (userName) setUserIslogged(true)
+    if (data) setUserIslogged(true)
     else setUserIslogged(false)
-  }, [userName])
+  }, [data])
 
   return (
     <ul

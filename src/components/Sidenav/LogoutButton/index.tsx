@@ -2,16 +2,16 @@
 
 import { useRouter } from 'next/navigation'
 import React from 'react'
-import { useDispatch } from 'react-redux'
+
 import { clearLocalData } from '../../../helpers/clearLocalData'
-import { logoutUser } from '../../../redux/user/userSlice'
+import { useUserStore } from '../../../hooks/useUserStore'
 
 export const LogoutButton = () => {
   const { push } = useRouter()
-  const dispatch = useDispatch()
+  const { logoutUser } = useUserStore()
 
   const logout = () => {
-    dispatch(logoutUser())
+    logoutUser()
     clearLocalData(['token', 'userId'])
     push('signin')
   }

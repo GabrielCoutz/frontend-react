@@ -1,54 +1,54 @@
 'use client'
 
 import { FormProvider, useForm } from 'react-hook-form'
-import { useDispatch, useSelector } from 'react-redux'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useRouter } from 'next/navigation'
 import React from 'react'
 
 import { LoginUserPayload } from '../../helpers/request/auth/interface'
 import { deleteAccountSchema, IDeleteAccountSchema } from './schema'
-import { selectUserState } from '../../redux/user/userSelectors'
 import { clearLocalData } from '../../helpers/clearLocalData'
+import { useUserStore } from '../../hooks/useUserStore'
 import { useCookie } from '../../hooks/useCookie'
 import { useAxios } from '../../hooks/useAxios'
 import { api } from '../../helpers/request'
 import { Button } from '../Button'
 import { Form } from '../Form'
 import { UI } from '../Ui'
-import {
-  deleteUserFail,
-  deleteUserStart,
-  deleteUserSuccess,
-} from '../../redux/user/userSlice'
 
 export const DeleteAccountForm = () => {
   const deleteAccountMethods = useForm<IDeleteAccountSchema>({
     resolver: zodResolver(deleteAccountSchema),
   })
+  const {
+    data: user,
+    error,
+    isLoading,
+    deleteUserFail,
+    deleteUserStart,
+    deleteUserSuccess,
+  } = useUserStore()
   const { send: sendDelete, error: deleteError } = useAxios(api.user.delete)
-  const { error, isLoading, data: user } = useSelector(selectUserState)
   const { send: sendLogin } = useAxios(api.auth.login)
   const { handleSubmit } = deleteAccountMethods
-  const dispatch = useDispatch()
   const { token } = useCookie()
   const { back } = useRouter()
   const { push } = useRouter()
 
   const handleDelete = async (payload: IDeleteAccountSchema) => {
-    dispatch(deleteUserStart())
+    deleteUserStart()
 
     const loginPayloadDto = {
       email: user?.email,
       password: payload.password,
     } as LoginUserPayload
     const resultLogin = await sendLogin(loginPayloadDto)
-    if (!resultLogin) return dispatch(deleteUserFail('Senha inválida'))
+    if (!resultLogin) return deleteUserFail('Senha inválida')
 
     await sendDelete({ id: `${user?.id}`, token })
-    if (deleteError) return dispatch(deleteUserFail(deleteError))
+    if (deleteError) return deleteUserFail(deleteError)
 
-    dispatch(deleteUserSuccess())
+    deleteUserSuccess()
     clearLocalData(['token', 'userId'])
     push('/profile/account/deleted')
   }

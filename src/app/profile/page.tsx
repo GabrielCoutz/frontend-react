@@ -1,33 +1,32 @@
 'use client'
 
-import { useDispatch } from 'react-redux'
 import React, { useEffect } from 'react'
 
 import { ProfileDisplay } from '../../components/ProfileDisplay'
-import { saveUser } from '../../redux/user/userSlice'
 import { Sidenav } from '../../components/Sidenav'
 import { useCookie } from '../../hooks/useCookie'
 import { api } from '../../helpers/request'
-import { saveProducts } from '../../redux/product/productSlice'
 import { useRouter } from 'next/navigation'
 import { useAxios } from '../../hooks/useAxios'
+import { useUserStore } from '../../hooks/useUserStore'
+import { useProductStore } from '../../hooks/useProductStore'
 
 const ProfilePage = () => {
-  const dispatch = useDispatch()
+  const { saveUser } = useUserStore()
+  const { saveProducts } = useProductStore()
   const { send } = useAxios(api.user.get)
   const { push } = useRouter()
+  const { userId } = useCookie()
 
   useEffect(() => {
-    const { userId } = useCookie()
-
     const fetchUser = async () => {
       const result = await send({ id: userId })
       if (!result) return push('/signin')
 
       const { data } = result
-      dispatch(saveUser(data))
+      saveUser(data)
 
-      if (data.products) dispatch(saveProducts(data.products))
+      if (data.products) saveProducts(data.products)
     }
 
     fetchUser()

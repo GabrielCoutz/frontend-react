@@ -1,30 +1,31 @@
 'use client'
 
 import { FormProvider, useForm } from 'react-hook-form'
-import { useDispatch, useSelector } from 'react-redux'
 import { zodResolver } from '@hookform/resolvers/zod'
 import React, { useEffect, useState } from 'react'
 
-import { selectUserState } from '../../redux/user/userSelectors'
 import { useCookie } from '../../hooks/useCookie'
 import { api } from '../../helpers/request'
 import { Button } from '../Button'
 import { Form } from '../Form'
 import { UI } from '../Ui'
 import {
-  updateUserSuccess,
-  updateUserStart,
-  updateUserFail,
-} from '../../redux/user/userSlice'
-import {
   IUserFormSchema,
   userFormDefaultValues,
   userFormSchema,
 } from './schema'
 import { useAxios } from '../../hooks/useAxios'
+import { useUserStore } from '../../hooks/useUserStore'
 
 export const UserForm = () => {
-  const { data: user, error, isLoading } = useSelector(selectUserState)
+  const {
+    data: user,
+    error,
+    isLoading,
+    updateUserFail,
+    updateUserStart,
+    updateUserSuccess,
+  } = useUserStore()
   const { send, error: requestErro } = useAxios(api.user.update)
   const userFormMethods = useForm<IUserFormSchema>({
     resolver: zodResolver(userFormSchema),
@@ -32,7 +33,7 @@ export const UserForm = () => {
   })
   const [message, setMessage] = useState('')
   const { handleSubmit, reset } = userFormMethods
-  const dispatch = useDispatch()
+
   const { token } = useCookie()
 
   useEffect(
@@ -44,7 +45,7 @@ export const UserForm = () => {
   )
 
   const handleUpdate = async (payload: IUserFormSchema) => {
-    dispatch(updateUserStart())
+    updateUserStart()
     setMessage('')
 
     const result = await send({
@@ -52,11 +53,11 @@ export const UserForm = () => {
       payload,
       token,
     })
-    if (!result) return dispatch(updateUserFail(`${requestErro}`))
+    if (!result) return updateUserFail(`${requestErro}`)
 
-    const { data } = result
+    const { data } = result!
 
-    dispatch(updateUserSuccess(data))
+    updateUserSuccess(data)
     setMessage('Dados atualizados')
   }
 
