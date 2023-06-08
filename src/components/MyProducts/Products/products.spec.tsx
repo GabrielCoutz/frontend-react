@@ -1,28 +1,18 @@
 import { render, waitFor } from '@testing-library/react'
-import { Provider } from 'react-redux'
 
 import { Products } from '.'
 
-import { mockStore } from '../../../redux/__mocks__/redux.mock'
-
-const mockUseSelector = jest.fn(() => [{ id: '1' }])
-
-jest.mock('react-redux', () => ({
-  ...jest.requireActual('react-redux'),
-  useSelector: () => mockUseSelector(),
+const mockData = jest.fn(() => ({
+  data: [{ id: '1' }],
 }))
-
-const renderProductsComponent = () => {
-  return render(
-    <Provider store={mockStore({})}>
-      <Products />
-    </Provider>,
-  )
-}
+jest.mock('../../../hooks/useProductStore', () => ({
+  ...jest.requireActual('../../../hooks/useProductStore'),
+  useProductStore: () => mockData(),
+}))
 
 describe('[MyProducts] Products', () => {
   it('should render', async () => {
-    const { container } = renderProductsComponent()
+    const { container } = render(<Products />)
 
     await waitFor(() => {
       expect(container.getElementsByTagName('li')[0]).toBeInTheDocument()
@@ -30,8 +20,8 @@ describe('[MyProducts] Products', () => {
   })
 
   it('should not render', async () => {
-    mockUseSelector.mockReturnValue([])
-    const { container } = renderProductsComponent()
+    mockData.mockReturnValue({ data: [] })
+    const { container } = render(<Products />)
 
     await waitFor(() => {
       expect(container.getElementsByTagName('li')[0]).toBeFalsy()

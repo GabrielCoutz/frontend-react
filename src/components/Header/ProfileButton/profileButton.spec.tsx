@@ -2,30 +2,27 @@ import { render } from '@testing-library/react'
 
 import { ProfileButton } from '.'
 
-const mockUseSelector = jest.fn(() => 'user')
-jest.mock('react-redux', () => ({
-  ...jest.requireActual('react-redux'),
-  useSelector: () => mockUseSelector(),
+const mockData = jest.fn(() => ({
+  data: {
+    name: 'test',
+  },
 }))
-
-jest.mock('../../../contexts/header', () =>
-  jest.fn(() => ({
-    menuIsOpen: false,
-    setMenuIsOpen: () => jest.fn(),
-  })),
-)
+jest.mock('../../../hooks/useUserStore', () => ({
+  ...jest.requireActual('../../../hooks/useUserStore'),
+  useUserStore: () => mockData(),
+}))
 
 describe('[Header] ProfileButton', () => {
   it('should render', () => {
     const { getByRole } = render(<ProfileButton />)
 
-    expect(getByRole('link', { name: 'User' })).toBeInTheDocument()
+    expect(getByRole('link', { name: 'Test' })).toBeInTheDocument()
   })
 
   it('should not render', () => {
-    mockUseSelector.mockReturnValue('')
+    mockData.mockReturnValue({} as any)
     const { queryByRole } = render(<ProfileButton />)
 
-    expect(queryByRole('link', { name: 'User' })).not.toBeInTheDocument()
+    expect(queryByRole('link', { name: 'Test' })).not.toBeInTheDocument()
   })
 })

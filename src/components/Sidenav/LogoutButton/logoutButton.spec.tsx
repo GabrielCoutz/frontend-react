@@ -1,45 +1,40 @@
 import userEvents from '@testing-library/user-event'
-import { render } from '@testing-library/react'
-import { Provider } from 'react-redux'
+import { render, waitFor } from '@testing-library/react'
 
 import { LogoutButton } from '.'
-
-import { mockStore } from '../../../redux/__mocks__/redux.mock'
 
 const mockPush = jest.fn()
 jest.mock('next/navigation', () => ({
   ...jest.requireActual('next/navigation'),
-  useRouter: jest.fn(() => ({ push: mockPush() })),
+  useRouter: () => ({
+    push: () => mockPush(),
+  }),
 }))
 
-const mockUseDispatch = jest.fn()
-jest.mock('react-redux', () => ({
-  ...jest.requireActual('react-redux'),
-  useDispatch: () => mockUseDispatch(),
+const mockLogoutUser = jest.fn()
+jest.mock('../../../hooks/useUserStore', () => ({
+  ...jest.requireActual('../../../hooks/useUserStore'),
+  useUserStore: () => ({
+    logoutUser: () => mockLogoutUser(),
+  }),
 }))
-
-const renderLogoutButton = () => {
-  return render(
-    <Provider store={mockStore({})}>
-      <LogoutButton />
-    </Provider>,
-  )
-}
 
 describe('[SideNav] LogoutButton', () => {
   it('should render', () => {
-    const { getByRole } = renderLogoutButton()
+    const { getByRole } = render(<LogoutButton />)
 
     expect(getByRole('button')).toBeInTheDocument()
   })
 
-  it('should call logout when button is clicked', () => {
-    const { getByRole } = renderLogoutButton()
+  it('should call logout when button is clicked', async () => {
+    const { getByRole } = render(<LogoutButton />)
     const logoutButton = getByRole('button')
 
-    userEvents.click(logoutButton)
+    await userEvents.click(logoutButton)
 
-    expect(mockPush).toBeCalled()
-    expect(mockUseDispatch).toBeCalled()
+    await waitFor(() => {
+      expect(mockPush).toBeCalled()
+      expect(mockLogoutUser).toBeCalled()
+    })
   })
 })

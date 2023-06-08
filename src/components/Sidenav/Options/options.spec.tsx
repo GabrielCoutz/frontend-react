@@ -1,18 +1,10 @@
 import { render } from '@testing-library/react'
-import { Provider } from 'react-redux'
 
 import { Options } from '.'
-
-import { mockStore } from '../../../redux/__mocks__/redux.mock'
 
 jest.mock('next/navigation', () => ({
   ...jest.requireActual('next/navigation'),
   useRouter: jest.fn(() => ({ push: jest.fn() })),
-}))
-
-jest.mock('react-redux', () => ({
-  ...jest.requireActual('react-redux'),
-  useDispatch: jest.fn(),
 }))
 
 jest.mock('react', () => ({
@@ -27,23 +19,15 @@ jest.mock('.././LogoutButton', () => ({
   LogoutButton: jest.fn(() => <div>logout button</div>),
 }))
 
-const renderOptions = () => {
-  return render(
-    <Provider store={mockStore({})}>
-      <Options />
-    </Provider>,
-  )
-}
-
 describe('[Sidenav] Options', () => {
   it('should render', () => {
-    const { container } = renderOptions()
+    const { container } = render(<Options />)
 
     expect(container.getElementsByTagName('ul')[0]).toBeInTheDocument()
   })
 
   it('should render with logout button', () => {
-    const { getByText } = renderOptions()
+    const { getByText } = render(<Options />)
 
     expect(getByText('logout button')).toBeInTheDocument()
   })

@@ -1,31 +1,7 @@
 import { render, waitFor } from '@testing-library/react'
-import { Provider } from 'react-redux'
-import { UserForm } from '.'
-import { mockStore } from '../../redux/__mocks__/redux.mock'
 import userEvent from '@testing-library/user-event'
-import {
-  updateUserFail,
-  updateUserStart,
-  updateUserSuccess,
-} from '../../redux/user/userSlice'
 
-const mockData = {
-  name: 'userName',
-  email: 'user@example.com',
-  id: '123',
-}
-
-const mockDispatch = jest.fn()
-const mockUseSelector = jest.fn(() => ({
-  data: mockData,
-  error: null,
-  isLoading: false,
-}))
-jest.mock('react-redux', () => ({
-  ...jest.requireActual('react-redux'),
-  useSelector: () => mockUseSelector(),
-  useDispatch: () => mockDispatch,
-}))
+import { UserForm } from '.'
 
 const mockError = jest.fn(() => '')
 const mockSend = jest.fn()
@@ -36,34 +12,48 @@ jest.mock('../../hooks/useAxios', () => ({
   }),
 }))
 
-const renderUserForm = () => {
-  return render(
-    <Provider store={mockStore({})}>
-      <UserForm />
-    </Provider>,
-  )
-}
+const mockUpdateUserFail = jest.fn()
+const mockUpdateUserStart = jest.fn()
+const mockUpdateUserSuccess = jest.fn()
+jest.mock('../../hooks/useUserStore', () => ({
+  ...jest.requireActual('../../hooks/useUserStore'),
+  useUserStore: () => ({
+    updateUserFail: () => mockUpdateUserFail(),
+    updateUserStart: () => mockUpdateUserStart(),
+    updateUserSuccess: () => mockUpdateUserSuccess(),
+  }),
+}))
+
+jest.mock('./schema', () => ({
+  ...jest.requireActual('./schema'),
+  userFormDefaultValues: {
+    name: 'userName',
+    email: 'user@example.com',
+  },
+}))
 
 describe('[UserForm] index', () => {
   it('should render', () => {
-    const { container } = renderUserForm()
+    const { container } = render(<UserForm />)
 
     expect(container.getElementsByTagName('form')[0]).toBeInTheDocument()
   })
 
   it('should inputs have user values from store', () => {
-    const { getByLabelText } = renderUserForm()
+    const { getByLabelText } = render(<UserForm />)
     const nameInput = getByLabelText('Nome') as HTMLInputElement
     const emailInput = getByLabelText('Email') as HTMLInputElement
 
-    expect(nameInput.value).toEqual(mockData.name)
-    expect(emailInput.value).toEqual(mockData.email)
+    expect(nameInput.value).toEqual('userName')
+    expect(emailInput.value).toEqual('user@example.com')
+
+    jest.unmock('./schema')
   })
 
   it('should dispatch and update user with valid data', async () => {
     mockSend.mockReturnValue({ data: {} })
 
-    const { getByLabelText, container } = renderUserForm()
+    const { getByLabelText, container } = render(<UserForm />)
     const nameInput = getByLabelText('Nome') as HTMLInputElement
     const emailInput = getByLabelText('Email') as HTMLInputElement
     const form = container.getElementsByTagName('form')[0] as HTMLFormElement
@@ -74,9 +64,9 @@ describe('[UserForm] index', () => {
     form.submit()
 
     await waitFor(() => {
-      expect(mockDispatch).toBeCalledWith(updateUserStart())
+      expect(mockUpdateUserStart).toBeCalled()
       expect(mockSend).toBeCalled()
-      expect(mockDispatch).toBeCalledWith(updateUserSuccess({} as any))
+      expect(mockUpdateUserSuccess).toBeCalled()
     })
   })
 
@@ -84,15 +74,20 @@ describe('[UserForm] index', () => {
     mockSend.mockReturnValue(undefined)
     mockError.mockReturnValue('Any error')
 
-    const { container } = renderUserForm()
-    const form = container.getElementsByTagName('form')[0] as HTMLFormElement
+    const { getByTestId, getByLabelText } = render(<UserForm />)
+    const submitButton = getByTestId('update-user-data')
+    const nameInput = getByLabelText('Nome') as HTMLInputElement
+    const emailInput = getByLabelText('Email') as HTMLInputElement
 
-    form.submit()
+    await userEvent.clear(emailInput)
+    await userEvent.type(nameInput, 'newName')
+    await userEvent.type(emailInput, 'newEmail@gmail.com')
+    await userEvent.click(submitButton)
 
     await waitFor(() => {
-      expect(mockDispatch).toBeCalledWith(updateUserStart())
+      expect(mockUpdateUserStart).toBeCalled()
       expect(mockSend).toBeCalled()
-      expect(mockDispatch).toBeCalledWith(updateUserFail('Any error'))
+      expect(mockUpdateUserFail).toBeCalled()
     })
   })
 })

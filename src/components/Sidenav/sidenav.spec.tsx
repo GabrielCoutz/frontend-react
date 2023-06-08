@@ -6,11 +6,6 @@ jest.mock('next/navigation', () => ({
   useRouter: jest.fn(() => ({ push: jest.fn() })),
 }))
 
-jest.mock('react-redux', () => ({
-  ...jest.requireActual('react-redux'),
-  useDispatch: jest.fn(),
-}))
-
 jest.mock('react', () => ({
   ...jest.requireActual('react'),
   useContext: jest.fn(() => ({

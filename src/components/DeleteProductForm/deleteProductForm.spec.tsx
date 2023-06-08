@@ -1,18 +1,10 @@
 import { render, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { Provider } from 'react-redux'
 
 import { DeleteProductForm } from '.'
 
-import * as mockRedux from '../../redux/__mocks__/redux.mock'
-import { mockUserState } from '../../redux/user/__mocks__/user.mock'
-
 const renderDeleteProductForm = () => {
-  return render(
-    <Provider store={mockRedux.mockStore({})}>
-      <DeleteProductForm product={{} as any} />
-    </Provider>,
-  )
+  return render(<DeleteProductForm product={{} as any} />)
 }
 
 const mockPush = jest.fn()
@@ -25,10 +17,16 @@ jest.mock('next/navigation', () => ({
   }),
 }))
 
-jest.mock('react-redux', () => ({
-  ...jest.requireActual('react-redux'),
-  useDispatch: () => mockRedux.mockDispatch,
-  useSelector: () => mockRedux.mockUseSelect(mockUserState),
+const mockDeleteProductStart = jest.fn()
+const mockDeleteProductFail = jest.fn()
+const mockDeleteProductSuccess = jest.fn()
+jest.mock('../../hooks/useProductStore', () => ({
+  ...jest.requireActual('../../hooks/useProductStore'),
+  useProductStore: () => ({
+    deleteProductStart: () => mockDeleteProductStart(),
+    deleteProductFail: () => mockDeleteProductFail(),
+    deleteProductSuccess: () => mockDeleteProductSuccess(),
+  }),
 }))
 
 const mockSend = jest.fn()
@@ -71,6 +69,7 @@ describe('[DeleteProductForm] index', () => {
     await waitFor(() => {
       expect(mockSend).toBeCalled()
       expect(mockPush).toBeCalled()
+      expect(mockDeleteProductSuccess).toBeCalled()
     })
   })
 
@@ -84,7 +83,7 @@ describe('[DeleteProductForm] index', () => {
 
     await waitFor(() => {
       expect(mockSend).toBeCalled()
-      expect(mockRedux.mockDispatch).toBeCalled()
+      expect(mockDeleteProductFail).toBeCalled()
       expect(mockPush).not.toBeCalled()
     })
   })

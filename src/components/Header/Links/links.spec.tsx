@@ -1,16 +1,8 @@
 import { render } from '@testing-library/react'
-import { Provider } from 'react-redux'
 
 import { Links } from '.'
 
-import { mockStore } from '../../../redux/__mocks__/redux.mock'
 import { mockHeaderContextValues } from '../../../contexts/header/__mocks__/header.mock'
-
-const mockUseSelector = jest.fn(() => '')
-jest.mock('react-redux', () => ({
-  ...jest.requireActual('react-redux'),
-  useSelector: () => mockUseSelector(),
-}))
 
 jest.mock('react', () => ({
   ...jest.requireActual('react'),
@@ -24,32 +16,32 @@ jest.mock('../../../contexts/header', () =>
   })),
 )
 
-const renderLinks = () => {
-  return render(
-    <Provider store={mockStore({})}>
-      <Links />
-    </Provider>,
-  )
-}
+const mockData = jest.fn(() => ({
+  data: {
+    name: 'User',
+  },
+}))
+jest.mock('../../../hooks/useUserStore', () => ({
+  useUserStore: () => ({ ...mockData() }),
+}))
 
 describe('[Header] Links', () => {
   it('should render', () => {
-    const { container } = renderLinks()
+    const { container } = render(<Links />)
 
     expect(container.getElementsByTagName('ul')[0]).toBeInTheDocument()
   })
 
   it('should render profile button is user is logged', () => {
-    mockUseSelector.mockReturnValue('user')
-    const { container } = renderLinks()
+    const { container } = render(<Links />)
     const profileLink = container.getElementsByTagName('a')[0]
 
     expect(profileLink.textContent).toEqual('User')
   })
 
   it('should render other links when user is not logged', () => {
-    mockUseSelector.mockReturnValue('')
-    const { container } = renderLinks()
+    mockData.mockReturnValue(undefined as any)
+    const { container } = render(<Links />)
     const profileLink = container.getElementsByTagName('a')[0]
 
     expect(profileLink.textContent).not.toEqual('User')

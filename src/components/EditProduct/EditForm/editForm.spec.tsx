@@ -1,21 +1,10 @@
 import { render, renderHook, waitFor } from '@testing-library/react'
 import { FormProvider, useForm } from 'react-hook-form'
 import userEvent from '@testing-library/user-event'
-import { Provider } from 'react-redux'
 
 import { EditForm } from '.'
-import * as productSlice from '../../../redux/product/productSlice'
 
-import { mockUserState } from '../../../redux/user/__mocks__/user.mock'
-import { mockDispatch, mockStore } from '../../../redux/__mocks__/redux.mock'
 import { mockUpdateProduct } from '../../../helpers/request/__mocks__/request.mock'
-import { mockProduct } from '../../../redux/product/__mocks__/product.mock'
-
-jest.mock('react-redux', () => ({
-  ...jest.requireActual('react-redux'),
-  useSelector: () => mockUserState,
-  useDispatch: () => mockDispatch,
-}))
 
 const mockSend = jest.fn()
 const mockError = jest.fn(() => '')
@@ -27,11 +16,23 @@ jest.mock('../../../hooks/useAxios', () => ({
   }),
 }))
 
+const mockUpdateProductStart = jest.fn()
+const mockUpdateProductFail = jest.fn()
+const mockUpdateProductSuccess = jest.fn()
+jest.mock('../../../hooks/useProductStore', () => ({
+  ...jest.requireActual('../../../hooks/useProductStore'),
+  useProductStore: () => ({
+    updateProductStart: () => mockUpdateProductStart(),
+    updateProductFail: () => mockUpdateProductFail(),
+    updateProductSuccess: () => mockUpdateProductSuccess(),
+  }),
+}))
+
 const renderEditForm = () => {
   const mockDefaultValues = {
-    name: mockProduct.name,
-    price: mockProduct.price,
-    description: mockProduct.description,
+    name: 'productName',
+    price: '100',
+    description: 'productDescription',
   }
   const {
     result: { current },
@@ -42,11 +43,9 @@ const renderEditForm = () => {
   )
 
   return render(
-    <Provider store={mockStore({})}>
-      <FormProvider {...current}>
-        <EditForm product={mockProduct} />
-      </FormProvider>
-    </Provider>,
+    <FormProvider {...current}>
+      <EditForm product={mockDefaultValues as any} />
+    </FormProvider>,
   )
 }
 
@@ -66,9 +65,9 @@ describe('[Edit Product] EditForm', () => {
       const descriptionInput = (getByLabelText('Descrição') as HTMLInputElement)
         .value
 
-      expect(nameInput).toEqual(mockProduct.name)
-      expect(priceInput).toEqual(mockProduct.price)
-      expect(descriptionInput).toEqual(mockProduct.description)
+      expect(nameInput).toEqual('productName')
+      expect(priceInput).toEqual('100')
+      expect(descriptionInput).toEqual('productDescription')
     })
   })
 
@@ -81,11 +80,9 @@ describe('[Edit Product] EditForm', () => {
 
       await userEvent.click(uploadButton)
 
-      expect(mockDispatch).toBeCalledWith(productSlice.updateProductStart())
+      expect(mockUpdateProductStart).toBeCalled()
       expect(mockSend).toBeCalled()
-      expect(mockDispatch).toBeCalledWith(
-        productSlice.updateProductSuccess(undefined as any),
-      )
+      expect(mockUpdateProductSuccess).toBeCalled()
     })
   })
 
@@ -100,11 +97,9 @@ describe('[Edit Product] EditForm', () => {
 
       await userEvent.click(uploadButton)
 
-      expect(mockDispatch).toBeCalledWith(productSlice.updateProductStart())
+      expect(mockUpdateProductStart).toBeCalled()
       expect(mockSend).toBeCalled()
-      expect(mockDispatch).toBeCalledWith(
-        productSlice.updateProductFail('error'),
-      )
+      expect(mockUpdateProductFail).toBeCalled()
     })
   })
 })

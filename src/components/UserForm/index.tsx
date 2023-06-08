@@ -33,7 +33,6 @@ export const UserForm = () => {
   })
   const [message, setMessage] = useState('')
   const { handleSubmit, reset } = userFormMethods
-
   const { token } = useCookie()
 
   useEffect(
@@ -55,7 +54,7 @@ export const UserForm = () => {
     })
     if (!result) return updateUserFail(`${requestErro}`)
 
-    const { data } = result!
+    const { data } = result
 
     updateUserSuccess(data)
     setMessage('Dados atualizados')

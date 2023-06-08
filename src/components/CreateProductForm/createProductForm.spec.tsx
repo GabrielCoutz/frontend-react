@@ -1,28 +1,7 @@
 import { render } from '@testing-library/react'
-import { Provider } from 'react-redux'
 import userEvent from '@testing-library/user-event'
 
 import { CreateProductForm } from '.'
-import {
-  createProductFail,
-  createProductStart,
-  createProductSuccess,
-} from '../../redux/product/productSlice'
-
-import {
-  mockDispatch,
-  mockStore,
-  mockUseSelect,
-} from '../../redux/__mocks__/redux.mock'
-import { mockUserState } from '../../redux/user/__mocks__/user.mock'
-
-const renderCreateProductForm = () => {
-  return render(
-    <Provider store={mockStore({})}>
-      <CreateProductForm />,
-    </Provider>,
-  )
-}
 
 const mockSend = jest.fn()
 const mockError = jest.fn(() => '')
@@ -34,15 +13,21 @@ jest.mock('../../hooks/useAxios', () => ({
   }),
 }))
 
-jest.mock('react-redux', () => ({
-  ...jest.requireActual('react-redux'),
-  useDispatch: () => mockDispatch,
-  useSelector: () => mockUseSelect(mockUserState),
-}))
-
 jest.mock('next/navigation', () => ({
   ...jest.requireActual('next/navigation'),
   useRouter: jest.fn(() => ({ push: jest.fn() })),
+}))
+
+const mockCreateProductStart = jest.fn()
+const mockCreateProductFail = jest.fn()
+const mockCreateProductSuccess = jest.fn()
+jest.mock('../../hooks/useProductStore', () => ({
+  ...jest.requireActual('../../hooks/useProductStore'),
+  useProductStore: () => ({
+    createProductStart: () => mockCreateProductStart(),
+    createProductFail: () => mockCreateProductFail(),
+    createProductSuccess: () => mockCreateProductSuccess(),
+  }),
 }))
 
 describe('[CreateProductForm] index', () => {
@@ -51,7 +36,9 @@ describe('[CreateProductForm] index', () => {
   })
 
   it('should render', () => {
-    const { getByText, queryByTestId, container } = renderCreateProductForm()
+    const { getByText, queryByTestId, container } = render(
+      <CreateProductForm />,
+    )
     const inputs = container.getElementsByTagName('input')
     const textarea = container.getElementsByTagName('textarea')[0]
     const button = container.getElementsByTagName('button')[0]
@@ -68,7 +55,7 @@ describe('[CreateProductForm] index', () => {
   it('should dispatch with valid data', async () => {
     mockSend.mockReturnValue({})
 
-    const { container, getByLabelText } = renderCreateProductForm()
+    const { container, getByLabelText } = render(<CreateProductForm />)
     const button = container.getElementsByTagName('button')[0]
     const nameInput = getByLabelText('Nome')
     const priceInput = getByLabelText('Preço')
@@ -79,14 +66,15 @@ describe('[CreateProductForm] index', () => {
     await userEvent.type(descriptionInput, 'desc')
     await userEvent.click(button)
 
-    expect(mockDispatch).toBeCalledWith(createProductStart())
+    expect(mockCreateProductStart).toBeCalled()
     expect(mockSend).toBeCalled()
-    expect(mockDispatch).toBeCalledWith(createProductSuccess(undefined))
+    expect(mockCreateProductSuccess).toBeCalled()
   })
 
   it('should not dispatch with invalid data', async () => {
-    const { container, queryAllByTestId, getByLabelText } =
-      renderCreateProductForm()
+    const { container, queryAllByTestId, getByLabelText } = render(
+      <CreateProductForm />,
+    )
     const button = container.getElementsByTagName('button')[0]
     const nameInput = getByLabelText('Nome')
 
@@ -94,7 +82,7 @@ describe('[CreateProductForm] index', () => {
     await userEvent.click(button)
 
     expect(queryAllByTestId('form-error')).toHaveLength(2)
-    expect(mockDispatch).not.toBeCalled()
+    expect(mockCreateProductSuccess).not.toBeCalled()
     expect(mockSend).not.toBeCalled()
   })
 
@@ -102,7 +90,7 @@ describe('[CreateProductForm] index', () => {
     mockSend.mockReturnValue(undefined)
     mockError.mockReturnValue('Any error')
 
-    const { container, getByLabelText } = renderCreateProductForm()
+    const { container, getByLabelText } = render(<CreateProductForm />)
     const button = container.getElementsByTagName('button')[0]
     const nameInput = getByLabelText('Nome')
     const priceInput = getByLabelText('Preço')
@@ -113,8 +101,8 @@ describe('[CreateProductForm] index', () => {
     await userEvent.type(descriptionInput, 'desc')
     await userEvent.click(button)
 
-    expect(mockDispatch).toBeCalledWith(createProductStart())
+    expect(mockCreateProductStart).toBeCalled()
     expect(mockSend).toBeCalled()
-    expect(mockDispatch).toBeCalledWith(createProductFail('Any error'))
+    expect(mockCreateProductFail).toBeCalled()
   })
 })
